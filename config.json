@@ -1,0 +1,43 @@
+{
+  "log": {"loglevel": "none"},
+  "dns": {"servers": ["8.8.8.8", "1.1.1.1"]},
+  "inbounds": [
+    {
+      "port": 10000,
+      "listen": "127.0.0.1",
+      "protocol": "trojan",
+      "settings": {"clients": [{"password": "saeka"}]},
+      "streamSettings": {"network": "ws", "wsSettings": {"path": "/saeka-tojirp"}},
+      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+    },
+    {
+      "port": 10001,
+      "listen": "127.0.0.1",
+      "protocol": "vmess",
+      "settings": {"clients": [{"id": "saeka", "security": "auto"}]},
+      "streamSettings": {"network": "ws", "wsSettings": {"path": "/vmess-saeka"}},
+      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+    },
+    {
+      "port": 10002,
+      "listen": "127.0.0.1",
+      "protocol": "vless",
+      "settings": {"clients": [{"id": "saeka"}], "decryption": "none"},
+      "streamSettings": {"network": "ws", "wsSettings": {"path": "/vless-saeka"}},
+      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+    },
+    {
+      "port": 10003,
+      "listen": "127.0.0.1",
+      "protocol": "shadowsocks",
+      "settings": {"clients": [{"password": "saeka", "method": "aes-256-gcm"}]},
+      "streamSettings": {"network": "ws", "wsSettings": {"path": "/ss-saeka"}}
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {"domainStrategy": "UseIPv4"}
+    }
+  ]
+}￼Enter
