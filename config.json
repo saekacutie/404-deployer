@@ -1,43 +1,123 @@
 {
   "log": {"loglevel": "none"},
-  "dns": {"servers": ["8.8.8.8", "1.1.1.1"]},
+  "dns": {
+    "servers": ["8.8.8.8", "1.1.1.1"],
+    "queryStrategy": "UseIPv4",
+    "disableCache": false,
+    "hosts": {
+      "pagead2.googlesyndication.com": "127.0.0.1",
+      "googlesyndication.com": "127.0.0.1",
+      "doubleclick.net": "127.0.0.1",
+      "googleadservices.com": "127.0.0.1",
+      "adservice.google.com": "127.0.0.1",
+      "adsbygoogle.com": "127.0.0.1",
+      "google-analytics.com": "127.0.0.1",
+      "googletagmanager.com": "127.0.0.1",
+      "googletagservices.com": "127.0.0.1",
+      "amazon-adsystem.com": "127.0.0.1",
+      "adnxs.com": "127.0.0.1",
+      "criteo.com": "127.0.0.1",
+      "criteo.net": "127.0.0.1",
+      "casalemedia.com": "127.0.0.1",
+      "openx.net": "127.0.0.1",
+      "pubmatic.com": "127.0.0.1",
+      "rubiconproject.com": "127.0.0.1",
+      "outbrain.com": "127.0.0.1",
+      "taboola.com": "127.0.0.1",
+      "adsrvr.org": "127.0.0.1",
+      "adform.net": "127.0.0.1",
+      "bidswitch.net": "127.0.0.1",
+      "bluekai.com": "127.0.0.1",
+      "demdex.net": "127.0.0.1",
+      "moatads.com": "127.0.0.1",
+      "scorecardresearch.com": "127.0.0.1",
+      "quantserve.com": "127.0.0.1",
+      "yieldmo.com": "127.0.0.1",
+      "sovrn.com": "127.0.0.1",
+      "sharethrough.com": "127.0.0.1",
+      "smartadserver.com": "127.0.0.1",
+      "mediamath.com": "127.0.0.1",
+      "turn.com": "127.0.0.1",
+      "xandr.com": "127.0.0.1",
+      "adroll.com": "127.0.0.1",
+      "advertising.com": "127.0.0.1",
+      "atdmt.com": "127.0.0.1",
+      "ads.facebook.com": "127.0.0.1",
+      "ads.twitter.com": "127.0.0.1",
+      "ads.yahoo.com": "127.0.0.1",
+      "ads.linkedin.com": "127.0.0.1",
+      "popads.net": "127.0.0.1",
+      "popcash.net": "127.0.0.1",
+      "propellerads.com": "127.0.0.1",
+      "adcash.com": "127.0.0.1",
+      "exoclick.com": "127.0.0.1",
+      "adsterra.com": "127.0.0.1",
+      "youtube.com": "127.0.0.1",
+      "ytimg.com": "127.0.0.1",
+      "googlevideo.com": "127.0.0.1",
+      "yt3.ggpht.com": "127.0.0.1",
+      "tiktok.com": "127.0.0.1",
+      "tiktokcdn.com": "127.0.0.1",
+      "bytedance.com": "127.0.0.1",
+      "pangle.io": "127.0.0.1",
+      "fbcdn.net": "127.0.0.1",
+      "facebook.com": "127.0.0.1",
+      "instagram.com": "127.0.0.1"
+    }
+  },
   "inbounds": [
     {
       "port": 10000,
       "listen": "127.0.0.1",
       "protocol": "trojan",
       "settings": {"clients": [{"password": "saeka"}]},
-      "streamSettings": {"network": "ws", "wsSettings": {"path": "/saeka-tojirp"}},
-      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {"path": "/saeka-tojirp"},
+        "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}
+      }
     },
     {
       "port": 10001,
       "listen": "127.0.0.1",
       "protocol": "vmess",
       "settings": {"clients": [{"id": "saeka", "security": "auto"}]},
-      "streamSettings": {"network": "ws", "wsSettings": {"path": "/vmess-saeka"}},
-      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {"path": "/vmess-saeka"},
+        "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}
+      }
     },
     {
       "port": 10002,
       "listen": "127.0.0.1",
       "protocol": "vless",
       "settings": {"clients": [{"id": "saeka"}], "decryption": "none"},
-      "streamSettings": {"network": "ws", "wsSettings": {"path": "/vless-saeka"}},
-      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {"path": "/vless-saeka"},
+        "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}
+      }
     },
     {
       "port": 10003,
       "listen": "127.0.0.1",
       "protocol": "shadowsocks",
       "settings": {"clients": [{"password": "saeka", "method": "aes-256-gcm"}]},
-      "streamSettings": {"network": "ws", "wsSettings": {"path": "/ss-saeka"}}
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {"path": "/ss-saeka"},
+        "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}
+      }
     }
   ],
   "outbounds": [
     {
       "protocol": "freedom",
-      "settings": {"domainStrategy": "UseIPv4"}
+      "settings": {"domainStrategy": "UseIPv4"},
+      "streamSettings": {
+        "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}
+      }
     }
   ]
-}￼Enter
+    }
