@@ -25,18 +25,30 @@ read -r -p "$(echo -e "  ${CYAN}SERVICE NAME [prvtspyyy]: ${RESET}")" INPUT_NAME
 SERVICE_NAME=${INPUT_NAME:-prvtspyyy}
 
 echo ""
-echo -e "  ${CYAN}SELECT PERFORMANCE:${RESET}"
-echo -e "  ${YELLOW}1) 1 vCPU / 2Gi RAM${RESET}"
-echo -e "  ${YELLOW}2) 2 vCPU / 4Gi RAM${RESET}"
-echo -e "  ${YELLOW}3) 4 vCPU / 8Gi RAM${RESET}"
+echo -e "  ${CYAN}SELECT MODE:${RESET}"
+echo -e "  ${YELLOW}1) BROWSING     (1 vCPU / 2Gi  RAM)${RESET}"
+echo -e "  ${YELLOW}2) STREAMING    (2 vCPU / 4Gi  RAM)${RESET}"
+echo -e "  ${YELLOW}3) GAMING       (4 vCPU / 8Gi  RAM)${RESET}"
+echo -e "  ${YELLOW}4) ULTRA        (8 vCPU / 16Gi RAM)${RESET}"
+echo -e "  ${YELLOW}5) CUSTOM${RESET}"
 echo ""
-read -r -p "$(echo -e "  ${CYAN}CHOICE [2]: ${RESET}")" PAIR_CHOICE
+read -r -p "$(echo -e "  ${CYAN}CHOICE [4]: ${RESET}")" MODE_CHOICE
 
-case "$PAIR_CHOICE" in
-    1) CPU="1"; RAM="2Gi";;
-    3) CPU="4"; RAM="8Gi";;
-    *) CPU="2"; RAM="4Gi";;
+case "$MODE_CHOICE" in
+    1) CPU="1"; RAM="2Gi"; MODE="BROWSING";;
+    2) CPU="2"; RAM="4Gi"; MODE="STREAMING";;
+    3) CPU="4"; RAM="8Gi"; MODE="GAMING";;
+    5)
+        echo ""
+        read -r -p "$(echo -e "  ${CYAN}CPU (1/2/4/8): ${RESET}")" CPU
+        read -r -p "$(echo -e "  ${CYAN}RAM (2Gi/4Gi/8Gi/16Gi/32Gi): ${RESET}")" RAM
+        MODE="CUSTOM"
+        ;;
+    *) CPU="8"; RAM="16Gi"; MODE="ULTRA";;
 esac
+
+echo ""
+echo -e "  ${CYAN}MODE: ${GREEN}${MODE}${RESET} | ${CYAN}CPU: ${GREEN}${CPU}${RESET} | ${CYAN}RAM: ${GREEN}${RAM}${RESET}"
 
 echo ""
 loading "BUILDING IMAGE"
@@ -63,7 +75,20 @@ echo ""
 echo -e "  ${CYAN}HOST     ${GREEN}${CLEAN_HOST}${RESET}"
 echo -e "  ${CYAN}PORT     ${GREEN}443${RESET}"
 echo -e "  ${CYAN}PASS     ${GREEN}saeka${RESET}"
+echo -e "  ${CYAN}MODE     ${GREEN}${MODE}${RESET}"
+echo -e "  ${CYAN}CPU      ${GREEN}${CPU}${RESET}"
+echo -e "  ${CYAN}RAM      ${GREEN}${RAM}${RESET}"
+echo ""
+echo -e "  ${CYAN}TROJAN       ${GREEN}/saeka-tojirp${RESET}"
+echo -e "  ${CYAN}VMESS        ${GREEN}/vmess-saeka${RESET}"
+echo -e "  ${CYAN}VLESS        ${GREEN}/vless-saeka${RESET}"
+echo -e "  ${CYAN}SHADOWSOCKS  ${GREEN}/ss-saeka${RESET}"
 echo ""
 echo -e "  ${CYAN}PAGE     ${GREEN}${SERVICE_URL}${RESET}"
 
-rm -f build.log deploy.log
+echo ""
+echo -e "  ${CYAN}STARTING REAL-TIME LOGS...${RESET}"
+echo -e "  ${YELLOW}(Press Ctrl+C to stop)${RESET}"
+echo ""
+
+gcloud run logs tail "$SERVICE_NAME" --region us-central1 --project=$PROJECT_ID
