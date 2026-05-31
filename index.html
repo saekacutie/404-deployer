@@ -6,34 +6,45 @@
     <title>404 NOT FOUND GCP</title>
     <style>
         :root {
-            --bg: #0a0a0a;
-            --surface: #141414;
-            --border: #2a2a2a;
-            --text: #e0e0e0;
-            --text-dim: #888;
+            --bg: #000000;
+            --surface: #0a0a0a;
+            --surface2: #0f0f0f;
+            --border: #1a1a1a;
+            --border-hover: #333333;
+            --text: #ffffff;
+            --text-dim: #777777;
+            --text-bright: #ffffff;
             --accent: #ffffff;
             --glow: #ffffff;
-            --green: #2ed573;
-            --red: #ff4757;
-            --yellow: #ffa502;
-            --blue: #1e90ff;
-            --magenta: #a55eea;
-            --cyan: #00d2d3;
-            --font-mono: 'Courier New', monospace;
+            --green: #00ff66;
+            --green-dim: #009944;
+            --red: #ff3333;
+            --red-dim: #991111;
+            --yellow: #ffaa00;
+            --yellow-dim: #996600;
+            --cyan: #00dddd;
+            --magenta: #cc44cc;
+            --font-mono: 'Courier New', 'Liberation Mono', 'DejaVu Sans Mono', monospace;
             --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --font-size-base: clamp(12px, 3.2vw, 15px);
-            --font-size-sm: clamp(10px, 2.8vw, 13px);
-            --font-size-lg: clamp(16px, 4.5vw, 20px);
-            --font-size-xl: clamp(24px, 7vw, 36px);
-            --font-size-xxl: clamp(36px, 10vw, 60px);
+            --font-size-base: clamp(11px, 2.9vw, 14px);
+            --font-size-sm: clamp(9px, 2.3vw, 11px);
+            --font-size-md: clamp(12px, 3.2vw, 15px);
+            --font-size-lg: clamp(14px, 3.8vw, 17px);
+            --font-size-xl: clamp(20px, 5.5vw, 28px);
+            --font-size-xxl: clamp(34px, 9vw, 56px);
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+            --spacing-lg: 16px;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.25s ease;
+            --transition-slow: 0.4s ease;
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; width: 100%; }
         body {
             background: var(--bg);
             color: var(--text);
@@ -44,251 +55,157 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             overflow-x: hidden;
+            overflow-y: auto;
             -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            -webkit-user-select: none;
+            -webkit-overflow-scrolling: touch;
         }
-
         .container {
             width: 100%;
-            max-width: 600px;
-            padding: 16px;
+            max-width: 580px;
+            padding: var(--spacing-md);
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: var(--spacing-md);
+            padding-bottom: 24px;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-
-        @keyframes glowPulse {
-            0%, 100% { text-shadow: 0 0 10px var(--glow), 0 0 20px var(--glow), 0 0 40px var(--glow); }
-            50% { text-shadow: 0 0 5px var(--glow), 0 0 10px var(--glow), 0 0 20px var(--glow); }
-        }
-
-        @keyframes glowPulseLight {
-            0%, 100% { text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow); }
-            50% { text-shadow: 0 0 2px var(--glow), 0 0 6px var(--glow); }
-        }
-
-        @keyframes blink {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0.15; }
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        .glow-text {
-            animation: glowPulse 2s ease-in-out infinite;
-        }
-
-        .glow-text-light {
-            animation: glowPulseLight 2.5s ease-in-out infinite;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        .fade-out {
-            animation: fadeOut 0.3s ease-in forwards;
-        }
-
-        .slide-down {
-            animation: slideDown 0.4s ease-out forwards;
-        }
-
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes glowPulseStrong { 0%, 100% { text-shadow: 0 0 12px var(--glow), 0 0 24px var(--glow), 0 0 48px var(--glow), 0 0 72px var(--glow); } 50% { text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow), 0 0 24px var(--glow); } }
+        @keyframes glowPulseLight { 0%, 100% { text-shadow: 0 0 6px var(--glow), 0 0 10px var(--glow); } 50% { text-shadow: 0 0 2px var(--glow), 0 0 4px var(--glow); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
+        @keyframes borderGlow { 0%, 100% { border-color: var(--border); } 50% { border-color: #333; } }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .glow-text-strong { animation: glowPulseStrong 2.5s ease-in-out infinite; }
+        .glow-text-light { animation: glowPulseLight 3s ease-in-out infinite; }
+        .fade-in { animation: fadeInUp 0.5s ease-out forwards; }
+        .fade-in-delay-1 { animation: fadeInUp 0.5s ease-out 0.1s forwards; opacity: 0; }
+        .fade-in-delay-2 { animation: fadeInUp 0.5s ease-out 0.2s forwards; opacity: 0; }
+        .fade-in-delay-3 { animation: fadeInUp 0.5s ease-out 0.3s forwards; opacity: 0; }
+        .fade-in-delay-4 { animation: fadeInUp 0.5s ease-out 0.4s forwards; opacity: 0; }
         #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(10, 10, 10, 0.92);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            z-index: 1000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            z-index: 9999; transition: opacity 0.5s ease;
         }
-
+        #loading-screen.hidden { opacity: 0; pointer-events: none; }
         .loading-digits {
-            font-size: var(--font-size-xxl);
-            font-weight: 900;
-            font-family: var(--font-mono);
-            letter-spacing: 8px;
-            display: flex;
-            gap: 4px;
-            color: var(--text);
+            font-size: var(--font-size-xxl); font-weight: 900; font-family: var(--font-mono);
+            letter-spacing: 8px; display: flex; gap: 4px; color: var(--text);
         }
-
-        .loading-digits span {
-            transition: all 0.3s ease;
-        }
-
-        .loading-digits span.active {
-            animation: glowPulse 0.8s ease-in-out infinite;
-        }
-
-        .loading-digits span.inactive {
-            opacity: 0.12;
-            text-shadow: none;
-        }
-
+        .loading-digits span { transition: all 0.35s ease; display: inline-block; }
+        .loading-digits span.active { animation: glowPulseStrong 0.7s ease-in-out infinite; transform: scale(1.1); }
+        .loading-digits span.inactive { opacity: 0.06; text-shadow: none; transform: scale(0.9); }
+        .loading-subtitle { margin-top: 20px; font-size: var(--font-size-sm); color: var(--text-dim); letter-spacing: 2px; animation: fadeIn 1s ease 2s forwards; opacity: 0; }
         .section {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px;
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
             width: 100%;
+            transition: border-color var(--transition-normal);
         }
-
+        .section:hover { border-color: var(--border-hover); }
+        .section-header { text-align: center; padding: var(--spacing-sm) 0; }
         .section-title {
-            font-weight: 700;
-            font-size: var(--font-size-lg);
-            text-align: center;
-            margin-bottom: 12px;
-            letter-spacing: 1px;
-            word-break: break-word;
+            font-weight: 700; font-size: var(--font-size-lg); text-align: center;
+            margin-bottom: var(--spacing-sm); letter-spacing: 1px; word-break: break-word;
+            color: var(--text-bright);
         }
-
-        .google-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
+        .section-subtitle {
+            font-size: var(--font-size-sm); color: var(--text-dim); text-align: center;
+            margin-bottom: var(--spacing-md); letter-spacing: 0.5px;
         }
-
+        .google-selector { display: flex; flex-wrap: wrap; gap: var(--spacing-xs); justify-content: center; }
         .google-btn {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 8px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: var(--font-mono);
-            font-size: var(--font-size-sm);
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            max-width: 100%;
+            background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+            padding: 7px 13px; border-radius: var(--radius-sm); cursor: pointer; font-family: var(--font-mono);
+            font-size: var(--font-size-sm); transition: all var(--transition-fast);
+            white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 100%;
+            letter-spacing: 0.3px;
         }
-
-        .google-btn:hover, .google-btn.active {
-            border-color: var(--accent);
-            background: #1a1a1a;
-        }
-
+        .google-btn:hover { border-color: var(--text-dim); background: #181818; }
+        .google-btn.active { border-color: var(--accent); background: #1a1a1a; color: var(--text-bright); box-shadow: 0 0 12px rgba(255,255,255,0.06); }
         .ping-display {
-            text-align: center;
-            font-size: var(--font-size-sm);
-            color: var(--text-dim);
-            margin-top: 10px;
-            font-family: var(--font-mono);
-            min-height: 20px;
-            transition: all 0.3s ease;
+            text-align: center; font-size: var(--font-size-sm); color: var(--text-dim);
+            margin-top: var(--spacing-sm); font-family: var(--font-mono); min-height: 20px;
+            transition: all var(--transition-normal); letter-spacing: 0.5px;
         }
-
-        .protocol-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
+        .timer-display {
+            text-align: center; font-size: var(--font-size-sm); color: var(--red);
+            margin-top: 2px; font-family: var(--font-mono); min-height: 18px; letter-spacing: 0.5px;
         }
-
+        .timer-display.warning { animation: pulse 0.8s infinite; }
+        .protocol-selector { display: flex; flex-wrap: wrap; gap: var(--spacing-xs); justify-content: center; }
         .protocol-btn {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 10px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: var(--font-mono);
-            font-size: var(--font-size-sm);
-            font-weight: 700;
-            transition: all 0.2s ease;
-            flex: 1 1 auto;
-            min-width: 70px;
-            text-align: center;
+            background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+            padding: 10px 16px; border-radius: var(--radius-sm); cursor: pointer; font-family: var(--font-mono);
+            font-size: var(--font-size-sm); font-weight: 700; transition: all var(--transition-fast);
+            flex: 1 1 auto; min-width: 68px; text-align: center; letter-spacing: 1px;
         }
-
-        .protocol-btn:hover, .protocol-btn.active {
-            background: #1a1a1a;
-            border-color: var(--accent);
-        }
-
+        .protocol-btn:hover { border-color: var(--text-dim); background: #181818; }
+        .protocol-btn.active { background: #1a1a1a; border-color: var(--accent); color: var(--text-bright); box-shadow: 0 0 10px rgba(255,255,255,0.05); }
+        .config-section { position: relative; }
+        .config-wrapper { position: relative; }
         .config-display {
-            background: #0d0d0d;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 14px;
-            font-family: var(--font-mono);
-            font-size: var(--font-size-sm);
-            line-height: 1.7;
-            word-break: break-all;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            color: var(--text-dim);
-            min-height: 120px;
-            max-height: 300px;
-            overflow-y: auto;
+            background: #030303; border: 1px solid var(--border); border-radius: var(--radius-md);
+            padding: 14px; padding-top: 40px; font-family: var(--font-mono); font-size: var(--font-size-sm);
+            line-height: 1.7; word-break: break-all; overflow-wrap: break-word;
+            white-space: pre-wrap; color: var(--green); min-height: 90px;
+            max-height: 300px; overflow-y: auto; overflow-x: hidden;
+            -webkit-user-select: all; user-select: all;
+            transition: all var(--transition-normal);
+            letter-spacing: 0.2px;
         }
-
-        .config-display .key {
-            color: var(--text);
+        .config-display:focus { outline: none; border-color: var(--text-dim); }
+        .copy-btn {
+            position: absolute; top: 10px; right: 14px;
+            background: var(--surface2); border: 1px solid var(--border); color: var(--text);
+            padding: 5px 12px; border-radius: var(--radius-sm); cursor: pointer; font-family: var(--font-mono);
+            font-size: var(--font-size-sm); transition: all var(--transition-fast); z-index: 5;
+            letter-spacing: 1px;
         }
-        .config-display .value {
-            color: var(--green);
-        }
-        .config-display .path {
-            color: var(--cyan);
-        }
-        .config-display .pass {
-            color: var(--yellow);
-        }
-
+        .copy-btn:hover { border-color: var(--accent); background: #1a1a1a; }
+        .copy-btn.copied { border-color: var(--green); color: var(--green); background: #0a1a0a; }
+        .copy-btn.copied::after { content: ' ✓'; }
         .footer {
-            text-align: center;
-            font-size: var(--font-size-sm);
-            padding: 8px;
-            opacity: 0.8;
+            text-align: center; font-size: var(--font-size-sm); padding: var(--spacing-sm);
+            opacity: 0.65; letter-spacing: 1px; margin-top: var(--spacing-xs);
         }
-
-        .status-dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 6px;
+        .footer a { color: var(--text-dim); text-decoration: none; transition: color var(--transition-fast); }
+        .footer a:hover { color: var(--text); }
+        .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+        .status-dot.green { background: var(--green); box-shadow: 0 0 8px var(--green), 0 0 16px var(--green-dim); }
+        .status-dot.yellow { background: var(--yellow); box-shadow: 0 0 8px var(--yellow), 0 0 16px var(--yellow-dim); animation: pulse 1s infinite; }
+        .status-dot.red { background: var(--red); box-shadow: 0 0 8px var(--red), 0 0 16px var(--red-dim); }
+        .divider { border: none; border-top: 1px solid var(--border); margin: var(--spacing-xs) 0; opacity: 0.5; }
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 2px 0; font-size: var(--font-size-sm); }
+        .info-label { color: var(--text-dim); }
+        .info-value { color: var(--green); font-weight: 700; }
+        .badge {
+            display: inline-block; background: var(--surface2); border: 1px solid var(--border);
+            padding: 2px 8px; border-radius: 3px; font-size: var(--font-size-sm);
+            color: var(--text-dim); letter-spacing: 0.5px;
         }
-        .status-dot.green { background: var(--green); box-shadow: 0 0 6px var(--green); }
-        .status-dot.red { background: var(--red); box-shadow: 0 0 6px var(--red); }
-        .status-dot.yellow { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); animation: pulse 1s infinite; }
-
+        .badge.active { border-color: var(--green); color: var(--green); }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #333; }
         @media (max-width: 380px) {
-            .protocol-btn { font-size: var(--font-size-sm); padding: 8px 10px; }
-            .google-btn { font-size: 10px; padding: 6px 10px; }
-            .config-display { font-size: 10px; padding: 10px; }
+            .protocol-btn { font-size: 10px; padding: 7px 9px; }
+            .google-btn { font-size: 8px; padding: 5px 8px; }
+            .config-display { font-size: 9px; padding: 10px; padding-top: 36px; }
+            .copy-btn { top: 8px; right: 10px; font-size: 9px; padding: 3px 8px; }
+            .section { padding: 10px; }
+        }
+        @media (min-width: 768px) {
+            .container { padding: 20px; gap: 16px; }
+            .section { padding: 20px; }
         }
     </style>
 </head>
@@ -298,199 +215,342 @@
     <div class="loading-digits" id="loading-digits">
         <span id="d4">4</span><span id="d0">0</span><span id="d4b">4</span>
     </div>
+    <div class="loading-subtitle" id="loading-subtitle">INITIALIZING DEPLOYER</div>
 </div>
 
 <div class="container" id="main-content" style="display:none;">
-    <div class="section fade-in" style="text-align:center;">
-        <div class="section-title glow-text" style="font-size:var(--font-size-xl);">404 NOT FOUND GCP</div>
+    <div class="section fade-in" style="text-align:center; border-color: #222;">
+        <div class="section-title glow-text-strong" style="font-size:var(--font-size-xl); letter-spacing:3px;">404 NOT FOUND GCP</div>
+        <div class="section-subtitle">DEPLOYMENT CONFIGURATION PORTAL</div>
+        <hr class="divider">
+        <div class="info-row">
+            <span class="info-label">HOST:</span>
+            <span class="info-value" id="info-host">---</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">PASS:</span>
+            <span class="info-value">saeka</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">STATUS:</span>
+            <span class="badge active" id="status-badge">READY</span>
+        </div>
     </div>
 
-    <div class="section fade-in">
-        <div class="section-title" style="font-size:var(--font-size-sm); color:var(--text-dim);">GOOGLE ADDRESS SELECTOR</div>
+    <div class="section fade-in-delay-1">
+        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);letter-spacing:2px;">GOOGLE ADDRESS SELECTOR</div>
+        <div class="section-subtitle">SELECT SNI / DESTINATION ADDRESS</div>
         <div class="google-selector" id="google-selector"></div>
         <div class="ping-display" id="ping-display">
             <span class="status-dot yellow"></span> SELECT ADDRESS TO PING
         </div>
+        <div class="timer-display" id="timer-display">SESSION: --:--:--</div>
     </div>
 
-    <div class="section fade-in">
-        <div class="section-title" style="font-size:var(--font-size-sm); color:var(--text-dim);">PROTOCOL SELECTOR</div>
+    <div class="section fade-in-delay-2">
+        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);letter-spacing:2px;">PROTOCOL SELECTOR</div>
+        <div class="section-subtitle">CHOOSE TUNNEL PROTOCOL</div>
         <div class="protocol-selector" id="protocol-selector"></div>
     </div>
 
-    <div class="section fade-in">
-        <div class="section-title" style="font-size:var(--font-size-sm); color:var(--text-dim);">CONFIG</div>
-        <div class="config-display" id="config-display"></div>
+    <div class="section config-section fade-in-delay-3">
+        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);letter-spacing:2px;">CONFIG OUTPUT</div>
+        <div class="section-subtitle">COPY AND IMPORT TO YOUR VPN CLIENT</div>
+        <div class="config-wrapper">
+            <button class="copy-btn" id="copy-btn" onclick="copyConfig()">COPY</button>
+            <div class="config-display" id="config-display"></div>
+        </div>
     </div>
 
-    <div class="footer fade-in glow-text-light">
-        CREATED BY SAEKA TOJIRP
+    <div class="footer fade-in-delay-4 glow-text-light">
+        CREATED BY <a href="https://fb.com/saekacutiee" target="_blank">SAEKA TOJIRP</a> &middot; 404 NOT FOUND GCP &middot; v2.0
     </div>
 </div>
 
 <script>
-    (function() {
-        const PASS = 'saeka';
-        const PATHS = {
-            trojan: '/saeka-tojirp',
-            vmess: '/vmess-saeka',
-            vless: '/vless-saeka',
-            ss: '/ss-saeka'
-        };
-        const PROTOCOLS = ['trojan', 'vmess', 'vless', 'ss'];
+(function() {
+    'use strict';
 
-        const GOOGLE_ADDRESSES = [
-            'run.googleapis.com',
-            'cloud.google.com',
-            'googleapis.com',
-            'firebase.google.com',
-            'storage.googleapis.com',
-            'fonts.googleapis.com',
-            'ajax.googleapis.com',
-            'maps.googleapis.com',
-            'oauth2.googleapis.com',
-            'www.googleapis.com'
-        ];
+    var PASS = 'saeka';
+    var GOOGLE = [
+        'saeka-tojirp.googleapis.com',
+        'fcmtoken.googleapis.com',
+        'run.googleapis.com',
+        'cloud.google.com',
+        'googleapis.com',
+        'firebase.google.com',
+        'storage.googleapis.com',
+        'fonts.googleapis.com',
+        'ajax.googleapis.com',
+        'maps.googleapis.com',
+        'www.googleapis.com',
+        'oauth2.googleapis.com'
+    ];
+    var PROTOCOLS = ['vless', 'trojan', 'vmess', 'ss'];
+    var PROTOCOL_LABELS = { vless: 'VLESS', trojan: 'TROJAN', vmess: 'VMESS', ss: 'SHADOWSOCKS' };
+    var PATHS = {
+        trojan: '/saeka-tojirp',
+        vmess: '/vmess-saeka',
+        vless: '/vless-saeka',
+        ss: '/ss-saeka'
+    };
+    var selectedProtocol = 'vless';
+    var selectedAddress = 'saeka-tojirp.googleapis.com';
+    var currentHost = window.location.hostname || 'localhost';
+    var pingCache = {};
+    var pingInProgress = false;
 
-        let selectedAddress = null;
-        let selectedProtocol = 'trojan';
-        let currentHost = window.location.hostname || 'localhost';
+    var loadingScreen = document.getElementById('loading-screen');
+    var mainContent = document.getElementById('main-content');
+    var d4 = document.getElementById('d4');
+    var d0 = document.getElementById('d0');
+    var d4b = document.getElementById('d4b');
+    var loadingSubtitle = document.getElementById('loading-subtitle');
 
-        const loadingScreen = document.getElementById('loading-screen');
-        const mainContent = document.getElementById('main-content');
-        const d4 = document.getElementById('d4');
-        const d0 = document.getElementById('d0');
-        const d4b = document.getElementById('d4b');
+    document.getElementById('info-host').textContent = currentHost;
 
-        function getConfigText(protocol) {
-            const path = PATHS[protocol];
-            let config = '';
+    var sessionEnd = new Date().getTime() + (2 * 60 * 60 * 1000);
 
-            switch(protocol) {
-                case 'trojan':
-                    config = `TYPE: trojan\nSERVER: ${currentHost}\nPORT: 443\nPASSWORD: ${PASS}\nPATH: ${path}\nNETWORK: ws\nSECURITY: tls\nSNI: ${currentHost}`;
-                    break;
-                case 'vmess':
-                    config = `TYPE: vmess\nSERVER: ${currentHost}\nPORT: 443\nUUID: ${PASS}\nPATH: ${path}\nNETWORK: ws\nSECURITY: tls\nSNI: ${currentHost}\nALTERID: 0`;
-                    break;
-                case 'vless':
-                    config = `TYPE: vless\nSERVER: ${currentHost}\nPORT: 443\nUUID: ${PASS}\nPATH: ${path}\nNETWORK: ws\nSECURITY: tls\nSNI: ${currentHost}\nFLOW: xtls-rprx-vision`;
-                    break;
-                case 'ss':
-                    config = `TYPE: shadowsocks\nSERVER: ${currentHost}\nPORT: 443\nPASSWORD: ${PASS}\nPATH: ${path}\nNETWORK: ws\nSECURITY: tls\nSNI: ${currentHost}\nMETHOD: aes-256-gcm`;
-                    break;
-            }
-            return config;
+    function updateTimer() {
+        var now = new Date().getTime();
+        var remaining = sessionEnd - now;
+        var el = document.getElementById('timer-display');
+        if (remaining <= 0) {
+            el.innerHTML = 'SESSION: EXPIRED';
+            el.classList.add('warning');
+            document.getElementById('status-badge').textContent = 'EXPIRED';
+            document.getElementById('status-badge').classList.remove('active');
+            return;
         }
-
-        function highlightConfig(text) {
-            return text
-                .replace(/^(\w+):/gm, '<span class="key">$1:</span>')
-                .replace(/: (\S+)$/gm, ': <span class="value">$1</span>')
-                .replace(/(\/\S+)/g, '<span class="path">$1</span>')
-                .replace(new RegExp(`(${PASS})`, 'g'), '<span class="pass">$1</span>');
+        if (remaining < 600000) {
+            el.classList.add('warning');
+            document.getElementById('status-badge').textContent = 'EXPIRING';
         }
+        var h = Math.floor(remaining / 3600000);
+        var m = Math.floor((remaining % 3600000) / 60000);
+        var s = Math.floor((remaining % 60000) / 1000);
+        el.innerHTML = 'SESSION: ' + String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
 
-        function updateConfigDisplay() {
-            const display = document.getElementById('config-display');
-            const config = getConfigText(selectedProtocol);
-            display.innerHTML = highlightConfig(config);
-        }
+    function buildConfig() {
+        var addr = selectedAddress;
+        var host = currentHost;
+        var p = selectedProtocol;
+        var path = PATHS[p];
+        var encPath = encodeURIComponent(path);
 
-        async function pingAddress(address) {
-            const display = document.getElementById('ping-display');
-            display.innerHTML = '<span class="status-dot yellow"></span> PINGING ' + address + '...';
-            
-            const start = performance.now();
-            try {
-                await fetch('https://' + address + '/', { mode: 'no-cors', cache: 'no-store' });
-                const latency = Math.round(performance.now() - start);
-                display.innerHTML = '<span class="status-dot green"></span> ' + address + ' : ' + latency + 'ms';
-                return latency;
-            } catch (e) {
-                const latency = Math.round(performance.now() - start);
-                if (latency < 50) {
-                    display.innerHTML = '<span class="status-dot green"></span> ' + address + ' : ' + latency + 'ms';
-                } else {
-                    display.innerHTML = '<span class="status-dot green"></span> ' + address + ' : ' + latency + 'ms';
+        switch(p) {
+            case 'vless':
+                return 'vless://' + PASS + '@' + addr + ':443?encryption=none&flow=none&type=ws&host=' +
+                       host + '&headerType=none&path=' + encPath + '&security=tls&fp=chrome&sni=' +
+                       addr + '&alpn=http%2F1.1#VLESS-' + host;
+            case 'trojan':
+                return 'trojan://' + PASS + '@' + addr + ':443?type=ws&host=' + host +
+                       '&path=' + encPath + '&security=tls&fp=chrome&sni=' + addr +
+                       '&alpn=http%2F1.1#TROJAN-' + host;
+            case 'vmess':
+                var vmessObj = {
+                    v: '2', ps: 'VMESS-' + host, add: addr, port: '443', id: PASS, aid: '0',
+                    scy: 'auto', net: 'ws', type: 'none', host: host, path: path,
+                    tls: 'tls', sni: addr, fp: 'chrome', alpn: 'http/1.1'
+                };
+                try {
+                    return 'vmess://' + btoa(unescape(encodeURIComponent(JSON.stringify(vmessObj))));
+                } catch(e) {
+                    return 'vmess://' + btoa(JSON.stringify(vmessObj));
                 }
-                return latency;
+            case 'ss':
+                var ssB64 = '';
+                try {
+                    ssB64 = btoa('aes-256-gcm:' + PASS + '@' + addr + ':443');
+                } catch(e) {
+                    ssB64 = btoa(unescape(encodeURIComponent('aes-256-gcm:' + PASS + '@' + addr + ':443')));
+                }
+                return 'ss://' + ssB64 +
+                       '?plugin=obfs-local%3Bobfs%3Dwebsocket%3Bobfs-host%3D' + host +
+                       '%3Bobfs-uri%3D' + encPath + '%3Bsni%3D' + addr + '#SHADOWSOCKS-' + host;
+            default:
+                return '';
+        }
+    }
+
+    function updateConfigDisplay() {
+        document.getElementById('config-display').textContent = buildConfig();
+    }
+
+    function copyConfig() {
+        var config = buildConfig();
+        var btn = document.getElementById('copy-btn');
+        function showSuccess() {
+            btn.textContent = 'COPIED';
+            btn.classList.add('copied');
+            setTimeout(function() { btn.textContent = 'COPY'; btn.classList.remove('copied'); }, 2500);
+        }
+        function showFail() {
+            btn.textContent = 'FAILED';
+            btn.style.borderColor = 'var(--red)';
+            btn.style.color = 'var(--red)';
+            setTimeout(function() { btn.textContent = 'COPY'; btn.style.borderColor = 'var(--border)'; btn.style.color = 'var(--text)'; }, 2000);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(config).then(showSuccess).catch(function() {
+                fallbackCopy(config, showSuccess, showFail);
+            });
+        } else {
+            fallbackCopy(config, showSuccess, showFail);
+        }
+    }
+
+    function fallbackCopy(text, success, fail) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        ta.style.top = '-9999px';
+        ta.style.width = '2px';
+        ta.style.height = '2px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        var worked = false;
+        try { worked = document.execCommand('copy'); } catch(e) {}
+        document.body.removeChild(ta);
+        if (worked) { success(); } else { fail(); }
+    }
+
+    function pingAddress(addr, silent) {
+        if (pingInProgress) return;
+        if (pingCache[addr] && !silent) {
+            showPingResult(addr, pingCache[addr]);
+            return;
+        }
+        pingInProgress = true;
+        var d = document.getElementById('ping-display');
+        if (!silent) {
+            d.innerHTML = '<span class="status-dot yellow"></span> PINGING ' + addr + '...';
+        }
+        var s = performance.now();
+        var done = false;
+        var timeout = setTimeout(function() {
+            if (!done) {
+                done = true;
+                pingInProgress = false;
+                var l = 9999;
+                pingCache[addr] = { latency: l, status: 'timeout' };
+                if (!silent) showPingResult(addr, pingCache[addr]);
             }
-        }
+        }, 5000);
+        fetch('https://' + addr + '/', {mode: 'no-cors', cache: 'no-store'}).then(function() {
+            if (!done) {
+                done = true;
+                clearTimeout(timeout);
+                pingInProgress = false;
+                var l = Math.round(performance.now() - s);
+                pingCache[addr] = { latency: l, status: 'ok' };
+                if (!silent) showPingResult(addr, pingCache[addr]);
+            }
+        }).catch(function() {
+            if (!done) {
+                done = true;
+                clearTimeout(timeout);
+                pingInProgress = false;
+                var l = Math.round(performance.now() - s);
+                pingCache[addr] = { latency: l, status: l < 3000 ? 'ok' : 'timeout' };
+                if (!silent) showPingResult(addr, pingCache[addr]);
+            }
+        });
+    }
 
-        function buildGoogleSelector() {
-            const container = document.getElementById('google-selector');
-            GOOGLE_ADDRESSES.forEach(addr => {
-                const btn = document.createElement('button');
-                btn.className = 'google-btn';
-                btn.textContent = addr;
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.google-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    selectedAddress = addr;
-                    pingAddress(addr);
-                });
-                container.appendChild(btn);
+    function showPingResult(addr, result) {
+        var d = document.getElementById('ping-display');
+        if (result.status === 'timeout') {
+            d.innerHTML = '<span class="status-dot red"></span> ' + addr + ' : TIMEOUT';
+        } else {
+            var color = result.latency < 200 ? 'green' : (result.latency < 600 ? 'yellow' : 'red');
+            d.innerHTML = '<span class="status-dot ' + color + '"></span> ' + addr + ' : ' + result.latency + 'ms';
+        }
+    }
+
+    function buildGoogleSelector() {
+        var container = document.getElementById('google-selector');
+        container.innerHTML = '';
+        GOOGLE.forEach(function(addr, index) {
+            var b = document.createElement('button');
+            b.className = 'google-btn';
+            b.textContent = addr;
+            b.setAttribute('data-addr', addr);
+            if (addr === selectedAddress) b.classList.add('active');
+            b.addEventListener('click', function() {
+                document.querySelectorAll('.google-btn').forEach(function(x) { x.classList.remove('active'); });
+                b.classList.add('active');
+                selectedAddress = addr;
+                updateConfigDisplay();
+                pingAddress(addr, false);
             });
-        }
+            container.appendChild(b);
+            if (index === 0) {
+                setTimeout(function() { pingAddress(addr, true); }, 1500);
+            }
+        });
+    }
 
-        function buildProtocolSelector() {
-            const container = document.getElementById('protocol-selector');
-            PROTOCOLS.forEach(proto => {
-                const btn = document.createElement('button');
-                btn.className = 'protocol-btn';
-                btn.textContent = proto.toUpperCase();
-                if (proto === selectedProtocol) btn.classList.add('active');
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.protocol-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    selectedProtocol = proto;
-                    updateConfigDisplay();
-                });
-                container.appendChild(btn);
+    function buildProtocolSelector() {
+        var container = document.getElementById('protocol-selector');
+        container.innerHTML = '';
+        PROTOCOLS.forEach(function(p) {
+            var b = document.createElement('button');
+            b.className = 'protocol-btn';
+            b.textContent = PROTOCOL_LABELS[p];
+            b.setAttribute('data-proto', p);
+            if (p === selectedProtocol) b.classList.add('active');
+            b.addEventListener('click', function() {
+                document.querySelectorAll('.protocol-btn').forEach(function(x) { x.classList.remove('active'); });
+                b.classList.add('active');
+                selectedProtocol = p;
+                updateConfigDisplay();
             });
-        }
+            container.appendChild(b);
+        });
+    }
 
-        function startLoadingAnimation() {
-            const digits = [d4, d0, d4b];
-            let activeIndex = 0;
-            const interval = setInterval(() => {
-                digits.forEach((d, i) => {
-                    if (i === activeIndex) {
-                        d.classList.add('active');
-                        d.classList.remove('inactive');
-                    } else {
-                        d.classList.remove('active');
-                        d.classList.add('inactive');
-                    }
-                });
-                activeIndex = (activeIndex + 1) % digits.length;
-            }, 500);
-
-            setTimeout(() => {
+    function startLoadingAnimation() {
+        var digits = [d4, d0, d4b];
+        var activeIndex = 0;
+        var cycleCount = 0;
+        var maxCycles = 10;
+        var interval = setInterval(function() {
+            digits.forEach(function(d, i) {
+                if (i === activeIndex) { d.classList.add('active'); d.classList.remove('inactive'); }
+                else { d.classList.remove('active'); d.classList.add('inactive'); }
+            });
+            activeIndex = (activeIndex + 1) % digits.length;
+            if (activeIndex === 0) cycleCount++;
+            if (cycleCount >= maxCycles) {
                 clearInterval(interval);
-                digits.forEach(d => {
-                    d.classList.add('active');
-                    d.classList.remove('inactive');
-                });
-                setTimeout(() => {
-                    loadingScreen.style.transition = 'opacity 0.4s ease';
-                    loadingScreen.style.opacity = '0';
-                    setTimeout(() => {
+                digits.forEach(function(d) { d.classList.add('active'); d.classList.remove('inactive'); });
+                loadingSubtitle.textContent = 'READY';
+                loadingSubtitle.style.opacity = '1';
+                setTimeout(function() {
+                    loadingScreen.classList.add('hidden');
+                    setTimeout(function() {
                         loadingScreen.style.display = 'none';
                         mainContent.style.display = 'flex';
-                        mainContent.style.animation = 'fadeIn 0.5s ease-out forwards';
                         updateConfigDisplay();
-                    }, 400);
-                }, 600);
-            }, 7000);
-        }
+                        pingAddress(selectedAddress, true);
+                    }, 500);
+                }, 800);
+            }
+        }, 550);
+    }
 
-        buildGoogleSelector();
-        buildProtocolSelector();
-        updateConfigDisplay();
-        startLoadingAnimation();
-    })();
+    buildGoogleSelector();
+    buildProtocolSelector();
+    updateConfigDisplay();
+    startLoadingAnimation();
+})();
 </script>
 </body>
-</html>￼Enter
+    </html>
