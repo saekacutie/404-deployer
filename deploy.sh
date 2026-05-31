@@ -42,13 +42,44 @@ case "$MODE_CHOICE" in
         echo ""
         read -r -p "$(echo -e "  ${CYAN}CPU (1/2/4/8): ${RESET}")" CPU
         read -r -p "$(echo -e "  ${CYAN}RAM (2Gi/4Gi/8Gi/16Gi/32Gi): ${RESET}")" RAM
+        echo ""
+        echo -e "  ${CYAN}SELECT INSTANCES:${RESET}"
+        echo -e "  ${YELLOW}1) 1 INSTANCE${RESET}"
+        echo -e "  ${YELLOW}2) 2 INSTANCES${RESET}"
+        echo -e "  ${YELLOW}3) 4 INSTANCES${RESET}"
+        echo -e "  ${YELLOW}4) 8 INSTANCES${RESET}"
+        echo ""
+        read -r -p "$(echo -e "  ${CYAN}CHOICE [1]: ${RESET}")" INST_CHOICE
+        case "$INST_CHOICE" in
+            2) MAX_INSTANCES="2";;
+            3) MAX_INSTANCES="4";;
+            4) MAX_INSTANCES="8";;
+            *) MAX_INSTANCES="1";;
+        esac
         MODE="CUSTOM"
         ;;
-    *) CPU="8"; RAM="16Gi"; MODE="ULTRA";;
+    *) CPU="8"; RAM="16Gi"; MODE="ULTRA"; MAX_INSTANCES="2";;
 esac
 
+if [ -z "$MAX_INSTANCES" ]; then
+    echo ""
+    echo -e "  ${CYAN}SELECT INSTANCES:${RESET}"
+    echo -e "  ${YELLOW}1) 1 INSTANCE${RESET}"
+    echo -e "  ${YELLOW}2) 2 INSTANCES${RESET}"
+    echo -e "  ${YELLOW}3) 4 INSTANCES${RESET}"
+    echo -e "  ${YELLOW}4) 8 INSTANCES${RESET}"
+    echo ""
+    read -r -p "$(echo -e "  ${CYAN}CHOICE [1]: ${RESET}")" INST_CHOICE
+    case "$INST_CHOICE" in
+        2) MAX_INSTANCES="2";;
+        3) MAX_INSTANCES="4";;
+        4) MAX_INSTANCES="8";;
+        *) MAX_INSTANCES="1";;
+    esac
+fi
+
 echo ""
-echo -e "  ${CYAN}MODE: ${GREEN}${MODE}${RESET} | ${CYAN}CPU: ${GREEN}${CPU}${RESET} | ${CYAN}RAM: ${GREEN}${RAM}${RESET}"
+echo -e "  ${CYAN}MODE: ${GREEN}${MODE}${RESET} | ${CYAN}CPU: ${GREEN}${CPU}${RESET} | ${CYAN}RAM: ${GREEN}${RAM}${RESET} | ${CYAN}INSTANCES: ${GREEN}${MAX_INSTANCES}${RESET}"
 
 echo ""
 loading "BUILDING IMAGE"
@@ -61,7 +92,7 @@ gcloud run deploy "$SERVICE_NAME" \
   --platform managed --region us-central1 \
   --cpu "$CPU" --memory "$RAM" --port 8080 \
   --concurrency 1000 --cpu-boost --no-cpu-throttling \
-  --timeout 3600 --min-instances 1 --max-instances 4 \
+  --timeout 3600 --min-instances 1 --max-instances "$MAX_INSTANCES" \
   --allow-unauthenticated --project=$PROJECT_ID --quiet > deploy.log 2>&1
 
 if [ $? -ne 0 ]; then echo -e "  ${RED}DEPLOYMENT FAILED${RESET}"; tail -n 10 deploy.log; exit 1; fi
@@ -72,12 +103,13 @@ CLEAN_HOST=$(echo "$SERVICE_URL" | sed 's|https://||')
 echo ""
 echo -e "  ${GREEN}DEPLOYED SUCCESSFULLY${RESET}"
 echo ""
-echo -e "  ${CYAN}HOST     ${GREEN}${CLEAN_HOST}${RESET}"
-echo -e "  ${CYAN}PORT     ${GREEN}443${RESET}"
-echo -e "  ${CYAN}PASS     ${GREEN}saeka${RESET}"
-echo -e "  ${CYAN}MODE     ${GREEN}${MODE}${RESET}"
-echo -e "  ${CYAN}CPU      ${GREEN}${CPU}${RESET}"
-echo -e "  ${CYAN}RAM      ${GREEN}${RAM}${RESET}"
+echo -e "  ${CYAN}HOST       ${GREEN}${CLEAN_HOST}${RESET}"
+echo -e "  ${CYAN}PORT       ${GREEN}443${RESET}"
+echo -e "  ${CYAN}PASS       ${GREEN}saeka${RESET}"
+echo -e "  ${CYAN}MODE       ${GREEN}${MODE}${RESET}"
+echo -e "  ${CYAN}CPU        ${GREEN}${CPU}${RESET}"
+echo -e "  ${CYAN}RAM        ${GREEN}${RAM}${RESET}"
+echo -e "  ${CYAN}INSTANCES  ${GREEN}${MAX_INSTANCES}${RESET}"
 echo ""
 echo -e "  ${CYAN}TROJAN       ${GREEN}/saeka-tojirp${RESET}"
 echo -e "  ${CYAN}VMESS        ${GREEN}/vmess-saeka${RESET}"
