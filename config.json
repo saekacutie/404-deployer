@@ -61,11 +61,27 @@
       "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
     },
     {
-      "port": 10002, "listen": "127.0.0.1", "protocol": "trojan", "tag": "trojan-xh",
+      "port": 10002,
+      "listen": "127.0.0.1",
+      "protocol": "trojan",
+      "tag": "trojan-xh",
       "settings": {"clients": [{"password": "saeka"}]},
-      "streamSettings": {"network": "xhttp", "xhttpSettings": {"path": "/saeka-tojirp-xh", "mode": "auto"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}},
-      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+      "streamSettings": {
+      "network": "xhttp",
+      "xhttpSettings": {
+      "path": "/saeka-tojirp-xh",
+      "mode": "auto",
+      "xmux": {
+        "maxConnections": 4,
+        "maxConcurrency": 8,
+        "cMaxLifetime": "5m",
+        "cMaxReuseCount": 1000
+      }
     },
+    "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}
+  },
+  "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+},
     {
       "port": 10003, "listen": "127.0.0.1", "protocol": "vmess", "tag": "vmess-ws",
       "settings": {"clients": [{"id": "saeka", "security": "auto"}]},
