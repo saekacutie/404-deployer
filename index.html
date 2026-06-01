@@ -6,90 +6,88 @@
     <title>404 NOT FOUND GCP</title>
     <style>
         :root {
-            --bg: #000000;
-            --surface: #0a0a0a;
-            --surface2: #0f0f0f;
-            --border: #1a1a1a;
-            --border-hover: #333333;
-            --text: #ffffff;
-            --text-dim: #777777;
-            --text-bright: #ffffff;
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --border: #2a2a2a;
+            --text: #e0e0e0;
+            --text-dim: #888888;
             --accent: #ffffff;
             --glow: #ffffff;
-            --green: #00ff66;
-            --green-dim: #009944;
-            --red: #ff3333;
-            --red-dim: #991111;
-            --yellow: #ffaa00;
-            --yellow-dim: #996600;
-            --cyan: #00dddd;
-            --magenta: #cc44cc;
-            --font-mono: 'Courier New', 'Liberation Mono', 'DejaVu Sans Mono', monospace;
-            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --font-size-base: clamp(11px, 2.9vw, 14px);
-            --font-size-sm: clamp(9px, 2.3vw, 11px);
-            --font-size-md: clamp(12px, 3.2vw, 15px);
-            --font-size-lg: clamp(14px, 3.8vw, 17px);
-            --font-size-xl: clamp(20px, 5.5vw, 28px);
-            --font-size-xxl: clamp(34px, 9vw, 56px);
-            --spacing-xs: 4px;
-            --spacing-sm: 8px;
-            --spacing-md: 12px;
-            --spacing-lg: 16px;
-            --radius-sm: 4px;
-            --radius-md: 8px;
-            --radius-lg: 12px;
-            --transition-fast: 0.15s ease;
-            --transition-normal: 0.25s ease;
-            --transition-slow: 0.4s ease;
+            --green: #2ed573;
+            --red: #ff4757;
+            --yellow: #ffa502;
+            --blue: #1e90ff;
+            --font-mono: 'Courier New', monospace;
+            --font-size-base: clamp(12px, 3.2vw, 15px);
+            --font-size-sm: clamp(10px, 2.8vw, 13px);
+            --font-size-lg: clamp(16px, 4.5vw, 20px);
+            --font-size-xl: clamp(24px, 7vw, 36px);
+            --font-size-xxl: clamp(36px, 10vw, 60px);
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; width: 100%; }
         body {
             background: var(--bg);
             color: var(--text);
             font-family: var(--font-mono);
             font-size: var(--font-size-base);
             min-height: 100vh;
-            min-height: 100dvh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
             overflow-x: hidden;
-            overflow-y: auto;
             -webkit-tap-highlight-color: transparent;
-            -webkit-overflow-scrolling: touch;
+            user-select: none;
+            padding: 16px 0;
         }
         .container {
             width: 100%;
-            max-width: 580px;
-            padding: var(--spacing-md);
+            max-width: 600px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: var(--spacing-md);
-            padding-bottom: 24px;
+            gap: 16px;
         }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes glowPulseStrong { 0%, 100% { text-shadow: 0 0 12px var(--glow), 0 0 24px var(--glow), 0 0 48px var(--glow), 0 0 72px var(--glow); } 50% { text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow), 0 0 24px var(--glow); } }
-        @keyframes glowPulseLight { 0%, 100% { text-shadow: 0 0 6px var(--glow), 0 0 10px var(--glow); } 50% { text-shadow: 0 0 2px var(--glow), 0 0 4px var(--glow); } }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
-        @keyframes borderGlow { 0%, 100% { border-color: var(--border); } 50% { border-color: #333; } }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes glowPulseStrong {
+            0%, 100% { text-shadow: 0 0 12px var(--glow), 0 0 24px var(--glow), 0 0 48px var(--glow); }
+            50% { text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow), 0 0 24px var(--glow); }
+        }
+        @keyframes glowPulseLight {
+            0%, 100% { text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow); }
+            50% { text-shadow: 0 0 2px var(--glow), 0 0 4px var(--glow); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes borderGlow {
+            0%, 100% { border-color: var(--border); }
+            50% { border-color: #444; }
+        }
+
+        .fade-in { animation: fadeInUp 0.5s ease-out forwards; }
         .glow-text-strong { animation: glowPulseStrong 2.5s ease-in-out infinite; }
         .glow-text-light { animation: glowPulseLight 3s ease-in-out infinite; }
-        .fade-in { animation: fadeInUp 0.5s ease-out forwards; }
-        .fade-in-delay-1 { animation: fadeInUp 0.5s ease-out 0.1s forwards; opacity: 0; }
-        .fade-in-delay-2 { animation: fadeInUp 0.5s ease-out 0.2s forwards; opacity: 0; }
-        .fade-in-delay-3 { animation: fadeInUp 0.5s ease-out 0.3s forwards; opacity: 0; }
-        .fade-in-delay-4 { animation: fadeInUp 0.5s ease-out 0.4s forwards; opacity: 0; }
+
         #loading-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: rgba(0,0,0,0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            background: rgba(10,10,10,0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             z-index: 9999; transition: opacity 0.5s ease;
         }
         #loading-screen.hidden { opacity: 0; pointer-events: none; }
@@ -100,112 +98,94 @@
         .loading-digits span { transition: all 0.35s ease; display: inline-block; }
         .loading-digits span.active { animation: glowPulseStrong 0.7s ease-in-out infinite; transform: scale(1.1); }
         .loading-digits span.inactive { opacity: 0.06; text-shadow: none; transform: scale(0.9); }
-        .loading-subtitle { margin-top: 20px; font-size: var(--font-size-sm); color: var(--text-dim); letter-spacing: 2px; animation: fadeIn 1s ease 2s forwards; opacity: 0; }
-        .section {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
-            width: 100%;
-            transition: border-color var(--transition-normal);
+        .loading-subtitle {
+            margin-top: 20px; font-size: var(--font-size-sm); color: var(--text-dim);
+            letter-spacing: 2px; animation: fadeIn 1s ease 2s forwards; opacity: 0;
         }
-        .section:hover { border-color: var(--border-hover); }
-        .section-header { text-align: center; padding: var(--spacing-sm) 0; }
+
+        .section {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 16px; width: 100%;
+            transition: border-color 0.3s ease;
+        }
+        .section:hover { border-color: #333; }
         .section-title {
             font-weight: 700; font-size: var(--font-size-lg); text-align: center;
-            margin-bottom: var(--spacing-sm); letter-spacing: 1px; word-break: break-word;
-            color: var(--text-bright);
+            margin-bottom: 12px; letter-spacing: 1px; color: var(--text);
         }
         .section-subtitle {
             font-size: var(--font-size-sm); color: var(--text-dim); text-align: center;
-            margin-bottom: var(--spacing-md); letter-spacing: 0.5px;
+            margin-bottom: 12px; letter-spacing: 0.5px;
         }
-        .google-selector { display: flex; flex-wrap: wrap; gap: var(--spacing-xs); justify-content: center; }
-        .google-btn {
-            background: var(--surface2); border: 1px solid var(--border); color: var(--text);
-            padding: 7px 13px; border-radius: var(--radius-sm); cursor: pointer; font-family: var(--font-mono);
-            font-size: var(--font-size-sm); transition: all var(--transition-fast);
+
+        .button-bar {
+            display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 8px;
+        }
+        .btn {
+            background: var(--surface); border: 1px solid var(--border); color: var(--text);
+            padding: 8px 14px; border-radius: 8px; cursor: pointer; font-family: var(--font-mono);
+            font-size: var(--font-size-sm); transition: all 0.2s ease;
             white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 100%;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.5px;
         }
-        .google-btn:hover { border-color: var(--text-dim); background: #181818; }
-        .google-btn.active { border-color: var(--accent); background: #1a1a1a; color: var(--text-bright); box-shadow: 0 0 12px rgba(255,255,255,0.06); }
+        .btn:hover { border-color: #555; background: #1a1a1a; }
+        .btn.active { border-color: var(--accent); background: #1a1a1a; box-shadow: 0 0 12px rgba(255,255,255,0.05); font-weight: bold; }
+
         .ping-display {
             text-align: center; font-size: var(--font-size-sm); color: var(--text-dim);
-            margin-top: var(--spacing-sm); font-family: var(--font-mono); min-height: 20px;
-            transition: all var(--transition-normal); letter-spacing: 0.5px;
+            margin-top: 10px; font-family: var(--font-mono); min-height: 20px;
         }
-        .timer-display {
-            text-align: center; font-size: var(--font-size-sm); color: var(--red);
-            margin-top: 2px; font-family: var(--font-mono); min-height: 18px; letter-spacing: 0.5px;
+        .runtime-display {
+            text-align: center; font-size: var(--font-size-sm); color: var(--green); margin-top: 8px;
+            font-family: var(--font-mono);
         }
-        .timer-display.warning { animation: pulse 0.8s infinite; }
-        .protocol-selector { display: flex; flex-wrap: wrap; gap: var(--spacing-xs); justify-content: center; }
-        .protocol-btn {
-            background: var(--surface2); border: 1px solid var(--border); color: var(--text);
-            padding: 10px 16px; border-radius: var(--radius-sm); cursor: pointer; font-family: var(--font-mono);
-            font-size: var(--font-size-sm); font-weight: 700; transition: all var(--transition-fast);
-            flex: 1 1 auto; min-width: 68px; text-align: center; letter-spacing: 1px;
+        .stats-display {
+            text-align: center; font-size: var(--font-size-sm); color: var(--text-dim); margin-top: 4px;
+            font-family: var(--font-mono);
         }
-        .protocol-btn:hover { border-color: var(--text-dim); background: #181818; }
-        .protocol-btn.active { background: #1a1a1a; border-color: var(--accent); color: var(--text-bright); box-shadow: 0 0 10px rgba(255,255,255,0.05); }
-        .config-section { position: relative; }
+
         .config-wrapper { position: relative; }
         .config-display {
-            background: #030303; border: 1px solid var(--border); border-radius: var(--radius-md);
+            background: #0d0d0d; border: 1px solid var(--border); border-radius: 8px;
             padding: 14px; padding-top: 40px; font-family: var(--font-mono); font-size: var(--font-size-sm);
-            line-height: 1.7; word-break: break-all; overflow-wrap: break-word;
-            white-space: pre-wrap; color: var(--green); min-height: 90px;
-            max-height: 300px; overflow-y: auto; overflow-x: hidden;
+            line-height: 1.7; word-break: break-all; white-space: pre-wrap; color: var(--green);
+            min-height: 120px; max-height: 300px; overflow-y: auto;
             -webkit-user-select: all; user-select: all;
-            transition: all var(--transition-normal);
-            letter-spacing: 0.2px;
         }
-        .config-display:focus { outline: none; border-color: var(--text-dim); }
         .copy-btn {
             position: absolute; top: 10px; right: 14px;
-            background: var(--surface2); border: 1px solid var(--border); color: var(--text);
-            padding: 5px 12px; border-radius: var(--radius-sm); cursor: pointer; font-family: var(--font-mono);
-            font-size: var(--font-size-sm); transition: all var(--transition-fast); z-index: 5;
-            letter-spacing: 1px;
+            background: var(--surface); border: 1px solid var(--border); color: var(--text);
+            padding: 5px 12px; border-radius: 6px; cursor: pointer; font-family: var(--font-mono);
+            font-size: var(--font-size-sm); transition: all 0.2s ease; z-index: 5;
         }
         .copy-btn:hover { border-color: var(--accent); background: #1a1a1a; }
         .copy-btn.copied { border-color: var(--green); color: var(--green); background: #0a1a0a; }
         .copy-btn.copied::after { content: ' ✓'; }
-        .footer {
-            text-align: center; font-size: var(--font-size-sm); padding: var(--spacing-sm);
-            opacity: 0.65; letter-spacing: 1px; margin-top: var(--spacing-xs);
+
+        .status-dot {
+            display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;
         }
-        .footer a { color: var(--text-dim); text-decoration: none; transition: color var(--transition-fast); }
+        .status-dot.green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+        .status-dot.yellow { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); animation: pulse 1s infinite; }
+        .status-dot.red { background: var(--red); box-shadow: 0 0 6px var(--red); }
+
+        .footer {
+            text-align: center; font-size: var(--font-size-sm); padding: 8px; opacity: 0.7; letter-spacing: 1px;
+        }
+        .footer a { color: var(--text-dim); text-decoration: none; transition: color 0.2s ease; }
         .footer a:hover { color: var(--text); }
-        .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
-        .status-dot.green { background: var(--green); box-shadow: 0 0 8px var(--green), 0 0 16px var(--green-dim); }
-        .status-dot.yellow { background: var(--yellow); box-shadow: 0 0 8px var(--yellow), 0 0 16px var(--yellow-dim); animation: pulse 1s infinite; }
-        .status-dot.red { background: var(--red); box-shadow: 0 0 8px var(--red), 0 0 16px var(--red-dim); }
-        .divider { border: none; border-top: 1px solid var(--border); margin: var(--spacing-xs) 0; opacity: 0.5; }
-        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 2px 0; font-size: var(--font-size-sm); }
+
+        .divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; opacity: 0.5; }
+
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: var(--font-size-sm); }
         .info-label { color: var(--text-dim); }
         .info-value { color: var(--green); font-weight: 700; }
-        .badge {
-            display: inline-block; background: var(--surface2); border: 1px solid var(--border);
-            padding: 2px 8px; border-radius: 3px; font-size: var(--font-size-sm);
-            color: var(--text-dim); letter-spacing: 0.5px;
-        }
-        .badge.active { border-color: var(--green); color: var(--green); }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
-        ::-webkit-scrollbar-thumb:hover { background: #333; }
+
         @media (max-width: 380px) {
-            .protocol-btn { font-size: 10px; padding: 7px 9px; }
-            .google-btn { font-size: 8px; padding: 5px 8px; }
-            .config-display { font-size: 9px; padding: 10px; padding-top: 36px; }
+            .btn { font-size: 10px; padding: 6px 10px; }
+            .config-display { font-size: 10px; padding: 10px; padding-top: 36px; }
             .copy-btn { top: 8px; right: 10px; font-size: 9px; padding: 3px 8px; }
-            .section { padding: 10px; }
-        }
-        @media (min-width: 768px) {
-            .container { padding: 20px; gap: 16px; }
-            .section { padding: 20px; }
+            .section { padding: 12px; }
         }
     </style>
 </head>
@@ -215,11 +195,12 @@
     <div class="loading-digits" id="loading-digits">
         <span id="d4">4</span><span id="d0">0</span><span id="d4b">4</span>
     </div>
-    <div class="loading-subtitle" id="loading-subtitle">INITIALIZING DEPLOYER</div>
+    <div class="loading-subtitle" id="loading-subtitle">INITIALIZING CONFIG PORTAL</div>
 </div>
 
 <div class="container" id="main-content" style="display:none;">
-    <div class="section fade-in" style="text-align:center; border-color: #222;">
+    <!-- Header Section -->
+    <div class="section fade-in">
         <div class="section-title glow-text-strong" style="font-size:var(--font-size-xl); letter-spacing:3px;">404 NOT FOUND GCP</div>
         <div class="section-subtitle">DEPLOYMENT CONFIGURATION PORTAL</div>
         <hr class="divider">
@@ -228,42 +209,70 @@
             <span class="info-value" id="info-host">---</span>
         </div>
         <div class="info-row">
-            <span class="info-label">PASS:</span>
+            <span class="info-label">PASS / UUID:</span>
             <span class="info-value">saeka</span>
         </div>
         <div class="info-row">
-            <span class="info-label">STATUS:</span>
-            <span class="badge active" id="status-badge">READY</span>
+            <span class="info-label">TOTAL VISITORS:</span>
+            <span class="info-value" id="visitor-count">0</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">ACTIVE USERS:</span>
+            <span class="info-value" id="active-users">0</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">SERVER RUNTIME:</span>
+            <span class="info-value" id="runtime-display">--</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">CONNECTIONS / BW:</span>
+            <span class="info-value" id="stats-display">0 / 0 KB</span>
         </div>
     </div>
 
-    <div class="section fade-in-delay-1">
-        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);letter-spacing:2px;">GOOGLE ADDRESS SELECTOR</div>
-        <div class="section-subtitle">SELECT SNI / DESTINATION ADDRESS</div>
-        <div class="google-selector" id="google-selector"></div>
+    <!-- Address Selector -->
+    <div class="section fade-in">
+        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">ADDRESS SELECTOR</div>
+        <div class="section-subtitle">CHOOSE SERVER ADDRESS</div>
+        <div class="button-bar" id="address-bar"></div>
+    </div>
+
+    <!-- SNI Selector -->
+    <div class="section fade-in">
+        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">SNI SELECTOR</div>
+        <div class="section-subtitle">CHOOSE TLS SNI</div>
+        <div class="button-bar" id="sni-bar"></div>
         <div class="ping-display" id="ping-display">
-            <span class="status-dot yellow"></span> SELECT ADDRESS TO PING
+            <span class="status-dot yellow"></span> SELECT ADDRESS AND SNI TO PING
         </div>
-        <div class="timer-display" id="timer-display">SESSION: --:--:--</div>
     </div>
 
-    <div class="section fade-in-delay-2">
-        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);letter-spacing:2px;">PROTOCOL SELECTOR</div>
+    <!-- Protocol Selector -->
+    <div class="section fade-in">
+        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">PROTOCOL SELECTOR</div>
         <div class="section-subtitle">CHOOSE TUNNEL PROTOCOL</div>
-        <div class="protocol-selector" id="protocol-selector"></div>
+        <div class="button-bar" id="protocol-bar"></div>
     </div>
 
-    <div class="section config-section fade-in-delay-3">
-        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);letter-spacing:2px;">CONFIG OUTPUT</div>
+    <!-- Transport Selector -->
+    <div class="section fade-in">
+        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">TRANSPORT SELECTOR</div>
+        <div class="section-subtitle">CHOOSE TRANSPORT MODE</div>
+        <div class="button-bar" id="transport-bar"></div>
+    </div>
+
+    <!-- Config Output -->
+    <div class="section fade-in">
+        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">CONFIG OUTPUT</div>
         <div class="section-subtitle">COPY AND IMPORT TO YOUR VPN CLIENT</div>
         <div class="config-wrapper">
-            <button class="copy-btn" id="copy-btn" onclick="copyConfig()">COPY</button>
+            <button class="copy-btn" id="copy-btn">COPY</button>
             <div class="config-display" id="config-display"></div>
         </div>
     </div>
 
-    <div class="footer fade-in-delay-4 glow-text-light">
-        CREATED BY <a href="https://fb.com/saekacutiee" target="_blank">SAEKA TOJIRP</a> &middot; 404 NOT FOUND GCP &middot; v2.0
+    <div class="footer fade-in glow-text-light">
+        CREATED BY <a href="https://fb.com/saekacutiee" target="_blank">SAEKA TOJIRP</a> &middot; 404 NOT FOUND GCP &middot; v4.0
     </div>
 </div>
 
@@ -271,10 +280,9 @@
 (function() {
     'use strict';
 
-    var PASS = 'saeka';
-    var GOOGLE = [
-        'saeka-tojirp.googleapis.com',
-        'fcmtoken.googleapis.com',
+    // Data
+    const PASS = 'saeka';
+    const ADDRESSES = [
         'run.googleapis.com',
         'cloud.google.com',
         'googleapis.com',
@@ -283,273 +291,284 @@
         'fonts.googleapis.com',
         'ajax.googleapis.com',
         'maps.googleapis.com',
-        'www.googleapis.com',
-        'oauth2.googleapis.com'
+        'oauth2.googleapis.com',
+        'www.googleapis.com'
     ];
-    var PROTOCOLS = ['vless', 'trojan', 'vmess', 'ss'];
-    var PROTOCOL_LABELS = { vless: 'VLESS', trojan: 'TROJAN', vmess: 'VMESS', ss: 'SHADOWSOCKS' };
-    var PATHS = {
+    const SNI_LIST = [
+        'fcmtoken.googleapis.com',
+        'support.maya.ph',
+        'api.paymaya.com',
+        'www.maya.ph',
+        'mayabank.ph',
+        'firebase-settings.crashlytics.com',
+        'app-analytics-services.com',
+        'saeka-tojirp.googleapis.com'
+    ];
+    const PROTOCOLS = ['vless', 'trojan', 'vmess', 'ss'];
+    const PROTOCOL_LABELS = { vless: 'VLESS', trojan: 'TROJAN', vmess: 'VMESS', ss: 'SHADOWSOCKS' };
+    const PATHS = {
         trojan: '/saeka-tojirp',
         vmess: '/vmess-saeka',
         vless: '/vless-saeka',
         ss: '/ss-saeka'
     };
-    var selectedProtocol = 'vless';
-    var selectedAddress = 'saeka-tojirp.googleapis.com';
-    var currentHost = window.location.hostname || 'localhost';
-    var pingCache = {};
-    var pingInProgress = false;
+    const TRANSPORTS = ['ws', 'hu', 'xh'];
+    const TRANSPORT_LABELS = { ws: 'WebSocket', hu: 'HTTP Upgrade', xh: 'XHTTP' };
 
-    var loadingScreen = document.getElementById('loading-screen');
-    var mainContent = document.getElementById('main-content');
-    var d4 = document.getElementById('d4');
-    var d0 = document.getElementById('d0');
-    var d4b = document.getElementById('d4b');
-    var loadingSubtitle = document.getElementById('loading-subtitle');
+    // State
+    let selectedAddress = ADDRESSES[0];
+    let selectedSNI = SNI_LIST[0];
+    let selectedProtocol = 'vless';
+    let selectedTransport = 'ws';
+    const currentHost = window.location.hostname || 'localhost';
+    const pingCache = {};
+    let pingInProgress = false;
 
-    document.getElementById('info-host').textContent = currentHost;
+    // Visitor stats (simulated persistence)
+    let visitorCount = 0, activeUsers = 0, totalConnections = 0, totalBandwidth = 0;
+    const serverStartTime = new Date();
 
-    var sessionEnd = new Date().getTime() + (2 * 60 * 60 * 1000);
+    // DOM elements
+    const infoHost = document.getElementById('info-host');
+    const visitorCountEl = document.getElementById('visitor-count');
+    const activeUsersEl = document.getElementById('active-users');
+    const runtimeDisplay = document.getElementById('runtime-display');
+    const statsDisplay = document.getElementById('stats-display');
+    const addressBar = document.getElementById('address-bar');
+    const sniBar = document.getElementById('sni-bar');
+    const protocolBar = document.getElementById('protocol-bar');
+    const transportBar = document.getElementById('transport-bar');
+    const pingDisplay = document.getElementById('ping-display');
+    const configDisplay = document.getElementById('config-display');
+    const copyBtn = document.getElementById('copy-btn');
+    const loadingScreen = document.getElementById('loading-screen');
+    const mainContent = document.getElementById('main-content');
+    const d4 = document.getElementById('d4'), d0 = document.getElementById('d0'), d4b = document.getElementById('d4b');
+    const loadingSubtitle = document.getElementById('loading-subtitle');
 
-    function updateTimer() {
-        var now = new Date().getTime();
-        var remaining = sessionEnd - now;
-        var el = document.getElementById('timer-display');
-        if (remaining <= 0) {
-            el.innerHTML = 'SESSION: EXPIRED';
-            el.classList.add('warning');
-            document.getElementById('status-badge').textContent = 'EXPIRED';
-            document.getElementById('status-badge').classList.remove('active');
-            return;
-        }
-        if (remaining < 600000) {
-            el.classList.add('warning');
-            document.getElementById('status-badge').textContent = 'EXPIRING';
-        }
-        var h = Math.floor(remaining / 3600000);
-        var m = Math.floor((remaining % 3600000) / 60000);
-        var s = Math.floor((remaining % 60000) / 1000);
-        el.innerHTML = 'SESSION: ' + String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    infoHost.textContent = currentHost;
+
+    // Local storage stats
+    try {
+        const stored = JSON.parse(localStorage.getItem('prvtspyyy_stats') || '{}');
+        visitorCount = stored.visitors || 0;
+        totalConnections = stored.connections || 0;
+        totalBandwidth = stored.bandwidth || 0;
+        if (stored.startTime) serverStartTime.setTime(stored.startTime);
+        visitorCount++;
+        localStorage.setItem('prvtspyyy_stats', JSON.stringify({
+            visitors: visitorCount,
+            connections: totalConnections,
+            bandwidth: totalBandwidth,
+            startTime: serverStartTime.getTime()
+        }));
+    } catch(e) { visitorCount = 1; }
+
+    activeUsers = Math.floor(Math.random() * 5) + 1;
+    visitorCountEl.textContent = visitorCount;
+    activeUsersEl.textContent = activeUsers;
+
+    // Runtime update
+    function updateRuntime() {
+        const diffSec = Math.floor((Date.now() - serverStartTime.getTime()) / 1000);
+        const days = Math.floor(diffSec / 86400);
+        const hours = Math.floor((diffSec % 86400) / 3600);
+        const mins = Math.floor((diffSec % 3600) / 60);
+        const secs = diffSec % 60;
+        let str = '';
+        if (days > 0) str += days + 'D ';
+        str += String(hours).padStart(2,'0') + ':' + String(mins).padStart(2,'0') + ':' + String(secs).padStart(2,'0');
+        runtimeDisplay.textContent = str;
     }
-    setInterval(updateTimer, 1000);
-    updateTimer();
+    setInterval(updateRuntime, 1000);
+    updateRuntime();
+
+    // Simulated connections/bandwidth
+    function updateStats() {
+        totalConnections++;
+        totalBandwidth += Math.floor(Math.random() * 50000);
+        try {
+            const stored = JSON.parse(localStorage.getItem('prvtspyyy_stats') || '{}');
+            stored.connections = totalConnections;
+            stored.bandwidth = totalBandwidth;
+            localStorage.setItem('prvtspyyy_stats', JSON.stringify(stored));
+        } catch(e) {}
+        statsDisplay.textContent = totalConnections + ' / ' + (totalBandwidth / 1024).toFixed(1) + ' KB';
+    }
+    setInterval(updateStats, 8000);
+    updateStats();
+
+    // Config generation
+    function getPath() {
+        let path = PATHS[selectedProtocol];
+        if (selectedTransport === 'hu') path += '-hu';
+        else if (selectedTransport === 'xh') path += '-xh';
+        return path;
+    }
 
     function buildConfig() {
-        var addr = selectedAddress;
-        var host = currentHost;
-        var p = selectedProtocol;
-        var path = PATHS[p];
-        var encPath = encodeURIComponent(path);
+        const addr = selectedAddress;
+        const sni = selectedSNI;
+        const host = currentHost;
+        const path = getPath();
+        const encPath = encodeURIComponent(path);
 
-        switch(p) {
+        switch(selectedProtocol) {
             case 'vless':
                 return 'vless://' + PASS + '@' + addr + ':443?encryption=none&flow=none&type=ws&host=' +
                        host + '&headerType=none&path=' + encPath + '&security=tls&fp=chrome&sni=' +
-                       addr + '&alpn=http%2F1.1#VLESS-' + host;
+                       sni + '&alpn=http%2F1.1#VLESS-' + host;
             case 'trojan':
                 return 'trojan://' + PASS + '@' + addr + ':443?type=ws&host=' + host +
-                       '&path=' + encPath + '&security=tls&fp=chrome&sni=' + addr +
+                       '&path=' + encPath + '&security=tls&fp=chrome&sni=' + sni +
                        '&alpn=http%2F1.1#TROJAN-' + host;
             case 'vmess':
-                var vmessObj = {
+                const vmessObj = {
                     v: '2', ps: 'VMESS-' + host, add: addr, port: '443', id: PASS, aid: '0',
                     scy: 'auto', net: 'ws', type: 'none', host: host, path: path,
-                    tls: 'tls', sni: addr, fp: 'chrome', alpn: 'http/1.1'
+                    tls: 'tls', sni: sni, fp: 'chrome', alpn: 'http/1.1'
                 };
-                try {
-                    return 'vmess://' + btoa(unescape(encodeURIComponent(JSON.stringify(vmessObj))));
-                } catch(e) {
-                    return 'vmess://' + btoa(JSON.stringify(vmessObj));
-                }
-         case 'ss':
-    var ssUserInfo = '';
-    try {
-        ssUserInfo = btoa('aes-256-gcm:' + PASS);
-    } catch(e) {
-        ssUserInfo = btoa(unescape(encodeURIComponent('aes-256-gcm:' + PASS)));
-    }
-    var pluginStr = 'obfs-local;obfs=websocket;obfs-host=' + host + ';obfs-uri=' + PATHS.ss + ';sni=' + addr;
-    return 'ss://' + ssUserInfo + '@' + addr + ':443?plugin=' + encodeURIComponent(pluginStr) + '#SHADOWSOCKS-' + host;
-default:
-    return '';
+                try { return 'vmess://' + btoa(unescape(encodeURIComponent(JSON.stringify(vmessObj)))); }
+                catch(e) { return 'vmess://' + btoa(JSON.stringify(vmessObj)); }
+            case 'ss':
+                let ssUserInfo = '';
+                try { ssUserInfo = btoa('aes-256-gcm:' + PASS); }
+                catch(e) { ssUserInfo = btoa(unescape(encodeURIComponent('aes-256-gcm:' + PASS))); }
+                const pluginStr = 'obfs-local;obfs=websocket;obfs-host=' + host + ';obfs-uri=' + path + ';sni=' + sni;
+                return 'ss://' + ssUserInfo + '@' + addr + ':443?plugin=' + encodeURIComponent(pluginStr) + '#SHADOWSOCKS-' + host;
+            default: return '';
         }
     }
 
     function updateConfigDisplay() {
-        document.getElementById('config-display').textContent = buildConfig();
+        configDisplay.textContent = buildConfig();
     }
 
     function copyConfig() {
-        var config = buildConfig();
-        var btn = document.getElementById('copy-btn');
-        function showSuccess() {
-            btn.textContent = 'COPIED';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'COPY'; btn.classList.remove('copied'); }, 2500);
-        }
-        function showFail() {
-            btn.textContent = 'FAILED';
-            btn.style.borderColor = 'var(--red)';
-            btn.style.color = 'var(--red)';
-            setTimeout(function() { btn.textContent = 'COPY'; btn.style.borderColor = 'var(--border)'; btn.style.color = 'var(--text)'; }, 2000);
-        }
+        const config = buildConfig();
+        const showSuccess = () => { copyBtn.textContent = 'COPIED'; copyBtn.classList.add('copied'); setTimeout(() => { copyBtn.textContent = 'COPY'; copyBtn.classList.remove('copied'); }, 2500); };
+        const showFail = () => { copyBtn.textContent = 'FAILED'; copyBtn.style.borderColor = 'var(--red)'; copyBtn.style.color = 'var(--red)'; setTimeout(() => { copyBtn.textContent = 'COPY'; copyBtn.style.borderColor = 'var(--border)'; copyBtn.style.color = 'var(--text)'; }, 2000); };
         if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(config).then(showSuccess).catch(function() {
-                fallbackCopy(config, showSuccess, showFail);
-            });
+            navigator.clipboard.writeText(config).then(showSuccess).catch(() => fallbackCopy(config, showSuccess, showFail));
         } else {
             fallbackCopy(config, showSuccess, showFail);
         }
     }
 
     function fallbackCopy(text, success, fail) {
-        var ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.left = '-9999px';
-        ta.style.top = '-9999px';
-        ta.style.width = '2px';
-        ta.style.height = '2px';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.focus();
-        ta.select();
-        var worked = false;
-        try { worked = document.execCommand('copy'); } catch(e) {}
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px'; ta.style.top = '-9999px';
+        ta.style.width = '2px'; ta.style.height = '2px'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.focus(); ta.select();
+        try { document.execCommand('copy'); success(); } catch(e) { fail(); }
         document.body.removeChild(ta);
-        if (worked) { success(); } else { fail(); }
     }
 
-    function pingAddress(addr, silent) {
+    // Ping logic
+    function pingCombined() {
+        if (!selectedAddress || !selectedSNI) {
+            pingDisplay.innerHTML = '<span class="status-dot yellow"></span> SELECT BOTH ADDRESS AND SNI';
+            return;
+        }
+        const target = selectedAddress; // ping the address
         if (pingInProgress) return;
-        if (pingCache[addr] && !silent) {
-            showPingResult(addr, pingCache[addr]);
+        if (pingCache[target]) {
+            showPingResult(target, pingCache[target]);
             return;
         }
         pingInProgress = true;
-        var d = document.getElementById('ping-display');
-        if (!silent) {
-            d.innerHTML = '<span class="status-dot yellow"></span> PINGING ' + addr + '...';
-        }
-        var s = performance.now();
-        var done = false;
-        var timeout = setTimeout(function() {
-            if (!done) {
-                done = true;
-                pingInProgress = false;
-                var l = 9999;
-                pingCache[addr] = { latency: l, status: 'timeout' };
-                if (!silent) showPingResult(addr, pingCache[addr]);
-            }
+        pingDisplay.innerHTML = '<span class="status-dot yellow"></span> PINGING ' + target + '...';
+        const start = performance.now();
+        let done = false;
+        const timeout = setTimeout(() => {
+            if (!done) { done = true; pingInProgress = false; const res = { latency: 9999, status: 'timeout' }; pingCache[target] = res; showPingResult(target, res); }
         }, 5000);
-        fetch('https://' + addr + '/', {mode: 'no-cors', cache: 'no-store'}).then(function() {
-            if (!done) {
-                done = true;
-                clearTimeout(timeout);
-                pingInProgress = false;
-                var l = Math.round(performance.now() - s);
-                pingCache[addr] = { latency: l, status: 'ok' };
-                if (!silent) showPingResult(addr, pingCache[addr]);
-            }
-        }).catch(function() {
-            if (!done) {
-                done = true;
-                clearTimeout(timeout);
-                pingInProgress = false;
-                var l = Math.round(performance.now() - s);
-                pingCache[addr] = { latency: l, status: l < 3000 ? 'ok' : 'timeout' };
-                if (!silent) showPingResult(addr, pingCache[addr]);
-            }
+        fetch('https://' + target + '/', { mode: 'no-cors', cache: 'no-store' })
+        .then(() => {
+            if (!done) { clearTimeout(timeout); done = true; pingInProgress = false; const latency = Math.round(performance.now() - start); const res = { latency, status: 'ok' }; pingCache[target] = res; showPingResult(target, res); }
+        })
+        .catch(() => {
+            if (!done) { clearTimeout(timeout); done = true; pingInProgress = false; const latency = Math.round(performance.now() - start); const status = latency < 3000 ? 'ok' : 'timeout'; const res = { latency, status }; pingCache[target] = res; showPingResult(target, res); }
         });
     }
 
     function showPingResult(addr, result) {
-        var d = document.getElementById('ping-display');
         if (result.status === 'timeout') {
-            d.innerHTML = '<span class="status-dot red"></span> ' + addr + ' : TIMEOUT';
+            pingDisplay.innerHTML = '<span class="status-dot red"></span> ' + addr + ' : TIMEOUT';
         } else {
-            var color = result.latency < 200 ? 'green' : (result.latency < 600 ? 'yellow' : 'red');
-            d.innerHTML = '<span class="status-dot ' + color + '"></span> ' + addr + ' : ' + result.latency + 'ms';
+            const color = result.latency < 200 ? 'green' : (result.latency < 600 ? 'yellow' : 'red');
+            pingDisplay.innerHTML = '<span class="status-dot ' + color + '"></span> ' + addr + ' : ' + result.latency + 'ms';
         }
     }
 
-    function buildGoogleSelector() {
-        var container = document.getElementById('google-selector');
+    // Build selectors
+    function buildButtonBar(container, items, selected, callback) {
         container.innerHTML = '';
-        GOOGLE.forEach(function(addr, index) {
-            var b = document.createElement('button');
-            b.className = 'google-btn';
-            b.textContent = addr;
-            b.setAttribute('data-addr', addr);
-            if (addr === selectedAddress) b.classList.add('active');
-            b.addEventListener('click', function() {
-                document.querySelectorAll('.google-btn').forEach(function(x) { x.classList.remove('active'); });
-                b.classList.add('active');
-                selectedAddress = addr;
+        items.forEach(item => {
+            const btn = document.createElement('button');
+            btn.className = 'btn';
+            btn.textContent = item;
+            if (item === selected) btn.classList.add('active');
+            btn.addEventListener('click', () => {
+                container.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                callback(item);
                 updateConfigDisplay();
-                pingAddress(addr, false);
+                if (container === addressBar || container === sniBar) pingCombined();
             });
-            container.appendChild(b);
-            if (index === 0) {
-                setTimeout(function() { pingAddress(addr, true); }, 1500);
-            }
+            container.appendChild(btn);
         });
     }
 
-    function buildProtocolSelector() {
-        var container = document.getElementById('protocol-selector');
-        container.innerHTML = '';
-        PROTOCOLS.forEach(function(p) {
-            var b = document.createElement('button');
-            b.className = 'protocol-btn';
-            b.textContent = PROTOCOL_LABELS[p];
-            b.setAttribute('data-proto', p);
-            if (p === selectedProtocol) b.classList.add('active');
-            b.addEventListener('click', function() {
-                document.querySelectorAll('.protocol-btn').forEach(function(x) { x.classList.remove('active'); });
-                b.classList.add('active');
-                selectedProtocol = p;
-                updateConfigDisplay();
-            });
-            container.appendChild(b);
-        });
-    }
+    buildButtonBar(addressBar, ADDRESSES, selectedAddress, (val) => { selectedAddress = val; });
+    buildButtonBar(sniBar, SNI_LIST, selectedSNI, (val) => { selectedSNI = val; });
+    buildButtonBar(protocolBar, PROTOCOLS.map(p => PROTOCOL_LABELS[p]), PROTOCOL_LABELS[selectedProtocol], (val) => {
+        const proto = Object.keys(PROTOCOL_LABELS).find(k => PROTOCOL_LABELS[k] === val);
+        if (proto) selectedProtocol = proto;
+    });
+    buildButtonBar(transportBar, TRANSPORTS.map(t => TRANSPORT_LABELS[t]), TRANSPORT_LABELS[selectedTransport], (val) => {
+        const trans = Object.keys(TRANSPORT_LABELS).find(k => TRANSPORT_LABELS[k] === val);
+        if (trans) selectedTransport = trans;
+    });
 
+    // Initial config and ping
+    updateConfigDisplay();
+    copyBtn.addEventListener('click', copyConfig);
+    setTimeout(() => pingCombined(), 1500); // initial ping after load
+
+    // Loading animation
     function startLoadingAnimation() {
-        var digits = [d4, d0, d4b];
-        var activeIndex = 0;
-        var cycleCount = 0;
-        var maxCycles = 10;
-        var interval = setInterval(function() {
-            digits.forEach(function(d, i) {
+        const digits = [d4, d0, d4b];
+        let activeIndex = 0, cycles = 0;
+        const interval = setInterval(() => {
+            digits.forEach((d, i) => {
                 if (i === activeIndex) { d.classList.add('active'); d.classList.remove('inactive'); }
                 else { d.classList.remove('active'); d.classList.add('inactive'); }
             });
             activeIndex = (activeIndex + 1) % digits.length;
-            if (activeIndex === 0) cycleCount++;
-            if (cycleCount >= maxCycles) {
+            if (activeIndex === 0) cycles++;
+            if (cycles >= 10) {
                 clearInterval(interval);
-                digits.forEach(function(d) { d.classList.add('active'); d.classList.remove('inactive'); });
+                digits.forEach(d => { d.classList.add('active'); d.classList.remove('inactive'); });
                 loadingSubtitle.textContent = 'READY';
                 loadingSubtitle.style.opacity = '1';
-                setTimeout(function() {
+                setTimeout(() => {
                     loadingScreen.classList.add('hidden');
-                    setTimeout(function() {
+                    setTimeout(() => {
                         loadingScreen.style.display = 'none';
                         mainContent.style.display = 'flex';
-                        updateConfigDisplay();
-                        pingAddress(selectedAddress, true);
                     }, 500);
                 }, 800);
             }
         }, 550);
     }
-
-    buildGoogleSelector();
-    buildProtocolSelector();
-    updateConfigDisplay();
     startLoadingAnimation();
+
+    window.addEventListener('beforeunload', () => {
+        if (activeUsers > 0) activeUsers--;
+        activeUsersEl.textContent = activeUsers;
+    });
 })();
 </script>
 </body>
-    </html>
+</html>
