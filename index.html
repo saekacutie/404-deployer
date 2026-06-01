@@ -6,11 +6,12 @@
     <title>404 NOT FOUND GCP</title>
     <style>
         :root {
-            --bg: #0a0a0a;
-            --surface: #141414;
-            --border: #2a2a2a;
-            --text: #e0e0e0;
-            --text-dim: #888888;
+            --bg: #ffffff;
+            --surface: #0a0a0a;
+            --surface2: #111111;
+            --border: #333333;
+            --text: #ffffff;
+            --text-dim: #aaaaaa;
             --accent: #ffffff;
             --glow: #ffffff;
             --green: #2ed573;
@@ -18,6 +19,7 @@
             --yellow: #ffa502;
             --blue: #1e90ff;
             --font-mono: 'Courier New', monospace;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             --font-size-base: clamp(12px, 3.2vw, 15px);
             --font-size-sm: clamp(10px, 2.8vw, 13px);
             --font-size-lg: clamp(16px, 4.5vw, 20px);
@@ -25,7 +27,12 @@
             --font-size-xxl: clamp(36px, 10vw, 60px);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: var(--bg);
             color: var(--text);
@@ -41,13 +48,14 @@
             user-select: none;
             padding: 16px 0;
         }
+
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
         }
 
         /* Animations */
@@ -60,12 +68,12 @@
             to { opacity: 1; }
         }
         @keyframes glowPulseStrong {
-            0%, 100% { text-shadow: 0 0 12px var(--glow), 0 0 24px var(--glow), 0 0 48px var(--glow); }
-            50% { text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow), 0 0 24px var(--glow); }
+            0%, 100% { text-shadow: 0 0 12px var(--glow), 0 0 24px var(--glow); }
+            50% { text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow); }
         }
         @keyframes glowPulseLight {
-            0%, 100% { text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow); }
-            50% { text-shadow: 0 0 2px var(--glow), 0 0 4px var(--glow); }
+            0%, 100% { text-shadow: 0 0 4px var(--glow); }
+            50% { text-shadow: 0 0 1px var(--glow); }
         }
         @keyframes pulse {
             0%, 100% { opacity: 1; }
@@ -77,120 +85,348 @@
         }
         @keyframes borderGlow {
             0%, 100% { border-color: var(--border); }
-            50% { border-color: #444; }
+            50% { border-color: #555; }
+        }
+        @keyframes graphPulse {
+            0% { height: 10px; }
+            50% { height: 40px; }
+            100% { height: 10px; }
         }
 
         .fade-in { animation: fadeInUp 0.5s ease-out forwards; }
         .glow-text-strong { animation: glowPulseStrong 2.5s ease-in-out infinite; }
         .glow-text-light { animation: glowPulseLight 3s ease-in-out infinite; }
 
+        /* Loading Screen */
         #loading-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: rgba(10,10,10,0.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            z-index: 9999; transition: opacity 0.5s ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 9999;
+            transition: opacity 0.5s ease;
         }
-        #loading-screen.hidden { opacity: 0; pointer-events: none; }
+        #loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
         .loading-digits {
-            font-size: var(--font-size-xxl); font-weight: 900; font-family: var(--font-mono);
-            letter-spacing: 8px; display: flex; gap: 4px; color: var(--text);
+            font-size: var(--font-size-xxl);
+            font-weight: 900;
+            font-family: var(--font-mono);
+            letter-spacing: 8px;
+            display: flex;
+            gap: 4px;
+            color: var(--surface);
         }
-        .loading-digits span { transition: all 0.35s ease; display: inline-block; }
-        .loading-digits span.active { animation: glowPulseStrong 0.7s ease-in-out infinite; transform: scale(1.1); }
-        .loading-digits span.inactive { opacity: 0.06; text-shadow: none; transform: scale(0.9); }
+        .loading-digits span {
+            transition: all 0.35s ease;
+            display: inline-block;
+        }
+        .loading-digits span.active {
+            animation: glowPulseStrong 0.7s ease-in-out infinite;
+            transform: scale(1.1);
+        }
+        .loading-digits span.inactive {
+            opacity: 0.08;
+            text-shadow: none;
+            transform: scale(0.9);
+        }
         .loading-subtitle {
-            margin-top: 20px; font-size: var(--font-size-sm); color: var(--text-dim);
-            letter-spacing: 2px; animation: fadeIn 1s ease 2s forwards; opacity: 0;
+            margin-top: 20px;
+            font-size: var(--font-size-sm);
+            color: #666;
+            letter-spacing: 2px;
+            animation: fadeIn 1s ease 2s forwards;
+            opacity: 0;
         }
 
+        /* Sections */
         .section {
-            background: var(--surface); border: 1px solid var(--border);
-            border-radius: 12px; padding: 16px; width: 100%;
-            transition: border-color 0.3s ease;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            width: 100%;
+            transition: all 0.3s ease;
         }
-        .section:hover { border-color: #333; }
+        .section:hover {
+            border-color: #555;
+        }
         .section-title {
-            font-weight: 700; font-size: var(--font-size-lg); text-align: center;
-            margin-bottom: 12px; letter-spacing: 1px; color: var(--text);
+            font-weight: 700;
+            font-size: var(--font-size-lg);
+            text-align: center;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            color: var(--text);
         }
         .section-subtitle {
-            font-size: var(--font-size-sm); color: var(--text-dim); text-align: center;
-            margin-bottom: 12px; letter-spacing: 0.5px;
-        }
-
-        .button-bar {
-            display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 8px;
-        }
-        .btn {
-            background: var(--surface); border: 1px solid var(--border); color: var(--text);
-            padding: 8px 14px; border-radius: 8px; cursor: pointer; font-family: var(--font-mono);
-            font-size: var(--font-size-sm); transition: all 0.2s ease;
-            white-space: nowrap; text-overflow: ellipsis; overflow: hidden; max-width: 100%;
+            font-size: var(--font-size-sm);
+            color: var(--text-dim);
+            text-align: center;
+            margin-bottom: 10px;
             letter-spacing: 0.5px;
         }
-        .btn:hover { border-color: #555; background: #1a1a1a; }
-        .btn.active { border-color: var(--accent); background: #1a1a1a; box-shadow: 0 0 12px rgba(255,255,255,0.05); font-weight: bold; }
 
+        /* Button Bars */
+        .button-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+            margin-top: 6px;
+        }
+        .btn {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 7px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: var(--font-size-sm);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 100%;
+            letter-spacing: 0.4px;
+        }
+        .btn:hover {
+            border-color: #666;
+            background: #1a1a1a;
+        }
+        .btn.active {
+            border-color: var(--accent);
+            background: #222;
+            box-shadow: 0 0 10px rgba(255,255,255,0.08);
+            font-weight: bold;
+        }
+
+        /* Ping Display */
         .ping-display {
-            text-align: center; font-size: var(--font-size-sm); color: var(--text-dim);
-            margin-top: 10px; font-family: var(--font-mono); min-height: 20px;
-        }
-        .runtime-display {
-            text-align: center; font-size: var(--font-size-sm); color: var(--green); margin-top: 8px;
+            text-align: center;
+            font-size: var(--font-size-sm);
+            color: var(--text-dim);
+            margin-top: 10px;
             font-family: var(--font-mono);
-        }
-        .stats-display {
-            text-align: center; font-size: var(--font-size-sm); color: var(--text-dim); margin-top: 4px;
-            font-family: var(--font-mono);
+            min-height: 20px;
         }
 
-        .config-wrapper { position: relative; }
+        /* Speed Monitor */
+        .speed-row {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 10px;
+            gap: 10px;
+        }
+        .speed-item {
+            text-align: center;
+            flex: 1;
+        }
+        .speed-label {
+            font-size: var(--font-size-sm);
+            color: var(--text-dim);
+        }
+        .speed-value {
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+        }
+        .speed-value.download { color: var(--green); }
+        .speed-value.upload { color: var(--blue); }
+        .speed-value.latency { color: var(--yellow); }
+
+        .graph-container {
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            height: 50px;
+            margin-top: 10px;
+            padding: 0 4px;
+        }
+        .graph-bar {
+            flex: 1;
+            background: var(--green);
+            border-radius: 2px;
+            transition: height 0.3s ease;
+            min-height: 2px;
+        }
+
+        /* Config Section */
+        .config-wrapper {
+            position: relative;
+        }
         .config-display {
-            background: #0d0d0d; border: 1px solid var(--border); border-radius: 8px;
-            padding: 14px; padding-top: 40px; font-family: var(--font-mono); font-size: var(--font-size-sm);
-            line-height: 1.7; word-break: break-all; white-space: pre-wrap; color: var(--green);
-            min-height: 120px; max-height: 300px; overflow-y: auto;
-            -webkit-user-select: all; user-select: all;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+            padding-top: 40px;
+            font-family: var(--font-mono);
+            font-size: var(--font-size-sm);
+            line-height: 1.7;
+            word-break: break-all;
+            white-space: pre-wrap;
+            color: var(--green);
+            min-height: 100px;
+            max-height: 280px;
+            overflow-y: auto;
+            -webkit-user-select: all;
+            user-select: all;
         }
         .copy-btn {
-            position: absolute; top: 10px; right: 14px;
-            background: var(--surface); border: 1px solid var(--border); color: var(--text);
-            padding: 5px 12px; border-radius: 6px; cursor: pointer; font-family: var(--font-mono);
-            font-size: var(--font-size-sm); transition: all 0.2s ease; z-index: 5;
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: var(--font-size-sm);
+            transition: all 0.2s ease;
+            z-index: 5;
         }
-        .copy-btn:hover { border-color: var(--accent); background: #1a1a1a; }
-        .copy-btn.copied { border-color: var(--green); color: var(--green); background: #0a1a0a; }
-        .copy-btn.copied::after { content: ' ✓'; }
+        .copy-btn:hover {
+            border-color: var(--accent);
+            background: #222;
+        }
+        .copy-btn.copied {
+            border-color: var(--green);
+            color: var(--green);
+            background: #0a1a0a;
+        }
+        .copy-btn.copied::after {
+            content: ' ✓';
+        }
 
+        /* Status Dots */
         .status-dot {
-            display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
         }
-        .status-dot.green { background: var(--green); box-shadow: 0 0 6px var(--green); }
-        .status-dot.yellow { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); animation: pulse 1s infinite; }
-        .status-dot.red { background: var(--red); box-shadow: 0 0 6px var(--red); }
+        .status-dot.green {
+            background: var(--green);
+            box-shadow: 0 0 6px var(--green);
+        }
+        .status-dot.yellow {
+            background: var(--yellow);
+            box-shadow: 0 0 6px var(--yellow);
+            animation: pulse 1s infinite;
+        }
+        .status-dot.red {
+            background: var(--red);
+            box-shadow: 0 0 6px var(--red);
+        }
 
+        /* Footer */
         .footer {
-            text-align: center; font-size: var(--font-size-sm); padding: 8px; opacity: 0.7; letter-spacing: 1px;
+            text-align: center;
+            font-size: var(--font-size-sm);
+            padding: 8px;
+            opacity: 0.7;
+            letter-spacing: 1px;
+            color: var(--text-dim);
         }
-        .footer a { color: var(--text-dim); text-decoration: none; transition: color 0.2s ease; }
-        .footer a:hover { color: var(--text); }
+        .footer a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .footer a:hover {
+            color: var(--text);
+        }
 
-        .divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; opacity: 0.5; }
+        /* Divider */
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 8px 0;
+            opacity: 0.5;
+        }
 
-        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: var(--font-size-sm); }
-        .info-label { color: var(--text-dim); }
-        .info-value { color: var(--green); font-weight: 700; }
+        /* Info rows */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            font-size: var(--font-size-sm);
+        }
+        .info-label {
+            color: var(--text-dim);
+        }
+        .info-value {
+            color: var(--green);
+            font-weight: 700;
+        }
 
+        /* Dropdown */
+        .dropdown-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px;
+            z-index: 10;
+            max-height: 200px;
+            overflow-y: auto;
+            min-width: 100%;
+            top: 100%;
+            left: 0;
+            margin-top: 4px;
+        }
+        .dropdown-content.show {
+            display: block;
+        }
+        .dropdown-item {
+            padding: 6px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: var(--font-size-sm);
+            color: var(--text);
+            transition: background 0.15s ease;
+        }
+        .dropdown-item:hover {
+            background: #222;
+        }
+        .dropdown-item.selected {
+            color: var(--green);
+        }
+
+        /* Responsive */
         @media (max-width: 380px) {
-            .btn { font-size: 10px; padding: 6px 10px; }
-            .config-display { font-size: 10px; padding: 10px; padding-top: 36px; }
-            .copy-btn { top: 8px; right: 10px; font-size: 9px; padding: 3px 8px; }
-            .section { padding: 12px; }
+            .btn { font-size: 10px; padding: 5px 8px; }
+            .config-display { font-size: 10px; padding: 10px; padding-top: 34px; }
+            .copy-btn { top: 8px; right: 8px; font-size: 9px; padding: 3px 8px; }
+            .section { padding: 10px; }
         }
     </style>
 </head>
 <body>
 
+<!-- Loading Screen -->
 <div id="loading-screen">
     <div class="loading-digits" id="loading-digits">
         <span id="d4">4</span><span id="d0">0</span><span id="d4b">4</span>
@@ -198,6 +434,7 @@
     <div class="loading-subtitle" id="loading-subtitle">INITIALIZING CONFIG PORTAL</div>
 </div>
 
+<!-- Main Content -->
 <div class="container" id="main-content" style="display:none;">
     <!-- Header Section -->
     <div class="section fade-in">
@@ -209,24 +446,28 @@
             <span class="info-value" id="info-host">---</span>
         </div>
         <div class="info-row">
+            <span class="info-label">HOST IP:</span>
+            <span class="info-value" id="info-ip">---</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">COUNTRY:</span>
+            <span class="info-value" id="info-country">---</span>
+        </div>
+        <div class="info-row">
             <span class="info-label">PASS / UUID:</span>
             <span class="info-value">saeka</span>
         </div>
         <div class="info-row">
-            <span class="info-label">TOTAL VISITORS:</span>
+            <span class="info-label">VISITORS:</span>
             <span class="info-value" id="visitor-count">0</span>
         </div>
         <div class="info-row">
-            <span class="info-label">ACTIVE USERS:</span>
+            <span class="info-label">ACTIVE:</span>
             <span class="info-value" id="active-users">0</span>
         </div>
         <div class="info-row">
-            <span class="info-label">SERVER RUNTIME:</span>
+            <span class="info-label">RUNTIME:</span>
             <span class="info-value" id="runtime-display">--</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">CONNECTIONS / BW:</span>
-            <span class="info-value" id="stats-display">0 / 0 KB</span>
         </div>
     </div>
 
@@ -234,17 +475,48 @@
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">ADDRESS SELECTOR</div>
         <div class="section-subtitle">CHOOSE SERVER ADDRESS</div>
-        <div class="button-bar" id="address-bar"></div>
+        <div class="dropdown-wrapper">
+            <button class="btn" id="address-dropdown-btn" style="width:100%; text-align:center;">SELECT ADDRESS ▾</button>
+            <div class="dropdown-content" id="address-dropdown"></div>
+        </div>
+        <div id="address-selected" style="text-align:center; margin-top:6px; font-size:var(--font-size-sm); color:var(--green);"></div>
     </div>
 
     <!-- SNI Selector -->
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">SNI SELECTOR</div>
         <div class="section-subtitle">CHOOSE TLS SNI</div>
-        <div class="button-bar" id="sni-bar"></div>
-        <div class="ping-display" id="ping-display">
-            <span class="status-dot yellow"></span> SELECT ADDRESS AND SNI TO PING
+        <div class="dropdown-wrapper">
+            <button class="btn" id="sni-dropdown-btn" style="width:100%; text-align:center;">SELECT SNI ▾</button>
+            <div class="dropdown-content" id="sni-dropdown"></div>
         </div>
+        <div id="sni-selected" style="text-align:center; margin-top:6px; font-size:var(--font-size-sm); color:var(--green);"></div>
+        <div class="ping-display" id="ping-display" style="margin-top:8px;">
+            <span class="status-dot yellow"></span> SELECT BOTH TO PING
+        </div>
+    </div>
+
+    <!-- Real-Time Monitor -->
+    <div class="section fade-in">
+        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">REAL-TIME MONITOR</div>
+        <div class="speed-row">
+            <div class="speed-item">
+                <div class="speed-label">DOWNLOAD</div>
+                <div class="speed-value download" id="speed-download">0</div>
+                <div class="speed-label">KB/s</div>
+            </div>
+            <div class="speed-item">
+                <div class="speed-label">UPLOAD</div>
+                <div class="speed-value upload" id="speed-upload">0</div>
+                <div class="speed-label">KB/s</div>
+            </div>
+            <div class="speed-item">
+                <div class="speed-label">LATENCY</div>
+                <div class="speed-value latency" id="speed-latency">0</div>
+                <div class="speed-label">ms</div>
+            </div>
+        </div>
+        <div class="graph-container" id="graph-container"></div>
     </div>
 
     <!-- Protocol Selector -->
@@ -271,6 +543,7 @@
         </div>
     </div>
 
+    <!-- Footer -->
     <div class="footer fade-in glow-text-light">
         CREATED BY <a href="https://fb.com/saekacutiee" target="_blank">SAEKA TOJIRP</a> &middot; 404 NOT FOUND GCP &middot; v4.0
     </div>
@@ -280,42 +553,33 @@
 (function() {
     'use strict';
 
-    // Data
+    // ─── Data ────────────────────────────────────────────────
     const PASS = 'saeka';
     const ADDRESSES = [
-        'run.googleapis.com',
-        'cloud.google.com',
-        'googleapis.com',
-        'firebase.google.com',
-        'storage.googleapis.com',
-        'fonts.googleapis.com',
-        'ajax.googleapis.com',
-        'maps.googleapis.com',
-        'oauth2.googleapis.com',
+        'run.googleapis.com', 'cloud.google.com', 'googleapis.com',
+        'firebase.google.com', 'storage.googleapis.com', 'fonts.googleapis.com',
+        'ajax.googleapis.com', 'maps.googleapis.com', 'oauth2.googleapis.com',
         'www.googleapis.com'
     ];
     const SNI_LIST = [
-        'fcmtoken.googleapis.com',
-        'support.maya.ph',
-        'api.paymaya.com',
-        'www.maya.ph',
-        'mayabank.ph',
-        'firebase-settings.crashlytics.com',
-        'app-analytics-services.com',
-        'saeka-tojirp.googleapis.com'
+        'fcmtoken.googleapis.com', 'support.maya.ph', 'api.paymaya.com',
+        'www.maya.ph', 'mayabank.ph', 'firebase-settings.crashlytics.com',
+        'app-analytics-services.com', 'saeka-tojirp.googleapis.com'
     ];
     const PROTOCOLS = ['vless', 'trojan', 'vmess', 'ss'];
-    const PROTOCOL_LABELS = { vless: 'VLESS', trojan: 'TROJAN', vmess: 'VMESS', ss: 'SHADOWSOCKS' };
+    const PROTOCOL_LABELS = {
+        vless: 'VLESS', trojan: 'TROJAN', vmess: 'VMESS', ss: 'SHADOWSOCKS'
+    };
     const PATHS = {
-        trojan: '/saeka-tojirp',
-        vmess: '/vmess-saeka',
-        vless: '/vless-saeka',
-        ss: '/ss-saeka'
+        trojan: '/saeka-tojirp', vmess: '/vmess-saeka',
+        vless: '/vless-saeka', ss: '/ss-saeka'
     };
     const TRANSPORTS = ['ws', 'hu', 'xh'];
-    const TRANSPORT_LABELS = { ws: 'WebSocket', hu: 'HTTP Upgrade', xh: 'XHTTP' };
+    const TRANSPORT_LABELS = {
+        ws: 'WebSocket', hu: 'HTTP Upgrade', xh: 'XHTTP'
+    };
 
-    // State
+    // ─── State ───────────────────────────────────────────────
     let selectedAddress = ADDRESSES[0];
     let selectedSNI = SNI_LIST[0];
     let selectedProtocol = 'vless';
@@ -324,29 +588,53 @@
     const pingCache = {};
     let pingInProgress = false;
 
-    // Visitor stats (simulated persistence)
+    // Visitor stats
     let visitorCount = 0, activeUsers = 0, totalConnections = 0, totalBandwidth = 0;
     const serverStartTime = new Date();
 
-    // DOM elements
+    // ─── DOM References ──────────────────────────────────────
     const infoHost = document.getElementById('info-host');
+    const infoIp = document.getElementById('info-ip');
+    const infoCountry = document.getElementById('info-country');
     const visitorCountEl = document.getElementById('visitor-count');
     const activeUsersEl = document.getElementById('active-users');
     const runtimeDisplay = document.getElementById('runtime-display');
-    const statsDisplay = document.getElementById('stats-display');
-    const addressBar = document.getElementById('address-bar');
-    const sniBar = document.getElementById('sni-bar');
+    const addressDropdownBtn = document.getElementById('address-dropdown-btn');
+    const addressDropdown = document.getElementById('address-dropdown');
+    const addressSelected = document.getElementById('address-selected');
+    const sniDropdownBtn = document.getElementById('sni-dropdown-btn');
+    const sniDropdown = document.getElementById('sni-dropdown');
+    const sniSelected = document.getElementById('sni-selected');
     const protocolBar = document.getElementById('protocol-bar');
     const transportBar = document.getElementById('transport-bar');
     const pingDisplay = document.getElementById('ping-display');
     const configDisplay = document.getElementById('config-display');
     const copyBtn = document.getElementById('copy-btn');
+    const speedDownload = document.getElementById('speed-download');
+    const speedUpload = document.getElementById('speed-upload');
+    const speedLatency = document.getElementById('speed-latency');
+    const graphContainer = document.getElementById('graph-container');
     const loadingScreen = document.getElementById('loading-screen');
     const mainContent = document.getElementById('main-content');
-    const d4 = document.getElementById('d4'), d0 = document.getElementById('d0'), d4b = document.getElementById('d4b');
+    const d4 = document.getElementById('d4'),
+          d0 = document.getElementById('d0'),
+          d4b = document.getElementById('d4b');
     const loadingSubtitle = document.getElementById('loading-subtitle');
 
+    // ─── Initial Data ────────────────────────────────────────
     infoHost.textContent = currentHost;
+
+    // Fetch IP and country
+    fetch('https://ipapi.co/json/')
+        .then(r => r.json())
+        .then(d => {
+            infoIp.textContent = d.ip || '---';
+            infoCountry.textContent = (d.country_name || '---') + ' ' + (d.flag?.emoji || '');
+        })
+        .catch(() => {
+            infoIp.textContent = '---';
+            infoCountry.textContent = '---';
+        });
 
     // Local storage stats
     try {
@@ -362,43 +650,173 @@
             bandwidth: totalBandwidth,
             startTime: serverStartTime.getTime()
         }));
-    } catch(e) { visitorCount = 1; }
+    } catch (e) { visitorCount = 1; }
 
     activeUsers = Math.floor(Math.random() * 5) + 1;
     visitorCountEl.textContent = visitorCount;
     activeUsersEl.textContent = activeUsers;
 
-    // Runtime update
+    // ─── Runtime Updater ─────────────────────────────────────
     function updateRuntime() {
-        const diffSec = Math.floor((Date.now() - serverStartTime.getTime()) / 1000);
-        const days = Math.floor(diffSec / 86400);
-        const hours = Math.floor((diffSec % 86400) / 3600);
-        const mins = Math.floor((diffSec % 3600) / 60);
-        const secs = diffSec % 60;
+        const diff = Math.floor((Date.now() - serverStartTime.getTime()) / 1000);
+        const days = Math.floor(diff / 86400);
+        const hours = Math.floor((diff % 86400) / 3600);
+        const minutes = Math.floor((diff % 3600) / 60);
+        const seconds = diff % 60;
         let str = '';
         if (days > 0) str += days + 'D ';
-        str += String(hours).padStart(2,'0') + ':' + String(mins).padStart(2,'0') + ':' + String(secs).padStart(2,'0');
+        str += String(hours).padStart(2, '0') + ':' +
+               String(minutes).padStart(2, '0') + ':' +
+               String(seconds).padStart(2, '0');
         runtimeDisplay.textContent = str;
     }
     setInterval(updateRuntime, 1000);
     updateRuntime();
 
-    // Simulated connections/bandwidth
-    function updateStats() {
-        totalConnections++;
-        totalBandwidth += Math.floor(Math.random() * 50000);
-        try {
-            const stored = JSON.parse(localStorage.getItem('prvtspyyy_stats') || '{}');
-            stored.connections = totalConnections;
-            stored.bandwidth = totalBandwidth;
-            localStorage.setItem('prvtspyyy_stats', JSON.stringify(stored));
-        } catch(e) {}
-        statsDisplay.textContent = totalConnections + ' / ' + (totalBandwidth / 1024).toFixed(1) + ' KB';
+    // ─── Graph Builder ───────────────────────────────────────
+    function buildGraph() {
+        graphContainer.innerHTML = '';
+        for (let i = 0; i < 30; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'graph-bar';
+            bar.style.height = (Math.random() * 40 + 5) + 'px';
+            bar.style.animationDelay = (i * 0.03) + 's';
+            graphContainer.appendChild(bar);
+        }
     }
-    setInterval(updateStats, 8000);
-    updateStats();
+    buildGraph();
 
-    // Config generation
+    // ─── Speed Monitor ───────────────────────────────────────
+    function updateSpeedMonitor() {
+        const dl = (Math.random() * 500 + 100).toFixed(1);
+        const ul = (Math.random() * 200 + 50).toFixed(1);
+        const lat = (Math.random() * 80 + 20).toFixed(0);
+        speedDownload.textContent = dl;
+        speedUpload.textContent = ul;
+        speedLatency.textContent = lat;
+
+        const bars = graphContainer.querySelectorAll('.graph-bar');
+        bars.forEach(b => {
+            b.style.height = (Math.random() * 40 + 5) + 'px';
+        });
+    }
+    setInterval(updateSpeedMonitor, 1500);
+    updateSpeedMonitor();
+
+    // ─── Dropdown Builders ───────────────────────────────────
+    function buildDropdown(container, items, selected, callback) {
+        container.innerHTML = '';
+        items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'dropdown-item';
+            div.textContent = item;
+            if (item === selected) div.classList.add('selected');
+            div.addEventListener('click', () => {
+                callback(item);
+                container.classList.remove('show');
+                // update selected style
+                container.querySelectorAll('.dropdown-item').forEach(d => d.classList.remove('selected'));
+                div.classList.add('selected');
+            });
+            container.appendChild(div);
+        });
+    }
+
+    buildDropdown(addressDropdown, ADDRESSES, selectedAddress, (val) => {
+        selectedAddress = val;
+        addressSelected.textContent = 'SELECTED: ' + val;
+        addressDropdownBtn.textContent = val + ' ▾';
+        updateConfigDisplay();
+        pingCombined();
+    });
+    addressDropdownBtn.textContent = selectedAddress + ' ▾';
+    addressSelected.textContent = 'SELECTED: ' + selectedAddress;
+
+    buildDropdown(sniDropdown, SNI_LIST, selectedSNI, (val) => {
+        selectedSNI = val;
+        sniSelected.textContent = 'SELECTED: ' + val;
+        sniDropdownBtn.textContent = val + ' ▾';
+        updateConfigDisplay();
+        pingCombined();
+    });
+    sniDropdownBtn.textContent = selectedSNI + ' ▾';
+    sniSelected.textContent = 'SELECTED: ' + selectedSNI;
+
+    // Dropdown toggles
+    addressDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        addressDropdown.classList.toggle('show');
+        sniDropdown.classList.remove('show');
+    });
+    sniDropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sniDropdown.classList.toggle('show');
+        addressDropdown.classList.remove('show');
+    });
+    document.addEventListener('click', () => {
+        addressDropdown.classList.remove('show');
+        sniDropdown.classList.remove('show');
+    });
+
+    // ─── Ping Logic ──────────────────────────────────────────
+    function pingCombined() {
+        if (!selectedAddress || !selectedSNI) return;
+        if (pingInProgress) return;
+        const target = selectedAddress;
+        if (pingCache[target]) {
+            showPingResult(target, pingCache[target]);
+            return;
+        }
+        pingInProgress = true;
+        pingDisplay.innerHTML = '<span class="status-dot yellow"></span> PINGING ' + target + '...';
+        const start = performance.now();
+        let done = false;
+        const timeout = setTimeout(() => {
+            if (!done) {
+                done = true;
+                pingInProgress = false;
+                const result = { latency: 9999, status: 'timeout' };
+                pingCache[target] = result;
+                showPingResult(target, result);
+            }
+        }, 5000);
+
+        fetch('https://' + target + '/', { mode: 'no-cors', cache: 'no-store' })
+        .then(() => {
+            if (!done) {
+                clearTimeout(timeout);
+                done = true;
+                pingInProgress = false;
+                const latency = Math.round(performance.now() - start);
+                const result = { latency: latency, status: 'ok' };
+                pingCache[target] = result;
+                showPingResult(target, result);
+            }
+        })
+        .catch(() => {
+            if (!done) {
+                clearTimeout(timeout);
+                done = true;
+                pingInProgress = false;
+                const latency = Math.round(performance.now() - start);
+                const status = latency < 3000 ? 'ok' : 'timeout';
+                const result = { latency: latency, status: status };
+                pingCache[target] = result;
+                showPingResult(target, result);
+            }
+        });
+    }
+
+    function showPingResult(addr, result) {
+        if (result.status === 'timeout') {
+            pingDisplay.innerHTML = '<span class="status-dot red"></span> ' + addr + ' : TIMEOUT';
+        } else {
+            const color = result.latency < 200 ? 'green' : (result.latency < 600 ? 'yellow' : 'red');
+            pingDisplay.innerHTML = '<span class="status-dot ' + color + '"></span> ' + addr + ' : ' + result.latency + 'ms';
+        }
+    }
+
+    // ─── Config Generation ───────────────────────────────────
     function getPath() {
         let path = PATHS[selectedProtocol];
         if (selectedTransport === 'hu') path += '-hu';
@@ -413,7 +831,7 @@
         const path = getPath();
         const encPath = encodeURIComponent(path);
 
-        switch(selectedProtocol) {
+        switch (selectedProtocol) {
             case 'vless':
                 return 'vless://' + PASS + '@' + addr + ':443?encryption=none&flow=none&type=ws&host=' +
                        host + '&headerType=none&path=' + encPath + '&security=tls&fp=chrome&sni=' +
@@ -422,21 +840,32 @@
                 return 'trojan://' + PASS + '@' + addr + ':443?type=ws&host=' + host +
                        '&path=' + encPath + '&security=tls&fp=chrome&sni=' + sni +
                        '&alpn=http%2F1.1#TROJAN-' + host;
-            case 'vmess':
+            case 'vmess': {
                 const vmessObj = {
                     v: '2', ps: 'VMESS-' + host, add: addr, port: '443', id: PASS, aid: '0',
                     scy: 'auto', net: 'ws', type: 'none', host: host, path: path,
                     tls: 'tls', sni: sni, fp: 'chrome', alpn: 'http/1.1'
                 };
-                try { return 'vmess://' + btoa(unescape(encodeURIComponent(JSON.stringify(vmessObj)))); }
-                catch(e) { return 'vmess://' + btoa(JSON.stringify(vmessObj)); }
-            case 'ss':
+                try {
+                    return 'vmess://' + btoa(unescape(encodeURIComponent(JSON.stringify(vmessObj))));
+                } catch (e) {
+                    return 'vmess://' + btoa(JSON.stringify(vmessObj));
+                }
+            }
+            case 'ss': {
                 let ssUserInfo = '';
-                try { ssUserInfo = btoa('aes-256-gcm:' + PASS); }
-                catch(e) { ssUserInfo = btoa(unescape(encodeURIComponent('aes-256-gcm:' + PASS))); }
-                const pluginStr = 'obfs-local;obfs=websocket;obfs-host=' + host + ';obfs-uri=' + path + ';sni=' + sni;
-                return 'ss://' + ssUserInfo + '@' + addr + ':443?plugin=' + encodeURIComponent(pluginStr) + '#SHADOWSOCKS-' + host;
-            default: return '';
+                try {
+                    ssUserInfo = btoa('aes-256-gcm:' + PASS);
+                } catch (e) {
+                    ssUserInfo = btoa(unescape(encodeURIComponent('aes-256-gcm:' + PASS)));
+                }
+                const pluginStr = 'obfs-local;obfs=websocket;obfs-host=' + host +
+                                  ';obfs-uri=' + path + ';sni=' + sni;
+                return 'ss://' + ssUserInfo + '@' + addr + ':443?plugin=' +
+                       encodeURIComponent(pluginStr) + '#SHADOWSOCKS-' + host;
+            }
+            default:
+                return '';
         }
     }
 
@@ -444,12 +873,32 @@
         configDisplay.textContent = buildConfig();
     }
 
+    // ─── Copy Logic ──────────────────────────────────────────
     function copyConfig() {
         const config = buildConfig();
-        const showSuccess = () => { copyBtn.textContent = 'COPIED'; copyBtn.classList.add('copied'); setTimeout(() => { copyBtn.textContent = 'COPY'; copyBtn.classList.remove('copied'); }, 2500); };
-        const showFail = () => { copyBtn.textContent = 'FAILED'; copyBtn.style.borderColor = 'var(--red)'; copyBtn.style.color = 'var(--red)'; setTimeout(() => { copyBtn.textContent = 'COPY'; copyBtn.style.borderColor = 'var(--border)'; copyBtn.style.color = 'var(--text)'; }, 2000); };
+        const showSuccess = () => {
+            copyBtn.textContent = 'COPIED';
+            copyBtn.classList.add('copied');
+            setTimeout(() => {
+                copyBtn.textContent = 'COPY';
+                copyBtn.classList.remove('copied');
+            }, 2500);
+        };
+        const showFail = () => {
+            copyBtn.textContent = 'FAILED';
+            copyBtn.style.borderColor = 'var(--red)';
+            copyBtn.style.color = 'var(--red)';
+            setTimeout(() => {
+                copyBtn.textContent = 'COPY';
+                copyBtn.style.borderColor = 'var(--border)';
+                copyBtn.style.color = 'var(--text)';
+            }, 2000);
+        };
+
         if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(config).then(showSuccess).catch(() => fallbackCopy(config, showSuccess, showFail));
+            navigator.clipboard.writeText(config).then(showSuccess).catch(() => {
+                fallbackCopy(config, showSuccess, showFail);
+            });
         } else {
             fallbackCopy(config, showSuccess, showFail);
         }
@@ -457,99 +906,79 @@
 
     function fallbackCopy(text, success, fail) {
         const ta = document.createElement('textarea');
-        ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px'; ta.style.top = '-9999px';
-        ta.style.width = '2px'; ta.style.height = '2px'; ta.style.opacity = '0';
-        document.body.appendChild(ta); ta.focus(); ta.select();
-        try { document.execCommand('copy'); success(); } catch(e) { fail(); }
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        ta.style.top = '-9999px';
+        ta.style.width = '2px';
+        ta.style.height = '2px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try {
+            document.execCommand('copy');
+            success();
+        } catch (e) {
+            fail();
+        }
         document.body.removeChild(ta);
     }
 
-    // Ping logic
-    function pingCombined() {
-        if (!selectedAddress || !selectedSNI) {
-            pingDisplay.innerHTML = '<span class="status-dot yellow"></span> SELECT BOTH ADDRESS AND SNI';
-            return;
-        }
-        const target = selectedAddress; // ping the address
-        if (pingInProgress) return;
-        if (pingCache[target]) {
-            showPingResult(target, pingCache[target]);
-            return;
-        }
-        pingInProgress = true;
-        pingDisplay.innerHTML = '<span class="status-dot yellow"></span> PINGING ' + target + '...';
-        const start = performance.now();
-        let done = false;
-        const timeout = setTimeout(() => {
-            if (!done) { done = true; pingInProgress = false; const res = { latency: 9999, status: 'timeout' }; pingCache[target] = res; showPingResult(target, res); }
-        }, 5000);
-        fetch('https://' + target + '/', { mode: 'no-cors', cache: 'no-store' })
-        .then(() => {
-            if (!done) { clearTimeout(timeout); done = true; pingInProgress = false; const latency = Math.round(performance.now() - start); const res = { latency, status: 'ok' }; pingCache[target] = res; showPingResult(target, res); }
-        })
-        .catch(() => {
-            if (!done) { clearTimeout(timeout); done = true; pingInProgress = false; const latency = Math.round(performance.now() - start); const status = latency < 3000 ? 'ok' : 'timeout'; const res = { latency, status }; pingCache[target] = res; showPingResult(target, res); }
-        });
-    }
-
-    function showPingResult(addr, result) {
-        if (result.status === 'timeout') {
-            pingDisplay.innerHTML = '<span class="status-dot red"></span> ' + addr + ' : TIMEOUT';
-        } else {
-            const color = result.latency < 200 ? 'green' : (result.latency < 600 ? 'yellow' : 'red');
-            pingDisplay.innerHTML = '<span class="status-dot ' + color + '"></span> ' + addr + ' : ' + result.latency + 'ms';
-        }
-    }
-
-    // Build selectors
-    function buildButtonBar(container, items, selected, callback) {
+    // ─── Protocol / Transport Buttons ────────────────────────
+    function buildButtonBar(container, items, selected, labels, callback) {
         container.innerHTML = '';
         items.forEach(item => {
             const btn = document.createElement('button');
             btn.className = 'btn';
-            btn.textContent = item;
+            btn.textContent = labels ? labels[item] : item;
             if (item === selected) btn.classList.add('active');
             btn.addEventListener('click', () => {
                 container.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 callback(item);
                 updateConfigDisplay();
-                if (container === addressBar || container === sniBar) pingCombined();
             });
             container.appendChild(btn);
         });
     }
 
-    buildButtonBar(addressBar, ADDRESSES, selectedAddress, (val) => { selectedAddress = val; });
-    buildButtonBar(sniBar, SNI_LIST, selectedSNI, (val) => { selectedSNI = val; });
-    buildButtonBar(protocolBar, PROTOCOLS.map(p => PROTOCOL_LABELS[p]), PROTOCOL_LABELS[selectedProtocol], (val) => {
-        const proto = Object.keys(PROTOCOL_LABELS).find(k => PROTOCOL_LABELS[k] === val);
-        if (proto) selectedProtocol = proto;
+    buildButtonBar(protocolBar, PROTOCOLS, selectedProtocol, PROTOCOL_LABELS, (val) => {
+        selectedProtocol = val;
     });
-    buildButtonBar(transportBar, TRANSPORTS.map(t => TRANSPORT_LABELS[t]), TRANSPORT_LABELS[selectedTransport], (val) => {
-        const trans = Object.keys(TRANSPORT_LABELS).find(k => TRANSPORT_LABELS[k] === val);
-        if (trans) selectedTransport = trans;
+    buildButtonBar(transportBar, TRANSPORTS, selectedTransport, TRANSPORT_LABELS, (val) => {
+        selectedTransport = val;
     });
 
-    // Initial config and ping
+    // ─── Initial Config & Ping ───────────────────────────────
     updateConfigDisplay();
     copyBtn.addEventListener('click', copyConfig);
-    setTimeout(() => pingCombined(), 1500); // initial ping after load
+    setTimeout(() => pingCombined(), 2000);
 
-    // Loading animation
-    function startLoadingAnimation() {
+    // ─── Loading Animation ───────────────────────────────────
+    function startLoading() {
         const digits = [d4, d0, d4b];
-        let activeIndex = 0, cycles = 0;
+        let activeIndex = 0;
+        let cycles = 0;
+        const maxCycles = 10;
         const interval = setInterval(() => {
             digits.forEach((d, i) => {
-                if (i === activeIndex) { d.classList.add('active'); d.classList.remove('inactive'); }
-                else { d.classList.remove('active'); d.classList.add('inactive'); }
+                if (i === activeIndex) {
+                    d.classList.add('active');
+                    d.classList.remove('inactive');
+                } else {
+                    d.classList.remove('active');
+                    d.classList.add('inactive');
+                }
             });
             activeIndex = (activeIndex + 1) % digits.length;
             if (activeIndex === 0) cycles++;
-            if (cycles >= 10) {
+            if (cycles >= maxCycles) {
                 clearInterval(interval);
-                digits.forEach(d => { d.classList.add('active'); d.classList.remove('inactive'); });
+                digits.forEach(d => {
+                    d.classList.add('active');
+                    d.classList.remove('inactive');
+                });
                 loadingSubtitle.textContent = 'READY';
                 loadingSubtitle.style.opacity = '1';
                 setTimeout(() => {
@@ -562,8 +991,9 @@
             }
         }, 550);
     }
-    startLoadingAnimation();
+    startLoading();
 
+    // ─── Cleanup on unload ───────────────────────────────────
     window.addEventListener('beforeunload', () => {
         if (activeUsers > 0) activeUsers--;
         activeUsersEl.textContent = activeUsers;
