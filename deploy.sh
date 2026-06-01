@@ -89,7 +89,7 @@ if [ $? -ne 0 ]; then echo -e "  ${RED}BUILD FAILED${RESET}"; tail -n 10 build.l
 loading "DEPLOYING TO CLOUD RUN"
 gcloud run deploy "$SERVICE_NAME" \
   --image "gcr.io/${PROJECT_ID}/${SERVICE_NAME}" \
-  --platform managed --region asia-southeast1 \
+  --platform managed --region us-central1 \
   --cpu "$CPU" --memory "$RAM" --port 8080 \
   --concurrency 1000 --cpu-boost --no-cpu-throttling \
   --timeout 3600 --min-instances 1 --max-instances "$MAX_INSTANCES" \
@@ -97,7 +97,7 @@ gcloud run deploy "$SERVICE_NAME" \
 
 if [ $? -ne 0 ]; then echo -e "  ${RED}DEPLOYMENT FAILED${RESET}"; tail -n 10 deploy.log; exit 1; fi
 
-SERVICE_URL=$(gcloud run services describe "$SERVICE_NAME" --region asia-southeast1 --project=$PROJECT_ID --format='value(status.url)' 2>/dev/null)
+SERVICE_URL=$(gcloud run services describe "$SERVICE_NAME" --region  us-central1 --project=$PROJECT_ID --format='value(status.url)' 2>/dev/null)
 CLEAN_HOST=$(echo "$SERVICE_URL" | sed 's|https://||')
 
 echo ""
@@ -123,4 +123,4 @@ echo -e "  ${CYAN}STARTING REAL-TIME LOGS...${RESET}"
 echo -e "  ${YELLOW}(Press Ctrl+C to stop)${RESET}"
 echo ""
 
-gcloud run logs tail "$SERVICE_NAME" --region asia-southeast1 --project=$PROJECT_ID
+gcloud run logs tail "$SERVICE_NAME" --region  us-central1 --project=$PROJECT_ID
