@@ -12,5 +12,15 @@ EXPOSE 8080
 
 CMD /usr/local/bin/xray run -c /etc/xray.json & \
     while ! nc -z 127.0.0.1 10000; do sleep 0.1; done && \
-    sleep 1 && \
+    while ! nc -z 127.0.0.1 10001; do sleep 0.1; done && \
+    while ! nc -z 127.0.0.1 10002; do sleep 0.1; done && \
+    while ! nc -z 127.0.0.1 10003; do sleep 0.1; done && \
+    while ! nc -z 127.0.0.1 10004; do sleep 0.1; done && \
+    while ! nc -z 127.0.0.1 10005; do sleep 0.1; done && \
+    while ! nc -z 127.0.0.1 10006; do sleep 0.1; done && \
+    while ! nc -z 127.0.0.1 10007; do sleep 0.1; done && \
+    while ! nc -z 127.0.0.1 10008; do sleep 0.1; done && \
+    while ! nc -z 127.0.0.1 10009; do sleep 0.1; done && \
+    while ! nc -z 127.0.0.1 10010; do sleep 0.1; done && \
+    while ! nc -z 127.0.0.1 10011; do sleep 0.1; done && \
     /usr/local/openresty/bin/openresty -g 'daemon off;'
