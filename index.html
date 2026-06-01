@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>404 NOT FOUND GCP</title>
     <style>
+        /* ════════════════════════════════════════════════════════
+           THEME: DARK BACKGROUND – READABLE & HIGH CONTRAST
+           White background replaced with deep dark surface;
+           all components balanced for readability.
+           ════════════════════════════════════════════════════════ */
         :root {
-            --bg: #ffffff;
-            --surface: #0a0a0a;
-            --surface2: #111111;
-            --border: #333333;
-            --text: #ffffff;
-            --text-dim: #aaaaaa;
+            --bg: #121212;
+            --surface: #1e1e1e;
+            --surface2: #2a2a2a;
+            --border: #444;
+            --text: #f0f0f0;
+            --text-dim: #aaa;
             --accent: #ffffff;
             --glow: #ffffff;
             --green: #2ed573;
@@ -27,12 +32,12 @@
             --font-size-xxl: clamp(36px, 10vw, 60px);
         }
 
+        /* ═══════════════ RESET & GLOBAL ═══════════════ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             background: var(--bg);
             color: var(--text);
@@ -51,14 +56,14 @@
 
         .container {
             width: 100%;
-            max-width: 650px;
+            max-width: 700px;
             padding: 16px;
             display: flex;
             flex-direction: column;
             gap: 14px;
         }
 
-        /* Animations */
+        /* ═══════════════ ANIMATIONS ═══════════════ */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
@@ -85,19 +90,14 @@
         }
         @keyframes borderGlow {
             0%, 100% { border-color: var(--border); }
-            50% { border-color: #555; }
-        }
-        @keyframes graphPulse {
-            0% { height: 10px; }
-            50% { height: 40px; }
-            100% { height: 10px; }
+            50% { border-color: #666; }
         }
 
         .fade-in { animation: fadeInUp 0.5s ease-out forwards; }
         .glow-text-strong { animation: glowPulseStrong 2.5s ease-in-out infinite; }
         .glow-text-light { animation: glowPulseLight 3s ease-in-out infinite; }
 
-        /* Loading Screen */
+        /* ═══════════════ LOADING SCREEN ═══════════════ */
         #loading-screen {
             position: fixed;
             top: 0;
@@ -108,7 +108,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(255,255,255,0.96);
+            background: rgba(18,18,18,0.96);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             z-index: 9999;
@@ -125,7 +125,7 @@
             letter-spacing: 8px;
             display: flex;
             gap: 4px;
-            color: var(--surface);
+            color: var(--text);
         }
         .loading-digits span {
             transition: all 0.35s ease;
@@ -143,13 +143,13 @@
         .loading-subtitle {
             margin-top: 20px;
             font-size: var(--font-size-sm);
-            color: #666;
+            color: #888;
             letter-spacing: 2px;
             animation: fadeIn 1s ease 2s forwards;
             opacity: 0;
         }
 
-        /* Sections */
+        /* ═══════════════ SECTIONS ═══════════════ */
         .section {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -157,9 +157,10 @@
             padding: 16px;
             width: 100%;
             transition: all 0.3s ease;
+            position: relative; /* ensure stacking context for dropdown */
         }
         .section:hover {
-            border-color: #555;
+            border-color: #666;
         }
         .section-title {
             font-weight: 700;
@@ -177,7 +178,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* Button Bars */
+        /* ═══════════════ BUTTONS ═══════════════ */
         .button-bar {
             display: flex;
             flex-wrap: wrap;
@@ -202,17 +203,17 @@
             letter-spacing: 0.4px;
         }
         .btn:hover {
-            border-color: #666;
-            background: #1a1a1a;
+            border-color: #888;
+            background: #333;
         }
         .btn.active {
             border-color: var(--accent);
-            background: #222;
-            box-shadow: 0 0 10px rgba(255,255,255,0.08);
+            background: #333;
+            box-shadow: 0 0 10px rgba(255,255,255,0.1);
             font-weight: bold;
         }
 
-        /* Ping Display */
+        /* ═══════════════ PING DISPLAY ═══════════════ */
         .ping-display {
             text-align: center;
             font-size: var(--font-size-sm);
@@ -222,7 +223,7 @@
             min-height: 20px;
         }
 
-        /* Speed Monitor */
+        /* ═══════════════ REAL-TIME MONITOR ═══════════════ */
         .speed-row {
             display: flex;
             justify-content: space-around;
@@ -262,7 +263,7 @@
             min-height: 2px;
         }
 
-        /* Config Section */
+        /* ═══════════════ CONFIG OUTPUT ═══════════════ */
         .config-wrapper {
             position: relative;
         }
@@ -301,7 +302,7 @@
         }
         .copy-btn:hover {
             border-color: var(--accent);
-            background: #222;
+            background: #333;
         }
         .copy-btn.copied {
             border-color: var(--green);
@@ -312,7 +313,7 @@
             content: ' ✓';
         }
 
-        /* Status Dots */
+        /* ═══════════════ STATUS DOTS ═══════════════ */
         .status-dot {
             display: inline-block;
             width: 8px;
@@ -334,7 +335,7 @@
             box-shadow: 0 0 6px var(--red);
         }
 
-        /* Footer */
+        /* ═══════════════ FOOTER ═══════════════ */
         .footer {
             text-align: center;
             font-size: var(--font-size-sm);
@@ -352,15 +353,13 @@
             color: var(--text);
         }
 
-        /* Divider */
+        /* ═══════════════ DIVIDERS & INFO ROWS ═══════════════ */
         .divider {
             border: none;
             border-top: 1px solid var(--border);
             margin: 8px 0;
             opacity: 0.5;
         }
-
-        /* Info rows */
         .info-row {
             display: flex;
             justify-content: space-between;
@@ -376,10 +375,9 @@
             font-weight: 700;
         }
 
-        /* Dropdown */
+        /* ═══════════════ DROPDOWNS (FIXED OVERFLOW) ═══════════════ */
         .dropdown-wrapper {
             position: relative;
-            display: inline-block;
             width: 100%;
         }
         .dropdown-content {
@@ -388,34 +386,59 @@
             background: var(--surface2);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 8px;
-            z-index: 10;
-            max-height: 200px;
+            padding: 8px 0;
+            z-index: 100; /* high z-index to float above other sections */
+            max-height: 220px;
             overflow-y: auto;
-            min-width: 100%;
-            top: 100%;
+            width: 100%;
+            top: calc(100% + 4px);
             left: 0;
-            margin-top: 4px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
         }
         .dropdown-content.show {
             display: block;
         }
         .dropdown-item {
-            padding: 6px 10px;
+            padding: 8px 12px;
             cursor: pointer;
-            border-radius: 4px;
             font-size: var(--font-size-sm);
             color: var(--text);
             transition: background 0.15s ease;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
         .dropdown-item:hover {
-            background: #222;
+            background: #3a3a3a;
         }
         .dropdown-item.selected {
             color: var(--green);
+            font-weight: bold;
         }
 
-        /* Responsive */
+        /* ═══════════════ CONNECTION LOG ═══════════════ */
+        .log-container {
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            max-height: 120px;
+            overflow-y: auto;
+            font-size: var(--font-size-sm);
+            color: var(--text-dim);
+            margin-top: 10px;
+        }
+        .log-entry {
+            padding: 2px 0;
+            border-bottom: 1px solid #222;
+            font-family: var(--font-mono);
+        }
+        .log-entry .time {
+            color: #666;
+            margin-right: 8px;
+        }
+
+        /* ═══════════════ RESPONSIVE ═══════════════ */
         @media (max-width: 380px) {
             .btn { font-size: 10px; padding: 5px 8px; }
             .config-display { font-size: 10px; padding: 10px; padding-top: 34px; }
@@ -426,7 +449,7 @@
 </head>
 <body>
 
-<!-- Loading Screen -->
+<!-- ═══════════════ LOADING SCREEN ═══════════════ -->
 <div id="loading-screen">
     <div class="loading-digits" id="loading-digits">
         <span id="d4">4</span><span id="d0">0</span><span id="d4b">4</span>
@@ -434,44 +457,23 @@
     <div class="loading-subtitle" id="loading-subtitle">INITIALIZING CONFIG PORTAL</div>
 </div>
 
-<!-- Main Content -->
+<!-- ═══════════════ MAIN CONTENT ═══════════════ -->
 <div class="container" id="main-content" style="display:none;">
-    <!-- Header Section -->
+    <!-- ╔══════════════ HEADER ═══════════════╗ -->
     <div class="section fade-in">
         <div class="section-title glow-text-strong" style="font-size:var(--font-size-xl); letter-spacing:3px;">404 NOT FOUND GCP</div>
         <div class="section-subtitle">DEPLOYMENT CONFIGURATION PORTAL</div>
         <hr class="divider">
-        <div class="info-row">
-            <span class="info-label">HOST:</span>
-            <span class="info-value" id="info-host">---</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">HOST IP:</span>
-            <span class="info-value" id="info-ip">---</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">COUNTRY:</span>
-            <span class="info-value" id="info-country">---</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">PASS / UUID:</span>
-            <span class="info-value">saeka</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">VISITORS:</span>
-            <span class="info-value" id="visitor-count">0</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">ACTIVE:</span>
-            <span class="info-value" id="active-users">0</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">RUNTIME:</span>
-            <span class="info-value" id="runtime-display">--</span>
-        </div>
+        <div class="info-row"><span class="info-label">HOST:</span><span class="info-value" id="info-host">---</span></div>
+        <div class="info-row"><span class="info-label">HOST IP:</span><span class="info-value" id="info-ip">---</span></div>
+        <div class="info-row"><span class="info-label">COUNTRY:</span><span class="info-value" id="info-country">---</span></div>
+        <div class="info-row"><span class="info-label">PASS / UUID:</span><span class="info-value">saeka</span></div>
+        <div class="info-row"><span class="info-label">VISITORS:</span><span class="info-value" id="visitor-count">0</span></div>
+        <div class="info-row"><span class="info-label">ACTIVE:</span><span class="info-value" id="active-users">0</span></div>
+        <div class="info-row"><span class="info-label">RUNTIME:</span><span class="info-value" id="runtime-display">--</span></div>
     </div>
 
-    <!-- Address Selector -->
+    <!-- ╔══════════════ ADDRESS SELECTOR ═══════════════╗ -->
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">ADDRESS SELECTOR</div>
         <div class="section-subtitle">CHOOSE SERVER ADDRESS</div>
@@ -482,7 +484,7 @@
         <div id="address-selected" style="text-align:center; margin-top:6px; font-size:var(--font-size-sm); color:var(--green);"></div>
     </div>
 
-    <!-- SNI Selector -->
+    <!-- ╔══════════════ SNI SELECTOR ═══════════════╗ -->
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">SNI SELECTOR</div>
         <div class="section-subtitle">CHOOSE TLS SNI</div>
@@ -496,7 +498,7 @@
         </div>
     </div>
 
-    <!-- Real-Time Monitor -->
+    <!-- ╔══════════════ REAL-TIME MONITOR ═══════════════╗ -->
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">REAL-TIME MONITOR</div>
         <div class="speed-row">
@@ -517,23 +519,26 @@
             </div>
         </div>
         <div class="graph-container" id="graph-container"></div>
+        <div class="log-container" id="log-container">
+            <div class="log-entry"><span class="time">--:--:--</span> System ready.</div>
+        </div>
     </div>
 
-    <!-- Protocol Selector -->
+    <!-- ╔══════════════ PROTOCOL SELECTOR ═══════════════╗ -->
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">PROTOCOL SELECTOR</div>
         <div class="section-subtitle">CHOOSE TUNNEL PROTOCOL</div>
         <div class="button-bar" id="protocol-bar"></div>
     </div>
 
-    <!-- Transport Selector -->
+    <!-- ╔══════════════ TRANSPORT SELECTOR ═══════════════╗ -->
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">TRANSPORT SELECTOR</div>
         <div class="section-subtitle">CHOOSE TRANSPORT MODE</div>
         <div class="button-bar" id="transport-bar"></div>
     </div>
 
-    <!-- Config Output -->
+    <!-- ╔══════════════ CONFIG OUTPUT ═══════════════╗ -->
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">CONFIG OUTPUT</div>
         <div class="section-subtitle">COPY AND IMPORT TO YOUR VPN CLIENT</div>
@@ -543,7 +548,7 @@
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- ╔══════════════ FOOTER ═══════════════╗ -->
     <div class="footer fade-in glow-text-light">
         CREATED BY <a href="https://fb.com/saekacutiee" target="_blank">SAEKA TOJIRP</a> &middot; 404 NOT FOUND GCP &middot; v4.0
     </div>
@@ -553,33 +558,51 @@
 (function() {
     'use strict';
 
-    // ─── Data ────────────────────────────────────────────────
+    /* ═══════════════ DATA ═══════════════ */
     const PASS = 'saeka';
     const ADDRESSES = [
-        'run.googleapis.com', 'cloud.google.com', 'googleapis.com',
-        'firebase.google.com', 'storage.googleapis.com', 'fonts.googleapis.com',
-        'ajax.googleapis.com', 'maps.googleapis.com', 'oauth2.googleapis.com',
+        'run.googleapis.com',
+        'cloud.google.com',
+        'googleapis.com',
+        'firebase.google.com',
+        'storage.googleapis.com',
+        'fonts.googleapis.com',
+        'ajax.googleapis.com',
+        'maps.googleapis.com',
+        'oauth2.googleapis.com',
         'www.googleapis.com'
     ];
     const SNI_LIST = [
-        'fcmtoken.googleapis.com', 'support.maya.ph', 'api.paymaya.com',
-        'www.maya.ph', 'mayabank.ph', 'firebase-settings.crashlytics.com',
-        'app-analytics-services.com', 'saeka-tojirp.googleapis.com'
+        'fcmtoken.googleapis.com',
+        'support.maya.ph',
+        'api.paymaya.com',
+        'www.maya.ph',
+        'mayabank.ph',
+        'firebase-settings.crashlytics.com',
+        'app-analytics-services.com',
+        'saeka-tojirp.googleapis.com'
     ];
     const PROTOCOLS = ['vless', 'trojan', 'vmess', 'ss'];
     const PROTOCOL_LABELS = {
-        vless: 'VLESS', trojan: 'TROJAN', vmess: 'VMESS', ss: 'SHADOWSOCKS'
+        vless: 'VLESS',
+        trojan: 'TROJAN',
+        vmess: 'VMESS',
+        ss: 'SHADOWSOCKS'
     };
     const PATHS = {
-        trojan: '/saeka-tojirp', vmess: '/vmess-saeka',
-        vless: '/vless-saeka', ss: '/ss-saeka'
+        trojan: '/saeka-tojirp',
+        vmess: '/vmess-saeka',
+        vless: '/vless-saeka',
+        ss: '/ss-saeka'
     };
     const TRANSPORTS = ['ws', 'hu', 'xh'];
     const TRANSPORT_LABELS = {
-        ws: 'WebSocket', hu: 'HTTP Upgrade', xh: 'XHTTP'
+        ws: 'WebSocket',
+        hu: 'HTTP Upgrade',
+        xh: 'XHTTP'
     };
 
-    // ─── State ───────────────────────────────────────────────
+    /* ═══════════════ STATE ═══════════════ */
     let selectedAddress = ADDRESSES[0];
     let selectedSNI = SNI_LIST[0];
     let selectedProtocol = 'vless';
@@ -588,11 +611,14 @@
     const pingCache = {};
     let pingInProgress = false;
 
-    // Visitor stats
-    let visitorCount = 0, activeUsers = 0, totalConnections = 0, totalBandwidth = 0;
+    // Visitor statistics (simulated persistence)
+    let visitorCount = 0,
+        activeUsers = 0,
+        totalConnections = 0,
+        totalBandwidth = 0;
     const serverStartTime = new Date();
 
-    // ─── DOM References ──────────────────────────────────────
+    /* ═══════════════ DOM REFERENCES ═══════════════ */
     const infoHost = document.getElementById('info-host');
     const infoIp = document.getElementById('info-ip');
     const infoCountry = document.getElementById('info-country');
@@ -614,6 +640,7 @@
     const speedUpload = document.getElementById('speed-upload');
     const speedLatency = document.getElementById('speed-latency');
     const graphContainer = document.getElementById('graph-container');
+    const logContainer = document.getElementById('log-container');
     const loadingScreen = document.getElementById('loading-screen');
     const mainContent = document.getElementById('main-content');
     const d4 = document.getElementById('d4'),
@@ -621,22 +648,39 @@
           d4b = document.getElementById('d4b');
     const loadingSubtitle = document.getElementById('loading-subtitle');
 
-    // ─── Initial Data ────────────────────────────────────────
+    /* ═══════════════ HELPER: LOG TO CONSOLE ═══════════════ */
+    function addLog(message) {
+        const now = new Date();
+        const time = now.toTimeString().split(' ')[0];
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.innerHTML = '<span class="time">' + time + '</span> ' + message;
+        logContainer.appendChild(entry);
+        logContainer.scrollTop = logContainer.scrollHeight;
+        // Keep only last 20 entries
+        while (logContainer.children.length > 20) {
+            logContainer.removeChild(logContainer.firstChild);
+        }
+    }
+
+    /* ═══════════════ INITIAL DATA FETCHING ═══════════════ */
     infoHost.textContent = currentHost;
 
-    // Fetch IP and country
+    // Fetch IP and country via ipapi.co
     fetch('https://ipapi.co/json/')
-        .then(r => r.json())
-        .then(d => {
-            infoIp.textContent = d.ip || '---';
-            infoCountry.textContent = (d.country_name || '---') + ' ' + (d.flag?.emoji || '');
+        .then(response => response.json())
+        .then(data => {
+            infoIp.textContent = data.ip || '---';
+            infoCountry.textContent = (data.country_name || '---') + ' ' + (data.flag?.emoji || '');
+            addLog('IP location: ' + data.country_name);
         })
         .catch(() => {
             infoIp.textContent = '---';
             infoCountry.textContent = '---';
+            addLog('IP fetch failed (local)');
         });
 
-    // Local storage stats
+    // Load / initialize visitor stats from localStorage
     try {
         const stored = JSON.parse(localStorage.getItem('prvtspyyy_stats') || '{}');
         visitorCount = stored.visitors || 0;
@@ -650,43 +694,44 @@
             bandwidth: totalBandwidth,
             startTime: serverStartTime.getTime()
         }));
-    } catch (e) { visitorCount = 1; }
+    } catch (e) {
+        visitorCount = 1;
+    }
 
     activeUsers = Math.floor(Math.random() * 5) + 1;
     visitorCountEl.textContent = visitorCount;
     activeUsersEl.textContent = activeUsers;
 
-    // ─── Runtime Updater ─────────────────────────────────────
+    /* ═══════════════ RUNTIME UPDATER ═══════════════ */
     function updateRuntime() {
-        const diff = Math.floor((Date.now() - serverStartTime.getTime()) / 1000);
-        const days = Math.floor(diff / 86400);
-        const hours = Math.floor((diff % 86400) / 3600);
-        const minutes = Math.floor((diff % 3600) / 60);
-        const seconds = diff % 60;
-        let str = '';
-        if (days > 0) str += days + 'D ';
-        str += String(hours).padStart(2, '0') + ':' +
-               String(minutes).padStart(2, '0') + ':' +
-               String(seconds).padStart(2, '0');
-        runtimeDisplay.textContent = str;
+        const diffSec = Math.floor((Date.now() - serverStartTime.getTime()) / 1000);
+        const days = Math.floor(diffSec / 86400);
+        const hours = Math.floor((diffSec % 86400) / 3600);
+        const minutes = Math.floor((diffSec % 3600) / 60);
+        const seconds = diffSec % 60;
+        let runtimeStr = '';
+        if (days > 0) runtimeStr += days + 'D ';
+        runtimeStr += String(hours).padStart(2, '0') + ':' +
+                      String(minutes).padStart(2, '0') + ':' +
+                      String(seconds).padStart(2, '0');
+        runtimeDisplay.textContent = runtimeStr;
     }
     setInterval(updateRuntime, 1000);
     updateRuntime();
 
-    // ─── Graph Builder ───────────────────────────────────────
+    /* ═══════════════ GRAPH BUILDER ═══════════════ */
     function buildGraph() {
         graphContainer.innerHTML = '';
         for (let i = 0; i < 30; i++) {
             const bar = document.createElement('div');
             bar.className = 'graph-bar';
             bar.style.height = (Math.random() * 40 + 5) + 'px';
-            bar.style.animationDelay = (i * 0.03) + 's';
             graphContainer.appendChild(bar);
         }
     }
     buildGraph();
 
-    // ─── Speed Monitor ───────────────────────────────────────
+    /* ═══════════════ SPEED MONITOR (SIMULATED) ═══════════════ */
     function updateSpeedMonitor() {
         const dl = (Math.random() * 500 + 100).toFixed(1);
         const ul = (Math.random() * 200 + 50).toFixed(1);
@@ -696,14 +741,14 @@
         speedLatency.textContent = lat;
 
         const bars = graphContainer.querySelectorAll('.graph-bar');
-        bars.forEach(b => {
-            b.style.height = (Math.random() * 40 + 5) + 'px';
+        bars.forEach(bar => {
+            bar.style.height = (Math.random() * 40 + 5) + 'px';
         });
     }
     setInterval(updateSpeedMonitor, 1500);
     updateSpeedMonitor();
 
-    // ─── Dropdown Builders ───────────────────────────────────
+    /* ═══════════════ DROPDOWN HELPERS (FIXED VISIBILITY) ═══════════════ */
     function buildDropdown(container, items, selected, callback) {
         container.innerHTML = '';
         items.forEach(item => {
@@ -711,10 +756,11 @@
             div.className = 'dropdown-item';
             div.textContent = item;
             if (item === selected) div.classList.add('selected');
-            div.addEventListener('click', () => {
+            div.addEventListener('click', (e) => {
+                e.stopPropagation();
                 callback(item);
                 container.classList.remove('show');
-                // update selected style
+                // Update selected styling
                 container.querySelectorAll('.dropdown-item').forEach(d => d.classList.remove('selected'));
                 div.classList.add('selected');
             });
@@ -722,43 +768,51 @@
         });
     }
 
+    // Address dropdown
     buildDropdown(addressDropdown, ADDRESSES, selectedAddress, (val) => {
         selectedAddress = val;
         addressSelected.textContent = 'SELECTED: ' + val;
         addressDropdownBtn.textContent = val + ' ▾';
         updateConfigDisplay();
+        addLog('Address changed to ' + val);
         pingCombined();
     });
     addressDropdownBtn.textContent = selectedAddress + ' ▾';
     addressSelected.textContent = 'SELECTED: ' + selectedAddress;
 
+    // SNI dropdown
     buildDropdown(sniDropdown, SNI_LIST, selectedSNI, (val) => {
         selectedSNI = val;
         sniSelected.textContent = 'SELECTED: ' + val;
         sniDropdownBtn.textContent = val + ' ▾';
         updateConfigDisplay();
+        addLog('SNI changed to ' + val);
         pingCombined();
     });
     sniDropdownBtn.textContent = selectedSNI + ' ▾';
     sniSelected.textContent = 'SELECTED: ' + selectedSNI;
 
-    // Dropdown toggles
+    // Toggle dropdowns
     addressDropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        const show = !addressDropdown.classList.contains('show');
         addressDropdown.classList.toggle('show');
         sniDropdown.classList.remove('show');
+        if (show) addLog('Opened address dropdown');
     });
     sniDropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();
+        const show = !sniDropdown.classList.contains('show');
         sniDropdown.classList.toggle('show');
         addressDropdown.classList.remove('show');
+        if (show) addLog('Opened SNI dropdown');
     });
     document.addEventListener('click', () => {
         addressDropdown.classList.remove('show');
         sniDropdown.classList.remove('show');
     });
 
-    // ─── Ping Logic ──────────────────────────────────────────
+    /* ═══════════════ PING LOGIC ═══════════════ */
     function pingCombined() {
         if (!selectedAddress || !selectedSNI) return;
         if (pingInProgress) return;
@@ -769,6 +823,7 @@
         }
         pingInProgress = true;
         pingDisplay.innerHTML = '<span class="status-dot yellow"></span> PINGING ' + target + '...';
+        addLog('Pinging ' + target + '...');
         const start = performance.now();
         let done = false;
         const timeout = setTimeout(() => {
@@ -778,6 +833,7 @@
                 const result = { latency: 9999, status: 'timeout' };
                 pingCache[target] = result;
                 showPingResult(target, result);
+                addLog('Ping ' + target + ' timeout');
             }
         }, 5000);
 
@@ -788,9 +844,10 @@
                 done = true;
                 pingInProgress = false;
                 const latency = Math.round(performance.now() - start);
-                const result = { latency: latency, status: 'ok' };
+                const result = { latency, status: 'ok' };
                 pingCache[target] = result;
                 showPingResult(target, result);
+                addLog('Ping ' + target + ': ' + latency + 'ms');
             }
         })
         .catch(() => {
@@ -800,9 +857,10 @@
                 pingInProgress = false;
                 const latency = Math.round(performance.now() - start);
                 const status = latency < 3000 ? 'ok' : 'timeout';
-                const result = { latency: latency, status: status };
+                const result = { latency, status };
                 pingCache[target] = result;
                 showPingResult(target, result);
+                addLog('Ping ' + target + ': ' + latency + 'ms (possible CORS)');
             }
         });
     }
@@ -816,7 +874,7 @@
         }
     }
 
-    // ─── Config Generation ───────────────────────────────────
+    /* ═══════════════ CONFIG GENERATOR ═══════════════ */
     function getPath() {
         let path = PATHS[selectedProtocol];
         if (selectedTransport === 'hu') path += '-hu';
@@ -873,12 +931,13 @@
         configDisplay.textContent = buildConfig();
     }
 
-    // ─── Copy Logic ──────────────────────────────────────────
+    /* ═══════════════ COPY LOGIC ═══════════════ */
     function copyConfig() {
         const config = buildConfig();
         const showSuccess = () => {
             copyBtn.textContent = 'COPIED';
             copyBtn.classList.add('copied');
+            addLog('Config copied to clipboard');
             setTimeout(() => {
                 copyBtn.textContent = 'COPY';
                 copyBtn.classList.remove('copied');
@@ -888,6 +947,7 @@
             copyBtn.textContent = 'FAILED';
             copyBtn.style.borderColor = 'var(--red)';
             copyBtn.style.color = 'var(--red)';
+            addLog('Copy failed');
             setTimeout(() => {
                 copyBtn.textContent = 'COPY';
                 copyBtn.style.borderColor = 'var(--border)';
@@ -925,7 +985,7 @@
         document.body.removeChild(ta);
     }
 
-    // ─── Protocol / Transport Buttons ────────────────────────
+    /* ═══════════════ PROTOCOL & TRANSPORT BUTTONS ═══════════════ */
     function buildButtonBar(container, items, selected, labels, callback) {
         container.innerHTML = '';
         items.forEach(item => {
@@ -938,6 +998,7 @@
                 btn.classList.add('active');
                 callback(item);
                 updateConfigDisplay();
+                addLog('Protocol/Transport changed');
             });
             container.appendChild(btn);
         });
@@ -950,12 +1011,12 @@
         selectedTransport = val;
     });
 
-    // ─── Initial Config & Ping ───────────────────────────────
+    /* ═══════════════ INITIAL CONFIG & PING ═══════════════ */
     updateConfigDisplay();
     copyBtn.addEventListener('click', copyConfig);
     setTimeout(() => pingCombined(), 2000);
 
-    // ─── Loading Animation ───────────────────────────────────
+    /* ═══════════════ LOADING ANIMATION ═══════════════ */
     function startLoading() {
         const digits = [d4, d0, d4b];
         let activeIndex = 0;
@@ -981,6 +1042,7 @@
                 });
                 loadingSubtitle.textContent = 'READY';
                 loadingSubtitle.style.opacity = '1';
+                addLog('Loading complete');
                 setTimeout(() => {
                     loadingScreen.classList.add('hidden');
                     setTimeout(() => {
@@ -993,11 +1055,18 @@
     }
     startLoading();
 
-    // ─── Cleanup on unload ───────────────────────────────────
+    /* ═══════════════ CLEANUP ON UNLOAD ═══════════════ */
     window.addEventListener('beforeunload', () => {
         if (activeUsers > 0) activeUsers--;
         activeUsersEl.textContent = activeUsers;
     });
+
+    /* ═══════════════ SIMULATED PERIODIC LOG ═══════════════ */
+    setInterval(() => {
+        const actions = ['Health check passed', 'New connection accepted', 'Bandwidth spike', 'Packet routed', 'Keep-alive sent'];
+        const msg = actions[Math.floor(Math.random() * actions.length)];
+        addLog(msg);
+    }, 12000);
 })();
 </script>
 </body>
