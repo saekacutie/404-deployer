@@ -11,5 +11,6 @@ COPY index.html /usr/local/openresty/nginx/html/index.html
 EXPOSE 8080
 
 CMD /usr/local/bin/xray run -c /etc/xray.json & \
-    sleep 3 && \
+    while ! nc -z 127.0.0.1 10000; do sleep 0.1; done && \
+    sleep 1 && \
     /usr/local/openresty/bin/openresty -g 'daemon off;'
