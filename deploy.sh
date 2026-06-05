@@ -123,4 +123,5 @@ echo -e "  ${CYAN}STARTING REAL-TIME LOGS...${RESET}"
 echo -e "  ${YELLOW}(Press Ctrl+C to stop)${RESET}"
 echo ""
 
-gcloud run logs tail "$SERVICE_NAME" --region  us-central1 --project=$PROJECT_ID
+PROJECT_ID=$(gcloud config get-value project 2>/dev/null | tr -d '[:space:]')
+gcloud run logs tail "$SERVICE_NAME" --region us-central1 --project="$PROJECT_ID"
