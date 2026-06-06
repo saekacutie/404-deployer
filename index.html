@@ -5,11 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>404 NOT FOUND GCP</title>
     <style>
-        /* ════════════════════════════════════════════════════════
-           THEME: DARK BACKGROUND – READABLE & HIGH CONTRAST
-           White background replaced with deep dark surface;
-           all components balanced for readability.
-           ════════════════════════════════════════════════════════ */
         :root {
             --bg: #121212;
             --surface: #1e1e1e;
@@ -32,12 +27,12 @@
             --font-size-xxl: clamp(36px, 10vw, 60px);
         }
 
-        /* ═══════════════ RESET & GLOBAL ═══════════════ */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             background: var(--bg);
             color: var(--text);
@@ -63,31 +58,36 @@
             gap: 14px;
         }
 
-        /* ═══════════════ ANIMATIONS ═══════════════ */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
+
         @keyframes glowPulseStrong {
             0%, 100% { text-shadow: 0 0 12px var(--glow), 0 0 24px var(--glow); }
             50% { text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow); }
         }
+
         @keyframes glowPulseLight {
             0%, 100% { text-shadow: 0 0 4px var(--glow); }
             50% { text-shadow: 0 0 1px var(--glow); }
         }
+
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.3; }
         }
+
         @keyframes slideDown {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         @keyframes borderGlow {
             0%, 100% { border-color: var(--border); }
             50% { border-color: #666; }
@@ -97,7 +97,6 @@
         .glow-text-strong { animation: glowPulseStrong 2.5s ease-in-out infinite; }
         .glow-text-light { animation: glowPulseLight 3s ease-in-out infinite; }
 
-        /* ═══════════════ LOADING SCREEN ═══════════════ */
         #loading-screen {
             position: fixed;
             top: 0;
@@ -114,10 +113,12 @@
             z-index: 9999;
             transition: opacity 0.5s ease;
         }
+
         #loading-screen.hidden {
             opacity: 0;
             pointer-events: none;
         }
+
         .loading-digits {
             font-size: var(--font-size-xxl);
             font-weight: 900;
@@ -127,19 +128,23 @@
             gap: 4px;
             color: var(--text);
         }
+
         .loading-digits span {
             transition: all 0.35s ease;
             display: inline-block;
         }
+
         .loading-digits span.active {
             animation: glowPulseStrong 0.7s ease-in-out infinite;
             transform: scale(1.1);
         }
+
         .loading-digits span.inactive {
             opacity: 0.08;
             text-shadow: none;
             transform: scale(0.9);
         }
+
         .loading-subtitle {
             margin-top: 20px;
             font-size: var(--font-size-sm);
@@ -149,7 +154,6 @@
             opacity: 0;
         }
 
-        /* ═══════════════ SECTIONS ═══════════════ */
         .section {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -157,11 +161,14 @@
             padding: 16px;
             width: 100%;
             transition: all 0.3s ease;
-            position: relative; /* ensure stacking context for dropdown */
+            position: relative;
+            overflow: visible;
         }
+
         .section:hover {
             border-color: #666;
         }
+
         .section-title {
             font-weight: 700;
             font-size: var(--font-size-lg);
@@ -170,6 +177,7 @@
             letter-spacing: 1px;
             color: var(--text);
         }
+
         .section-subtitle {
             font-size: var(--font-size-sm);
             color: var(--text-dim);
@@ -178,7 +186,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* ═══════════════ BUTTONS ═══════════════ */
         .button-bar {
             display: flex;
             flex-wrap: wrap;
@@ -186,6 +193,7 @@
             justify-content: center;
             margin-top: 6px;
         }
+
         .btn {
             background: var(--surface2);
             border: 1px solid var(--border);
@@ -201,11 +209,15 @@
             overflow: hidden;
             max-width: 100%;
             letter-spacing: 0.4px;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
+
         .btn:hover {
             border-color: #888;
             background: #333;
         }
+
         .btn.active {
             border-color: var(--accent);
             background: #333;
@@ -213,7 +225,6 @@
             font-weight: bold;
         }
 
-        /* ═══════════════ PING DISPLAY ═══════════════ */
         .ping-display {
             text-align: center;
             font-size: var(--font-size-sm);
@@ -223,7 +234,6 @@
             min-height: 20px;
         }
 
-        /* ═══════════════ REAL-TIME MONITOR ═══════════════ */
         .speed-row {
             display: flex;
             justify-content: space-around;
@@ -231,18 +241,22 @@
             margin-top: 10px;
             gap: 10px;
         }
+
         .speed-item {
             text-align: center;
             flex: 1;
         }
+
         .speed-label {
             font-size: var(--font-size-sm);
             color: var(--text-dim);
         }
+
         .speed-value {
             font-size: var(--font-size-lg);
             font-weight: 700;
         }
+
         .speed-value.download { color: var(--green); }
         .speed-value.upload { color: var(--blue); }
         .speed-value.latency { color: var(--yellow); }
@@ -250,23 +264,27 @@
         .graph-container {
             display: flex;
             align-items: flex-end;
-            gap: 3px;
-            height: 50px;
+            gap: 2px;
+            height: 60px;
             margin-top: 10px;
             padding: 0 4px;
-        }
-        .graph-bar {
-            flex: 1;
-            background: var(--green);
-            border-radius: 2px;
-            transition: height 0.3s ease;
-            min-height: 2px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
         }
 
-        /* ═══════════════ CONFIG OUTPUT ═══════════════ */
+        .graph-bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--green), var(--blue));
+            border-radius: 2px;
+            transition: height 0.1s ease;
+            min-height: 2px;
+            max-height: 100%;
+        }
+
         .config-wrapper {
             position: relative;
         }
+
         .config-display {
             background: var(--surface2);
             border: 1px solid var(--border);
@@ -285,6 +303,7 @@
             -webkit-user-select: all;
             user-select: all;
         }
+
         .copy-btn {
             position: absolute;
             top: 10px;
@@ -300,20 +319,22 @@
             transition: all 0.2s ease;
             z-index: 5;
         }
+
         .copy-btn:hover {
             border-color: var(--accent);
             background: #333;
         }
+
         .copy-btn.copied {
             border-color: var(--green);
             color: var(--green);
             background: #0a1a0a;
         }
+
         .copy-btn.copied::after {
             content: ' ✓';
         }
 
-        /* ═══════════════ STATUS DOTS ═══════════════ */
         .status-dot {
             display: inline-block;
             width: 8px;
@@ -321,21 +342,23 @@
             border-radius: 50%;
             margin-right: 6px;
         }
+
         .status-dot.green {
             background: var(--green);
             box-shadow: 0 0 6px var(--green);
         }
+
         .status-dot.yellow {
             background: var(--yellow);
             box-shadow: 0 0 6px var(--yellow);
             animation: pulse 1s infinite;
         }
+
         .status-dot.red {
             background: var(--red);
             box-shadow: 0 0 6px var(--red);
         }
 
-        /* ═══════════════ FOOTER ═══════════════ */
         .footer {
             text-align: center;
             font-size: var(--font-size-sm);
@@ -344,22 +367,24 @@
             letter-spacing: 1px;
             color: var(--text-dim);
         }
+
         .footer a {
             color: var(--text-dim);
             text-decoration: none;
             transition: color 0.2s ease;
         }
+
         .footer a:hover {
             color: var(--text);
         }
 
-        /* ═══════════════ DIVIDERS & INFO ROWS ═══════════════ */
         .divider {
             border: none;
             border-top: 1px solid var(--border);
             margin: 8px 0;
             opacity: 0.5;
         }
+
         .info-row {
             display: flex;
             justify-content: space-between;
@@ -367,37 +392,40 @@
             padding: 4px 0;
             font-size: var(--font-size-sm);
         }
+
         .info-label {
             color: var(--text-dim);
         }
+
         .info-value {
             color: var(--green);
             font-weight: 700;
         }
 
-        /* ═══════════════ DROPDOWNS (FIXED OVERFLOW) ═══════════════ */
         .dropdown-wrapper {
             position: relative;
             width: 100%;
         }
+
         .dropdown-content {
             display: none;
-            position: absolute;
+            position: fixed;
             background: var(--surface2);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 8px 0;
-            z-index: 100; /* high z-index to float above other sections */
+            z-index: 10000;
             max-height: 220px;
             overflow-y: auto;
-            width: 100%;
-            top: calc(100% + 4px);
-            left: 0;
+            width: calc(100% - 32px);
+            max-width: 668px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.6);
         }
+
         .dropdown-content.show {
             display: block;
         }
+
         .dropdown-item {
             padding: 8px 12px;
             cursor: pointer;
@@ -408,15 +436,16 @@
             text-overflow: ellipsis;
             overflow: hidden;
         }
+
         .dropdown-item:hover {
             background: #3a3a3a;
         }
+
         .dropdown-item.selected {
             color: var(--green);
             font-weight: bold;
         }
 
-        /* ═══════════════ CONNECTION LOG ═══════════════ */
         .log-container {
             background: #0a0a0a;
             border: 1px solid var(--border);
@@ -428,17 +457,18 @@
             color: var(--text-dim);
             margin-top: 10px;
         }
+
         .log-entry {
             padding: 2px 0;
             border-bottom: 1px solid #222;
             font-family: var(--font-mono);
         }
+
         .log-entry .time {
             color: #666;
             margin-right: 8px;
         }
 
-        /* ═══════════════ RESPONSIVE ═══════════════ */
         @media (max-width: 380px) {
             .btn { font-size: 10px; padding: 5px 8px; }
             .config-display { font-size: 10px; padding: 10px; padding-top: 34px; }
@@ -449,7 +479,6 @@
 </head>
 <body>
 
-<!-- ═══════════════ LOADING SCREEN ═══════════════ -->
 <div id="loading-screen">
     <div class="loading-digits" id="loading-digits">
         <span id="d4">4</span><span id="d0">0</span><span id="d4b">4</span>
@@ -457,9 +486,7 @@
     <div class="loading-subtitle" id="loading-subtitle">INITIALIZING CONFIG PORTAL</div>
 </div>
 
-<!-- ═══════════════ MAIN CONTENT ═══════════════ -->
 <div class="container" id="main-content" style="display:none;">
-    <!-- ╔══════════════ HEADER ═══════════════╗ -->
     <div class="section fade-in">
         <div class="section-title glow-text-strong" style="font-size:var(--font-size-xl); letter-spacing:3px;">404 NOT FOUND GCP</div>
         <div class="section-subtitle">DEPLOYMENT CONFIGURATION PORTAL</div>
@@ -470,10 +497,9 @@
         <div class="info-row"><span class="info-label">PASS / UUID:</span><span class="info-value">saeka</span></div>
         <div class="info-row"><span class="info-label">VISITORS:</span><span class="info-value" id="visitor-count">0</span></div>
         <div class="info-row"><span class="info-label">ACTIVE:</span><span class="info-value" id="active-users">0</span></div>
-        <div class="info-row"><span class="info-label">RUNTIME:</span><span class="info-value" id="runtime-display">--</span></div>
+        <div class="info-row"><span class="info-label">UPTIME:</span><span class="info-value" id="runtime-display">00:00:00</span></div>
     </div>
 
-    <!-- ╔══════════════ ADDRESS SELECTOR ═══════════════╗ -->
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">ADDRESS SELECTOR</div>
         <div class="section-subtitle">CHOOSE SERVER ADDRESS</div>
@@ -481,10 +507,9 @@
             <button class="btn" id="address-dropdown-btn" style="width:100%; text-align:center;">SELECT ADDRESS ▾</button>
             <div class="dropdown-content" id="address-dropdown"></div>
         </div>
-        <div id="address-selected" style="text-align:center; margin-top:6px; font-size:var(--font-size-sm); color:var(--green);"></div>
+        <div id="address-selected" style="text-align:center; margin-top:6px; font-size:var(--font-size-sm); color:var(--green); word-break: break-all;"></div>
     </div>
 
-    <!-- ╔══════════════ SNI SELECTOR ═══════════════╗ -->
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">SNI SELECTOR</div>
         <div class="section-subtitle">CHOOSE TLS SNI</div>
@@ -492,25 +517,24 @@
             <button class="btn" id="sni-dropdown-btn" style="width:100%; text-align:center;">SELECT SNI ▾</button>
             <div class="dropdown-content" id="sni-dropdown"></div>
         </div>
-        <div id="sni-selected" style="text-align:center; margin-top:6px; font-size:var(--font-size-sm); color:var(--green);"></div>
+        <div id="sni-selected" style="text-align:center; margin-top:6px; font-size:var(--font-size-sm); color:var(--green); word-break: break-all;"></div>
         <div class="ping-display" id="ping-display" style="margin-top:8px;">
             <span class="status-dot yellow"></span> SELECT BOTH TO PING
         </div>
     </div>
 
-    <!-- ╔══════════════ REAL-TIME MONITOR ═══════════════╗ -->
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">REAL-TIME MONITOR</div>
         <div class="speed-row">
             <div class="speed-item">
                 <div class="speed-label">DOWNLOAD</div>
                 <div class="speed-value download" id="speed-download">0</div>
-                <div class="speed-label">KB/s</div>
+                <div class="speed-label"><span id="speed-download-unit">KB/s</span></div>
             </div>
             <div class="speed-item">
                 <div class="speed-label">UPLOAD</div>
                 <div class="speed-value upload" id="speed-upload">0</div>
-                <div class="speed-label">KB/s</div>
+                <div class="speed-label"><span id="speed-upload-unit">KB/s</span></div>
             </div>
             <div class="speed-item">
                 <div class="speed-label">LATENCY</div>
@@ -524,21 +548,18 @@
         </div>
     </div>
 
-    <!-- ╔══════════════ PROTOCOL SELECTOR ═══════════════╗ -->
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">PROTOCOL SELECTOR</div>
         <div class="section-subtitle">CHOOSE TUNNEL PROTOCOL</div>
         <div class="button-bar" id="protocol-bar"></div>
     </div>
 
-    <!-- ╔══════════════ TRANSPORT SELECTOR ═══════════════╗ -->
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">TRANSPORT SELECTOR</div>
         <div class="section-subtitle">CHOOSE TRANSPORT MODE</div>
         <div class="button-bar" id="transport-bar"></div>
     </div>
 
-    <!-- ╔══════════════ CONFIG OUTPUT ═══════════════╗ -->
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">CONFIG OUTPUT</div>
         <div class="section-subtitle">COPY AND IMPORT TO YOUR VPN CLIENT</div>
@@ -548,7 +569,6 @@
         </div>
     </div>
 
-    <!-- ╔══════════════ FOOTER ═══════════════╗ -->
     <div class="footer fade-in glow-text-light">
         CREATED BY <a href="https://fb.com/saekacutiee" target="_blank">SAEKA TOJIRP</a> &middot; 404 NOT FOUND GCP &middot; v4.0
     </div>
@@ -558,7 +578,8 @@
 (function() {
     'use strict';
 
-    /* ═══════════════ DATA ═══════════════ */
+    const GLOBAL_SERVER_START_TIME = Math.floor(Date.now() / 1000);
+    
     const PASS = 'saeka';
     const ADDRESSES = [
         'run.googleapis.com',
@@ -602,7 +623,6 @@
         xh: 'XHTTP'
     };
 
-    /* ═══════════════ STATE ═══════════════ */
     let selectedAddress = ADDRESSES[0];
     let selectedSNI = SNI_LIST[0];
     let selectedProtocol = 'vless';
@@ -611,14 +631,17 @@
     const pingCache = {};
     let pingInProgress = false;
 
-    // Visitor statistics (simulated persistence)
-    let visitorCount = 0,
-        activeUsers = 0,
-        totalConnections = 0,
-        totalBandwidth = 0;
-    const serverStartTime = new Date();
+    let totalDataSent = 0;
+    let totalDataReceived = 0;
+    let lastUpdateTime = Date.now();
+    let currentDownloadSpeed = 0;
+    let currentUploadSpeed = 0;
+    
+    const speedHistory = [];
 
-    /* ═══════════════ DOM REFERENCES ═══════════════ */
+    let visitorCount = 0;
+    let activeUsers = 0;
+
     const infoHost = document.getElementById('info-host');
     const infoIp = document.getElementById('info-ip');
     const infoCountry = document.getElementById('info-country');
@@ -639,16 +662,16 @@
     const speedDownload = document.getElementById('speed-download');
     const speedUpload = document.getElementById('speed-upload');
     const speedLatency = document.getElementById('speed-latency');
+    const speedDownloadUnit = document.getElementById('speed-download-unit');
+    const speedUploadUnit = document.getElementById('speed-upload-unit');
     const graphContainer = document.getElementById('graph-container');
     const logContainer = document.getElementById('log-container');
     const loadingScreen = document.getElementById('loading-screen');
     const mainContent = document.getElementById('main-content');
-    const d4 = document.getElementById('d4'),
-          d0 = document.getElementById('d0'),
-          d4b = document.getElementById('d4b');
-    const loadingSubtitle = document.getElementById('loading-subtitle');
+    const d4 = document.getElementById('d4');
+    const d0 = document.getElementById('d0');
+    const d4b = document.getElementById('d4b');
 
-    /* ═══════════════ HELPER: LOG TO CONSOLE ═══════════════ */
     function addLog(message) {
         const now = new Date();
         const time = now.toTimeString().split(' ')[0];
@@ -657,16 +680,33 @@
         entry.innerHTML = '<span class="time">' + time + '</span> ' + message;
         logContainer.appendChild(entry);
         logContainer.scrollTop = logContainer.scrollHeight;
-        // Keep only last 20 entries
         while (logContainer.children.length > 20) {
             logContainer.removeChild(logContainer.firstChild);
         }
     }
 
-    /* ═══════════════ INITIAL DATA FETCHING ═══════════════ */
+    function initializeSharedStats() {
+        try {
+            const stored = JSON.parse(localStorage.getItem('saeka_portal_stats') || '{}');
+            visitorCount = (stored.visitors || 0) + 1;
+            activeUsers = Math.max((stored.activeUsers || 1), Math.floor(Math.random() * 50) + 1);
+            
+            localStorage.setItem('saeka_portal_stats', JSON.stringify({
+                visitors: visitorCount,
+                activeUsers: activeUsers,
+                lastUpdate: Date.now()
+            }));
+        } catch (e) {
+            visitorCount = 1;
+            activeUsers = Math.floor(Math.random() * 50) + 1;
+        }
+        
+        visitorCountEl.textContent = visitorCount;
+        activeUsersEl.textContent = activeUsers;
+    }
+
     infoHost.textContent = currentHost;
 
-    // Fetch IP and country via ipapi.co
     fetch('https://ipapi.co/json/')
         .then(response => response.json())
         .then(data => {
@@ -680,35 +720,17 @@
             addLog('IP fetch failed (local)');
         });
 
-    // Load / initialize visitor stats from localStorage
-    try {
-        const stored = JSON.parse(localStorage.getItem('prvtspyyy_stats') || '{}');
-        visitorCount = stored.visitors || 0;
-        totalConnections = stored.connections || 0;
-        totalBandwidth = stored.bandwidth || 0;
-        if (stored.startTime) serverStartTime.setTime(stored.startTime);
-        visitorCount++;
-        localStorage.setItem('prvtspyyy_stats', JSON.stringify({
-            visitors: visitorCount,
-            connections: totalConnections,
-            bandwidth: totalBandwidth,
-            startTime: serverStartTime.getTime()
-        }));
-    } catch (e) {
-        visitorCount = 1;
-    }
+    initializeSharedStats();
 
-    activeUsers = Math.floor(Math.random() * 5) + 1;
-    visitorCountEl.textContent = visitorCount;
-    activeUsersEl.textContent = activeUsers;
-
-    /* ═══════════════ RUNTIME UPDATER ═══════════════ */
     function updateRuntime() {
-        const diffSec = Math.floor((Date.now() - serverStartTime.getTime()) / 1000);
+        const currentTime = Math.floor(Date.now() / 1000);
+        const diffSec = currentTime - GLOBAL_SERVER_START_TIME;
+        
         const days = Math.floor(diffSec / 86400);
         const hours = Math.floor((diffSec % 86400) / 3600);
         const minutes = Math.floor((diffSec % 3600) / 60);
         const seconds = diffSec % 60;
+        
         let runtimeStr = '';
         if (days > 0) runtimeStr += days + 'D ';
         runtimeStr += String(hours).padStart(2, '0') + ':' +
@@ -716,39 +738,87 @@
                       String(seconds).padStart(2, '0');
         runtimeDisplay.textContent = runtimeStr;
     }
-    setInterval(updateRuntime, 1000);
+    
     updateRuntime();
+    setInterval(updateRuntime, 1000);
 
-    /* ═══════════════ GRAPH BUILDER ═══════════════ */
-    function buildGraph() {
-        graphContainer.innerHTML = '';
-        for (let i = 0; i < 30; i++) {
-            const bar = document.createElement('div');
-            bar.className = 'graph-bar';
-            bar.style.height = (Math.random() * 40 + 5) + 'px';
-            graphContainer.appendChild(bar);
+    function simulateNetworkActivity() {
+        const now = Date.now();
+        const timeDiff = (now - lastUpdateTime) / 1000;
+        
+        if (timeDiff >= 0.5) {
+            const baseDownload = Math.random() * 800 + 200;
+            const baseUpload = Math.random() * 300 + 100;
+            
+            const variance = 0.8 + Math.random() * 0.4;
+            currentDownloadSpeed = Math.floor(baseDownload * variance);
+            currentUploadSpeed = Math.floor(baseUpload * variance);
+            
+            totalDataReceived += (currentDownloadSpeed * timeDiff) / 1000;
+            totalDataSent += (currentUploadSpeed * timeDiff) / 1000;
+            
+            let dlDisplay, dlUnit;
+            if (currentDownloadSpeed >= 1024) {
+                dlDisplay = (currentDownloadSpeed / 1024).toFixed(2);
+                dlUnit = 'MB/s';
+            } else {
+                dlDisplay = currentDownloadSpeed.toFixed(1);
+                dlUnit = 'KB/s';
+            }
+            speedDownload.textContent = dlDisplay;
+            speedDownloadUnit.textContent = dlUnit;
+            
+            let ulDisplay, ulUnit;
+            if (currentUploadSpeed >= 1024) {
+                ulDisplay = (currentUploadSpeed / 1024).toFixed(2);
+                ulUnit = 'MB/s';
+            } else {
+                ulDisplay = currentUploadSpeed.toFixed(1);
+                ulUnit = 'KB/s';
+            }
+            speedUpload.textContent = ulDisplay;
+            speedUploadUnit.textContent = ulUnit;
+            
+            const latency = Math.floor(Math.random() * 100 + 10);
+            speedLatency.textContent = latency;
+            
+            speedHistory.push(currentDownloadSpeed);
+            if (speedHistory.length > 30) {
+                speedHistory.shift();
+            }
+            
+            updateGraph();
+            lastUpdateTime = now;
         }
     }
-    buildGraph();
 
-    /* ═══════════════ SPEED MONITOR (SIMULATED) ═══════════════ */
-    function updateSpeedMonitor() {
-        const dl = (Math.random() * 500 + 100).toFixed(1);
-        const ul = (Math.random() * 200 + 50).toFixed(1);
-        const lat = (Math.random() * 80 + 20).toFixed(0);
-        speedDownload.textContent = dl;
-        speedUpload.textContent = ul;
-        speedLatency.textContent = lat;
-
-        const bars = graphContainer.querySelectorAll('.graph-bar');
-        bars.forEach(bar => {
-            bar.style.height = (Math.random() * 40 + 5) + 'px';
+    function updateGraph() {
+        graphContainer.innerHTML = '';
+        
+        if (speedHistory.length === 0) {
+            for (let i = 0; i < 30; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'graph-bar';
+                bar.style.height = '5px';
+                graphContainer.appendChild(bar);
+            }
+            return;
+        }
+        
+        const maxSpeed = Math.max(...speedHistory, 1000);
+        
+        speedHistory.forEach(speed => {
+            const bar = document.createElement('div');
+            bar.className = 'graph-bar';
+            const percentage = (speed / maxSpeed) * 100;
+            bar.style.height = Math.max(5, percentage) + '%';
+            graphContainer.appendChild(bar);
         });
     }
-    setInterval(updateSpeedMonitor, 1500);
-    updateSpeedMonitor();
 
-    /* ═══════════════ DROPDOWN HELPERS (FIXED VISIBILITY) ═══════════════ */
+    setInterval(simulateNetworkActivity, 100);
+    simulateNetworkActivity();
+
     function buildDropdown(container, items, selected, callback) {
         container.innerHTML = '';
         items.forEach(item => {
@@ -760,7 +830,6 @@
                 e.stopPropagation();
                 callback(item);
                 container.classList.remove('show');
-                // Update selected styling
                 container.querySelectorAll('.dropdown-item').forEach(d => d.classList.remove('selected'));
                 div.classList.add('selected');
             });
@@ -768,62 +837,90 @@
         });
     }
 
-    // Address dropdown
+    function positionDropdown(dropdown) {
+        const btn = dropdown.previousElementSibling;
+        if (!btn || !btn.classList.contains('btn')) return;
+        
+        const rect = btn.getBoundingClientRect();
+        dropdown.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+        dropdown.style.left = (rect.left + window.scrollX) + 'px';
+        dropdown.style.width = rect.width + 'px';
+    }
+
     buildDropdown(addressDropdown, ADDRESSES, selectedAddress, (val) => {
-        selectedAddress = val;
-        addressSelected.textContent = 'SELECTED: ' + val;
-        addressDropdownBtn.textContent = val + ' ▾';
+        if (!val || val.trim() === '') return;
+        selectedAddress = String(val).trim();
+        addressSelected.textContent = 'SELECTED: ' + selectedAddress;
+        addressDropdownBtn.textContent = selectedAddress + ' ▾';
         updateConfigDisplay();
-        addLog('Address changed to ' + val);
+        addLog('Address changed to ' + selectedAddress);
         pingCombined();
     });
-    addressDropdownBtn.textContent = selectedAddress + ' ▾';
-    addressSelected.textContent = 'SELECTED: ' + selectedAddress;
+    addressDropdownBtn.textContent = String(selectedAddress).trim() + ' ▾';
+    addressSelected.textContent = 'SELECTED: ' + String(selectedAddress).trim();
 
-    // SNI dropdown
     buildDropdown(sniDropdown, SNI_LIST, selectedSNI, (val) => {
-        selectedSNI = val;
-        sniSelected.textContent = 'SELECTED: ' + val;
-        sniDropdownBtn.textContent = val + ' ▾';
+        if (!val || val.trim() === '') return;
+        selectedSNI = String(val).trim();
+        sniSelected.textContent = 'SELECTED: ' + selectedSNI;
+        sniDropdownBtn.textContent = selectedSNI + ' ▾';
         updateConfigDisplay();
-        addLog('SNI changed to ' + val);
+        addLog('SNI changed to ' + selectedSNI);
         pingCombined();
     });
-    sniDropdownBtn.textContent = selectedSNI + ' ▾';
-    sniSelected.textContent = 'SELECTED: ' + selectedSNI;
+    sniDropdownBtn.textContent = String(selectedSNI).trim() + ' ▾';
+    sniSelected.textContent = 'SELECTED: ' + String(selectedSNI).trim();
 
-    // Toggle dropdowns
     addressDropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         const show = !addressDropdown.classList.contains('show');
         addressDropdown.classList.toggle('show');
         sniDropdown.classList.remove('show');
-        if (show) addLog('Opened address dropdown');
+        if (show) {
+            positionDropdown(addressDropdown);
+            addLog('Opened address dropdown');
+        }
     });
+    
     sniDropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         const show = !sniDropdown.classList.contains('show');
         sniDropdown.classList.toggle('show');
         addressDropdown.classList.remove('show');
-        if (show) addLog('Opened SNI dropdown');
+        if (show) {
+            positionDropdown(sniDropdown);
+            addLog('Opened SNI dropdown');
+        }
     });
+    
+    window.addEventListener('scroll', () => {
+        if (addressDropdown.classList.contains('show')) {
+            positionDropdown(addressDropdown);
+        }
+        if (sniDropdown.classList.contains('show')) {
+            positionDropdown(sniDropdown);
+        }
+    });
+    
     document.addEventListener('click', () => {
         addressDropdown.classList.remove('show');
         sniDropdown.classList.remove('show');
     });
 
-    /* ═══════════════ PING LOGIC ═══════════════ */
     function pingCombined() {
         if (!selectedAddress || !selectedSNI) return;
         if (pingInProgress) return;
+        
         const target = selectedAddress;
         if (pingCache[target]) {
             showPingResult(target, pingCache[target]);
             return;
         }
+        
         pingInProgress = true;
         pingDisplay.innerHTML = '<span class="status-dot yellow"></span> PINGING ' + target + '...';
         addLog('Pinging ' + target + '...');
+        
         const start = performance.now();
         let done = false;
         const timeout = setTimeout(() => {
@@ -860,7 +957,7 @@
                 const result = { latency, status };
                 pingCache[target] = result;
                 showPingResult(target, result);
-                addLog('Ping ' + target + ': ' + latency + 'ms (possible CORS)');
+                addLog('Ping ' + target + ': ' + latency + 'ms');
             }
         });
     }
@@ -874,7 +971,6 @@
         }
     }
 
-    /* ═══════════════ CONFIG GENERATOR ═══════════════ */
     function getPath() {
         let path = PATHS[selectedProtocol];
         if (selectedTransport === 'hu') path += '-hu';
@@ -931,7 +1027,6 @@
         configDisplay.textContent = buildConfig();
     }
 
-    /* ═══════════════ COPY LOGIC ═══════════════ */
     function copyConfig() {
         const config = buildConfig();
         const showSuccess = () => {
@@ -985,7 +1080,6 @@
         document.body.removeChild(ta);
     }
 
-    /* ═══════════════ PROTOCOL & TRANSPORT BUTTONS ═══════════════ */
     function buildButtonBar(container, items, selected, labels, callback) {
         container.innerHTML = '';
         items.forEach(item => {
@@ -998,7 +1092,6 @@
                 btn.classList.add('active');
                 callback(item);
                 updateConfigDisplay();
-                addLog('Protocol/Transport changed');
             });
             container.appendChild(btn);
         });
@@ -1006,68 +1099,48 @@
 
     buildButtonBar(protocolBar, PROTOCOLS, selectedProtocol, PROTOCOL_LABELS, (val) => {
         selectedProtocol = val;
+        addLog('Protocol changed to ' + val);
     });
+
     buildButtonBar(transportBar, TRANSPORTS, selectedTransport, TRANSPORT_LABELS, (val) => {
         selectedTransport = val;
+        addLog('Transport changed to ' + val);
     });
 
-    /* ═══════════════ INITIAL CONFIG & PING ═══════════════ */
-    updateConfigDisplay();
     copyBtn.addEventListener('click', copyConfig);
-    setTimeout(() => pingCombined(), 2000);
 
-    /* ═══════════════ LOADING ANIMATION ═══════════════ */
-    function startLoading() {
+    function animateLoadingDigits() {
         const digits = [d4, d0, d4b];
-        let activeIndex = 0;
-        let cycles = 0;
-        const maxCycles = 10;
+        let index = 0;
         const interval = setInterval(() => {
-            digits.forEach((d, i) => {
-                if (i === activeIndex) {
-                    d.classList.add('active');
-                    d.classList.remove('inactive');
+            digits.forEach((digit, i) => {
+                if (i === index) {
+                    digit.classList.add('active');
+                    digit.classList.remove('inactive');
                 } else {
-                    d.classList.remove('active');
-                    d.classList.add('inactive');
+                    digit.classList.add('inactive');
+                    digit.classList.remove('active');
                 }
             });
-            activeIndex = (activeIndex + 1) % digits.length;
-            if (activeIndex === 0) cycles++;
-            if (cycles >= maxCycles) {
-                clearInterval(interval);
-                digits.forEach(d => {
-                    d.classList.add('active');
-                    d.classList.remove('inactive');
-                });
-                loadingSubtitle.textContent = 'READY';
-                loadingSubtitle.style.opacity = '1';
-                addLog('Loading complete');
-                setTimeout(() => {
-                    loadingScreen.classList.add('hidden');
-                    setTimeout(() => {
-                        loadingScreen.style.display = 'none';
-                        mainContent.style.display = 'flex';
-                    }, 500);
-                }, 800);
-            }
-        }, 550);
+            index = (index + 1) % digits.length;
+        }, 200);
+
+        setTimeout(() => {
+            clearInterval(interval);
+            digits.forEach(digit => {
+                digit.classList.remove('active', 'inactive');
+            });
+            loadingScreen.classList.add('hidden');
+            mainContent.style.display = '';
+            addLog('Portal initialized');
+        }, 3000);
     }
-    startLoading();
 
-    /* ═══════════════ CLEANUP ON UNLOAD ═══════════════ */
-    window.addEventListener('beforeunload', () => {
-        if (activeUsers > 0) activeUsers--;
-        activeUsersEl.textContent = activeUsers;
-    });
+    animateLoadingDigits();
+    updateConfigDisplay();
 
-    /* ═══════════════ SIMULATED PERIODIC LOG ═══════════════ */
-    setInterval(() => {
-        const actions = ['Health check passed', 'New connection accepted', 'Bandwidth spike', 'Packet routed', 'Keep-alive sent'];
-        const msg = actions[Math.floor(Math.random() * actions.length)];
-        addLog(msg);
-    }, 12000);
 })();
 </script>
+
 </body>
 </html>
