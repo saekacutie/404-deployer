@@ -3,7 +3,6 @@
   "dns": {
     "servers": ["8.8.8.8", "1.1.1.1"],
     "queryStrategy": "UseIPv4",
-    "disableCache": false,
     "hosts": {
       "pagead2.googlesyndication.com": "127.0.0.1",
       "googlesyndication.com": "127.0.0.1",
@@ -13,109 +12,76 @@
       "adsbygoogle.com": "127.0.0.1",
       "google-analytics.com": "127.0.0.1",
       "googletagmanager.com": "127.0.0.1",
-      "googletagservices.com": "127.0.0.1",
-      "googleads.g.doubleclick.net": "127.0.0.1",
-      "securepubads.g.doubleclick.net": "127.0.0.1",
-      "tpc.googlesyndication.com": "127.0.0.1",
-      "afs.googlesyndication.com": "127.0.0.1",
-      "stats.g.doubleclick.net": "127.0.0.1",
-      "ad.doubleclick.net": "127.0.0.1",
-      "partner.googleadservices.com": "127.0.0.1",
-      "pagead2.googleadservices.com": "127.0.0.1",
       "youtube.com": "127.0.0.1",
-      "ytimg.com": "127.0.0.1",
       "googlevideo.com": "127.0.0.1",
-      "youtube-nocookie.com": "127.0.0.1",
-      "yt3.ggpht.com": "127.0.0.1",
-      "i.ytimg.com": "127.0.0.1",
-      "s.ytimg.com": "127.0.0.1",
       "popads.net": "127.0.0.1",
       "popcash.net": "127.0.0.1",
       "propellerads.com": "127.0.0.1",
       "adcash.com": "127.0.0.1",
       "exoclick.com": "127.0.0.1",
-      "adsterra.com": "127.0.0.1",
-      "popmyads.com": "127.0.0.1",
-      "adultforce.com": "127.0.0.1",
-      "trafficjunky.com": "127.0.0.1",
-      "clickaine.com": "127.0.0.1",
-      "ad-maven.com": "127.0.0.1",
-      "adpushup.com": "127.0.0.1",
-      "adrecover.com": "127.0.0.1",
-      "blockadblock.com": "127.0.0.1",
-      "admiral.com": "127.0.0.1",
-      "fundingchoices.google.com": "127.0.0.1"
+      "adsterra.com": "127.0.0.1"
     }
   },
   "inbounds": [
     {
-      "port": 10000, "listen": "127.0.0.1", "protocol": "trojan", "tag": "trojan-ws",
+      "port": 10000, "listen": "127.0.0.1", "protocol": "trojan",
       "settings": {"clients": [{"password": "saeka"}]},
-      "streamSettings": {"network": "ws", "wsSettings": {"path": "/saeka-tojirp"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}},
-      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+      "streamSettings": {"network": "ws", "wsSettings": {"path": "/saeka-tojirp"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}}
     },
     {
-      "port": 10001, "listen": "127.0.0.1", "protocol": "trojan", "tag": "trojan-hu",
+      "port": 10001, "listen": "127.0.0.1", "protocol": "trojan",
       "settings": {"clients": [{"password": "saeka"}]},
-      "streamSettings": {"network": "httpupgrade", "httpupgradeSettings": {"path": "/saeka-tojirp-hu"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}},
-      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+      "streamSettings": {"network": "httpupgrade", "httpupgradeSettings": {"path": "/saeka-tojirp-hu"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}}
     },
     {
-      "port": 10002, "listen": "127.0.0.1", "protocol": "trojan", "tag": "trojan-xh",
+      "port": 10002, "listen": "127.0.0.1", "protocol": "trojan",
       "settings": {"clients": [{"password": "saeka"}]},
-      "streamSettings": {"network": "xhttp", "xhttpSettings": {"path": "/saeka-tojirp-xh", "mode": "auto"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}},
-      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+      "streamSettings": {"network": "xhttp", "xhttpSettings": {"path": "/saeka-tojirp-xh", "mode": "auto", "xmux": {"maxConnections": 4, "maxConcurrency": 8, "cMaxLifetime": "5m", "cMaxReuseCount": 1000}}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}}
     },
     {
-      "port": 10003, "listen": "127.0.0.1", "protocol": "vmess", "tag": "vmess-ws",
+      "port": 10003, "listen": "127.0.0.1", "protocol": "vmess",
       "settings": {"clients": [{"id": "saeka", "security": "auto"}]},
-      "streamSettings": {"network": "ws", "wsSettings": {"path": "/vmess-saeka"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}},
-      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+      "streamSettings": {"network": "ws", "wsSettings": {"path": "/vmess-saeka"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}}
     },
     {
-      "port": 10004, "listen": "127.0.0.1", "protocol": "vmess", "tag": "vmess-hu",
+      "port": 10004, "listen": "127.0.0.1", "protocol": "vmess",
       "settings": {"clients": [{"id": "saeka", "security": "auto"}]},
-      "streamSettings": {"network": "httpupgrade", "httpupgradeSettings": {"path": "/vmess-saeka-hu"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}},
-      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+      "streamSettings": {"network": "httpupgrade", "httpupgradeSettings": {"path": "/vmess-saeka-hu"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}}
     },
     {
-      "port": 10005, "listen": "127.0.0.1", "protocol": "vmess", "tag": "vmess-xh",
+      "port": 10005, "listen": "127.0.0.1", "protocol": "vmess",
       "settings": {"clients": [{"id": "saeka", "security": "auto"}]},
-      "streamSettings": {"network": "xhttp", "xhttpSettings": {"path": "/vmess-saeka-xh", "mode": "auto"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}},
-      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+      "streamSettings": {"network": "xhttp", "xhttpSettings": {"path": "/vmess-saeka-xh", "mode": "auto", "xmux": {"maxConnections": 4, "maxConcurrency": 8, "cMaxLifetime": "5m", "cMaxReuseCount": 1000}}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}}
     },
     {
-      "port": 10006, "listen": "127.0.0.1", "protocol": "vless", "tag": "vless-ws",
+      "port": 10006, "listen": "127.0.0.1", "protocol": "vless",
       "settings": {"clients": [{"id": "saeka"}], "decryption": "none"},
-      "streamSettings": {"network": "ws", "wsSettings": {"path": "/vless-saeka"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}},
-      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+      "streamSettings": {"network": "ws", "wsSettings": {"path": "/vless-saeka"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}}
     },
     {
-      "port": 10007, "listen": "127.0.0.1", "protocol": "vless", "tag": "vless-hu",
+      "port": 10007, "listen": "127.0.0.1", "protocol": "vless",
       "settings": {"clients": [{"id": "saeka"}], "decryption": "none"},
-      "streamSettings": {"network": "httpupgrade", "httpupgradeSettings": {"path": "/vless-saeka-hu"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}},
-      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+      "streamSettings": {"network": "httpupgrade", "httpupgradeSettings": {"path": "/vless-saeka-hu"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}}
     },
     {
-      "port": 10008, "listen": "127.0.0.1", "protocol": "vless", "tag": "vless-xh",
+      "port": 10008, "listen": "127.0.0.1", "protocol": "vless",
       "settings": {"clients": [{"id": "saeka"}], "decryption": "none"},
-      "streamSettings": {"network": "xhttp", "xhttpSettings": {"path": "/vless-saeka-xh", "mode": "auto"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}},
-      "sniffing": {"enabled": true, "destOverride": ["http", "tls"]}
+      "streamSettings": {"network": "xhttp", "xhttpSettings": {"path": "/vless-saeka-xh", "mode": "auto", "xmux": {"maxConnections": 4, "maxConcurrency": 8, "cMaxLifetime": "5m", "cMaxReuseCount": 1000}}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}}
     },
     {
-      "port": 10009, "listen": "127.0.0.1", "protocol": "shadowsocks", "tag": "ss-ws",
+      "port": 10009, "listen": "127.0.0.1", "protocol": "shadowsocks",
       "settings": {"clients": [{"password": "saeka", "method": "aes-256-gcm"}]},
       "streamSettings": {"network": "ws", "wsSettings": {"path": "/ss-saeka"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}}
     },
     {
-      "port": 10010, "listen": "127.0.0.1", "protocol": "shadowsocks", "tag": "ss-hu",
+      "port": 10010, "listen": "127.0.0.1", "protocol": "shadowsocks",
       "settings": {"clients": [{"password": "saeka", "method": "aes-256-gcm"}]},
       "streamSettings": {"network": "httpupgrade", "httpupgradeSettings": {"path": "/ss-saeka-hu"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}}
     },
     {
-      "port": 10011, "listen": "127.0.0.1", "protocol": "shadowsocks", "tag": "ss-xh",
+      "port": 10011, "listen": "127.0.0.1", "protocol": "shadowsocks",
       "settings": {"clients": [{"password": "saeka", "method": "aes-256-gcm"}]},
-      "streamSettings": {"network": "xhttp", "xhttpSettings": {"path": "/ss-saeka-xh", "mode": "auto"}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}}
+      "streamSettings": {"network": "xhttp", "xhttpSettings": {"path": "/ss-saeka-xh", "mode": "auto", "xmux": {"maxConnections": 4, "maxConcurrency": 8, "cMaxLifetime": "5m", "cMaxReuseCount": 1000}}, "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}}
     }
   ],
   "outbounds": [
@@ -125,4 +91,4 @@
       "streamSettings": {"sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}}
     }
   ]
-    }
+}
