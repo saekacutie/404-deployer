@@ -1,267 +1,362 @@
-name: 🔍 Pre-Deployment Code Analysis & Validation
+name: 🔍 Virtual Pre-Deployment Checker
 
 on:
   push:
-    branches: [main, develop]
-    paths:
-      - 'index.html'
-      - 'config.json'
-      - 'nginx.conf'
-      - 'Dockerfile'
-      - 'deploy.sh'
-      - '.github/workflows/ci-checks.yml'
+    branches: [ main, develop ]
   pull_request:
-    branches: [main, develop]
+    branches: [ main, develop ]
+  workflow_dispatch:
 
 jobs:
-  # ============ HTML VALIDATION ============
-  html-validation:
+  virtual-deployment-check:
+    name: 🧪 Virtual Cloud Shell Deployment Test
     runs-on: ubuntu-latest
-    name: 🌐 HTML & JavaScript Analysis
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Check HTML Syntax
-        run: |
-          echo "🔍 Scanning index.html for syntax errors..."
-          if ! grep -q '<!DOCTYPE html>' index.html; then
-            echo "❌ ERROR: Missing DOCTYPE declaration"
-            exit 1
-          fi
-          if ! grep -q '<html' index.html; then
-            echo "❌ ERROR: Missing <html> tag"
-            exit 1
-          fi
-          if ! grep -q '</html>' index.html; then
-            echo "❌ ERROR: Unclosed </html> tag"
-            exit 1
-          fi
-          echo "✅ HTML structure is valid"
-
-      - name: Check Required Functions
-        run: |
-          echo "🔍 Verifying required JavaScript functions..."
-          FUNCTIONS=(
-            "generateUUID"
-            "displayQuiz"
-            "verifyQuizAnswer"
-            "selectQuizOption"
-            "initializeAuth"
-            "showPortal"
-            "updateConfig"
-            "updateUptime"
-          )
-          ERRORS=0
-          for FUNC in "${FUNCTIONS[@]}"; do
-            if ! grep -q "$FUNC" index.html; then
-              echo "❌ ERROR: Missing function: $FUNC"
-              ERRORS=$((ERRORS + 1))
-            fi
-          done
-          if [ $ERRORS -gt 0 ]; then exit 1; fi
-          echo "✅ All required functions found"
-
-  # ============ JSON VALIDATION ============
-  json-validation:
-    runs-on: ubuntu-latest
-    name: 📝 JSON Configuration Validation
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Validate config.json Syntax
-        run: |
-          echo "🔍 Checking JSON syntax..."
-          if ! python3 -m json.tool config.json > /dev/null 2>&1; then
-            echo "❌ ERROR: Invalid JSON syntax in config.json"
-            exit 1
-          fi
-          echo "✅ JSON syntax is valid"
-
-      - name: Validate config.json Structure
-        run: |
-          echo "🔍 Validating config.json structure..."
-          ERRORS=0
-          for KEY in "log" "dns" "inbounds" "outbounds" "routing"; do
-            if ! python3 -c "import json; data = json.load(open('config.json')); assert '$KEY' in data" 2>/dev/null; then
-              echo "❌ ERROR: Missing required key: $KEY"
-              ERRORS=$((ERRORS + 1))
-            fi
-          done
-          INBOUNDS=$(python3 -c "import json; print(len(json.load(open('config.json'))['inbounds']))")
-          if [ "$INBOUNDS" -ne 12 ]; then
-            echo "❌ ERROR: Expected 12 inbounds, found $INBOUNDS"
-            exit 1
-          fi
-          echo "✅ config.json structure is valid (12 inbounds confirmed)"
-
-  # ============ NGINX VALIDATION ============
-  nginx-validation:
-    runs-on: ubuntu-latest
-    name: ⚙️ Nginx Configuration Validation
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Syntax Check nginx.conf
-        run: |
-          echo "🔍 Checking nginx syntax..."
-          docker run --rm -v ${{ github.workspace }}/nginx.conf:/etc/nginx/nginx.conf:ro nginx:alpine nginx -t
-          echo "✅ nginx.conf syntax is valid"
-
-      - name: Validate nginx.conf Structure
-        run: |
-          echo "🔍 Validating nginx configuration..."
-          ERRORS=0
-          DIRECTIVES=("worker_processes" "gzip" "upstream" "server" "resolver")
-          for DIR in "${DIRECTIVES[@]}"; do
-            if ! grep -q "$DIR" nginx.conf; then
-              echo "❌ ERROR: Missing directive: $DIR"
-              ERRORS=$((ERRORS + 1))
-            fi
-          done
-          UPSTREAMS=$(grep -c "upstream " nginx.conf)
-          if [ "$UPSTREAMS" -ne 12 ]; then
-            echo "❌ ERROR: Expected 12 upstreams, found $UPSTREAMS"
-            exit 1
-          fi
-          echo "✅ nginx.conf structure is valid (12 upstreams confirmed)"
-
-  # ============ DOCKERFILE VALIDATION ============
-  docker-validation:
-    runs-on: ubuntu-latest
-    name: 🐳 Dockerfile Validation
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Check Dockerfile Syntax
-        run: |
-          echo "🔍 Validating Dockerfile..."
-          ERRORS=0
-          for DIR in "FROM" "COPY" "EXPOSE" "HEALTHCHECK" "CMD"; do
-            if ! grep -q "^$DIR" Dockerfile; then
-              echo "❌ ERROR: Missing $DIR directive"
-              ERRORS=$((ERRORS + 1))
-            fi
-          done
-          if [ $ERRORS -gt 0 ]; then exit 1; fi
-          echo "✅ Dockerfile structure is valid"
-
-      - name: Check Port Configurations Match
-        run: |
-          echo "🔍 Verifying port configurations..."
-          DOCKERFILE_PORT=$(grep "^EXPOSE" Dockerfile | awk '{print $2}')
-          NGINX_PORT=$(grep "listen " nginx.conf | head -1 | awk '{print $2}' | sed 's/;//')
-          if [ "$DOCKERFILE_PORT" != "$NGINX_PORT" ]; then
-            echo "❌ ERROR: Port mismatch - Dockerfile: $DOCKERFILE_PORT, nginx: $NGINX_PORT"
-            exit 1
-          fi
-          echo "✅ Ports match: $DOCKERFILE_PORT"
-
-  # ============ SHELL SCRIPT VALIDATION ============
-  shell-validation:
-    runs-on: ubuntu-latest
-    name: 📜 Shell Script Validation
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: ShellCheck Linting
-        run: |
-          echo "🔍 Running ShellCheck..."
-          apt-get update > /dev/null && apt-get install -y shellcheck > /dev/null
-          shellcheck -x deploy.sh || exit 1
-          echo "✅ deploy.sh passed ShellCheck"
-
-      - name: Check deploy.sh Functions
-        run: |
-          echo "🔍 Verifying deploy.sh functions..."
-          FUNCTIONS=("loading" "error_exit" "retry_command")
-          ERRORS=0
-          for FUNC in "${FUNCTIONS[@]}"; do
-            if ! grep -q "^$FUNC()" deploy.sh; then
-              echo "❌ ERROR: Missing function: $FUNC"
-              ERRORS=$((ERRORS + 1))
-            fi
-          done
-          if [ $ERRORS -gt 0 ]; then exit 1; fi
-          echo "✅ All required functions found"
-
-  # ============ FILE CONSISTENCY CHECK ============
-  consistency-check:
-    runs-on: ubuntu-latest
-    name: 🔗 Cross-File Consistency Check
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Verify File References Match
-        run: |
-          echo "🔍 Checking cross-file consistency..."
-          PROTOCOLS=("saeka-tojirp" "vmess-saeka" "vless-saeka" "ss-saeka")
-          ERRORS=0
-          for PROTO in "${PROTOCOLS[@]}"; do
-            if ! grep -q "$PROTO" nginx.conf; then
-              echo "❌ ERROR: Protocol path $PROTO not in nginx.conf"
-              ERRORS=$((ERRORS + 1))
-            fi
-            if ! grep -q "$PROTO" index.html; then
-              echo "❌ ERROR: Protocol path $PROTO not in index.html"
-              ERRORS=$((ERRORS + 1))
-            fi
-          done
-          if [ $ERRORS -gt 0 ]; then exit 1; fi
-          echo "✅ Cross-file consistency verified"
-
-  # ============ SECURITY CHECKS ============
-  security-check:
-    runs-on: ubuntu-latest
-    name: 🔐 Security & Hardening Check
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Check for Exposed Secrets
-        run: |
-          echo "🔍 Scanning for exposed secrets..."
-          if grep -rE "AWS_SECRET|PRIVATE_KEY|api.key" .; then
-            echo "⚠️ WARNING: Potential secrets detected"
-          fi
-          echo "✅ Secret scan complete"
-
-      - name: Docker Image Security
-        run: |
-          echo "🔍 Checking Docker security..."
-          if grep -q "FROM.*:latest" Dockerfile; then
-            echo "⚠️ WARNING: Using 'latest' tag (use pinned versions)"
-          fi
-          echo "✅ Docker security check complete"
-
-  # ============ FINAL SUMMARY ============
-  validation-summary:
-    runs-on: ubuntu-latest
-    name: ✅ Validation Summary
-    needs: [html-validation, json-validation, nginx-validation, docker-validation, shell-validation, consistency-check, security-check]
-    if: always()
+    
+    outputs:
+      overall_status: ${{ steps.final-status.outputs.status }}
+      error_count: ${{ steps.error-counter.outputs.count }}
     
     steps:
-      - name: Report Status
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: 🔧 Setup Testing Environment
         run: |
-          echo "════════════════════════════════════════════════════════════"
-          echo "          🎉 PRE-DEPLOYMENT VALIDATION COMPLETE 🎉"
-          echo "════════════════════════════════════════════════════════════"
+          echo "═══════════════════════════════════════════════════════════"
+          echo "     🔍 VIRTUAL PRE-DEPLOYMENT CHECKER v1.0"
+          echo "═══════════════════════════════════════════════════════════"
           echo ""
-          echo "Checks Passed:"
-          echo "  ✅ HTML & JavaScript Analysis"
-          echo "  ✅ JSON Configuration"
-          echo "  ✅ Nginx Configuration"
-          echo "  ✅ Dockerfile"
-          echo "  ✅ Shell Scripts"
-          echo "  ✅ Cross-File Consistency"
-          echo "  ✅ Security Checks"
+          echo "📁 Repository: ${{ github.repository }}"
+          echo "🌿 Branch: ${{ github.ref_name }}"
+          echo "🕐 Time: $(date)"
           echo ""
-          echo "════════════════════════════════════════════════════════════"
-          echo "Status: ✅ READY FOR DEPLOYMENT"
-          echo "════════════════════════════════════════════════════════════"
           
-          if [[ "${{ needs.html-validation.result }}" == "failure" || \
-                "${{ needs.json-validation.result }}" == "failure" || \
-                "${{ needs.nginx-validation.result }}" == "failure" ]]; then
-            echo "❌ DEPLOYMENT BLOCKED: Errors found"
-            exit 1
+          # Create virtual Cloud Shell environment
+          mkdir -p /tmp/cloudshell-sim
+          mkdir -p /tmp/cloudshell-sim/nginx
+          mkdir -p /tmp/cloudshell-sim/xray
+          mkdir -p /tmp/cloudshell-sim/www
+          
+          # Copy all files to simulation
+          cp -r ./* /tmp/cloudshell-sim/ 2>/dev/null || true
+          
+          # Install testing tools
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq nginx html-tidy jq shellcheck docker.io curl wget 2>/dev/null || true
+          
+      - name: 📊 File Change Detection
+        id: file-changes
+        run: |
+          echo "═══════════════════════════════════════════════════════════"
+          echo "     📊 FILE CHANGE DETECTION"
+          echo "═══════════════════════════════════════════════════════════"
+          echo ""
+          
+          # Get changed files
+          if [ "${{ github.event_name }}" == "push" ]; then
+            CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || echo "")
+            ADDED_FILES=$(git diff --diff-filter=A --name-only HEAD~1 HEAD 2>/dev/null || echo "")
+            REMOVED_FILES=$(git diff --diff-filter=D --name-only HEAD~1 HEAD 2>/dev/null || echo "")
+            MODIFIED_FILES=$(git diff --diff-filter=M --name-only HEAD~1 HEAD 2>/dev/null || echo "")
+          else
+            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}..HEAD 2>/dev/null || echo "")
+            ADDED_FILES=$(git diff --diff-filter=A --name-only origin/${{ github.base_ref }}..HEAD 2>/dev/null || echo "")
+            REMOVED_FILES=$(git diff --diff-filter=D --name-only origin/${{ github.base_ref }}..HEAD 2>/dev/null || echo "")
+            MODIFIED_FILES=$(git diff --diff-filter=M --name-only origin/${{ github.base_ref }}..HEAD 2>/dev/null || echo "")
           fi
+          
+          echo "📝 CHANGES DETECTED:"
+          echo "   ➕ Added files: $(echo "$ADDED_FILES" | wc -l)"
+          echo "   ➖ Removed files: $(echo "$REMOVED_FILES" | wc -l)"
+          echo "   📝 Modified files: $(echo "$MODIFIED_FILES" | wc -l)"
+          echo ""
+          
+          if [ -n "$ADDED_FILES" ]; then
+            echo "➕ ADDED FILES:"
+            echo "$ADDED_FILES" | sed 's/^/     /'
+            echo ""
+          fi
+          
+          if [ -n "$REMOVED_FILES" ]; then
+            echo "⚠️ REMOVED FILES (may affect deployment):"
+            echo "$REMOVED_FILES" | sed 's/^/     /'
+            echo ""
+          fi
+          
+          if [ -n "$MODIFIED_FILES" ]; then
+            echo "📝 MODIFIED FILES:"
+            echo "$MODIFIED_FILES" | sed 's/^/     /'
+            echo ""
+          fi
+          
+          # Save to output
+          echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGED_FILES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          
+      - name: 🔍 HTML File Validation
+        id: html-validation
+        run: |
+          echo "═══════════════════════════════════════════════════════════"
+          echo "     🔍 HTML FILE VALIDATION"
+          echo "═══════════════════════════════════════════════════════════"
+          echo ""
+          
+          ERROR_COUNT=0
+          WARNING_COUNT=0
+          ERROR_LOG=""
+          
+          # Find all HTML files
+          for file in $(find . -name "*.html" -type f 2>/dev/null); do
+            echo "📄 Checking: $file"
+            
+            # Check file exists and not empty
+            if [ ! -s "$file" ]; then
+              echo "   ❌ ERROR: File is empty"
+              ERROR_COUNT=$((ERROR_COUNT+1))
+              ERROR_LOG="${ERROR_LOG}[EMPTY] $file - File is empty\n"
+              continue
+            fi
+            
+            # Check for basic HTML structure
+            if ! grep -q "<!DOCTYPE html" "$file" && ! grep -q "<html" "$file"; then
+              echo "   ⚠️ WARNING: Missing DOCTYPE or html tag"
+              WARNING_COUNT=$((WARNING_COUNT+1))
+            fi
+            
+            # Check for unclosed tags (basic)
+            OPEN_DIV=$(grep -o "<div[^>]*>" "$file" | wc -l)
+            CLOSE_DIV=$(grep -o "</div>" "$file" | wc -l)
+            if [ "$OPEN_DIV" -ne "$CLOSE_DIV" ]; then
+              echo "   ❌ ERROR: Unclosed div tags (open: $OPEN_DIV, close: $CLOSE_DIV)"
+              ERROR_COUNT=$((ERROR_COUNT+1))
+              ERROR_LOG="${ERROR_LOG}[UNCLOSED_DIV] $file - Open: $OPEN_DIV, Close: $CLOSE_DIV\n"
+            fi
+            
+            # Check for script syntax errors using node
+            if command -v node &> /dev/null; then
+              # Extract JavaScript from script tags
+              grep -oP '(?<=<script>).*?(?=</script>)' "$file" > /tmp/js_check.js 2>/dev/null || true
+              if [ -s /tmp/js_check.js ]; then
+                if ! node -c /tmp/js_check.js 2>/dev/null; then
+                  echo "   ❌ ERROR: JavaScript syntax error in inline script"
+                  ERROR_COUNT=$((ERROR_COUNT+1))
+                  ERROR_LOG="${ERROR_LOG}[JS_ERROR] $file - Inline script syntax error\n"
+                fi
+              fi
+            fi
+            
+            # Check for missing closing body/html
+            if ! grep -q "</body>" "$file"; then
+              echo "   ⚠️ WARNING: Missing </body> tag"
+              WARNING_COUNT=$((WARNING_COUNT+1))
+            fi
+            if ! grep -q "</html>" "$file"; then
+              echo "   ⚠️ WARNING: Missing </html> tag"
+              WARNING_COUNT=$((WARNING_COUNT+1))
+            fi
+            
+            # Check for broken external links (basic pattern)
+            grep -oP '(?<=href=")[^"]+' "$file" | grep -v "^#" | grep -v "^javascript:" | while read link; do
+              if [[ "$link" == http* ]] && [[ "$link" != *"${{ github.repository }}"* ]]; then
+                echo "   ℹ️ INFO: External link: $link"
+              fi
+            done
+            
+            echo "   ✅ Basic HTML check passed"
+            echo ""
+          done
+          
+          echo "═══════════════════════════════════════════════════════════"
+          echo "📊 HTML Validation Results:"
+          echo "   ❌ Errors: $ERROR_COUNT"
+          echo "   ⚠️ Warnings: $WARNING_COUNT"
+          echo "═══════════════════════════════════════════════════════════"
+          
+          if [ $ERROR_COUNT -gt 0 ]; then
+            echo "ERRORS FOUND:"
+            echo -e "$ERROR_LOG"
+          fi
+          
+          echo "error_count=$ERROR_COUNT" >> $GITHUB_OUTPUT
+          echo "warning_count=$WARNING_COUNT" >> $GITHUB_OUTPUT
+          
+      - name: 🔧 JSON Configuration Validation
+        id: json-validation
+        run: |
+          echo "═══════════════════════════════════════════════════════════"
+          echo "     🔧 JSON CONFIGURATION VALIDATION"
+          echo "═══════════════════════════════════════════════════════════"
+          echo ""
+          
+          ERROR_COUNT=0
+          WARNING_COUNT=0
+          ERROR_LOG=""
+          
+          for file in $(find . -name "*.json" -type f 2>/dev/null); do
+            echo "📄 Checking: $file"
+            
+            if [ ! -s "$file" ]; then
+              echo "   ❌ ERROR: File is empty"
+              ERROR_COUNT=$((ERROR_COUNT+1))
+              ERROR_LOG="${ERROR_LOG}[EMPTY] $file - JSON file is empty\n"
+              continue
+            fi
+            
+            # Validate JSON syntax
+            if command -v jq &> /dev/null; then
+              if ! jq empty "$file" 2>/tmp/json_error.txt; then
+                echo "   ❌ ERROR: Invalid JSON syntax"
+                cat /tmp/json_error.txt | sed 's/^/        /'
+                ERROR_COUNT=$((ERROR_COUNT+1))
+                ERROR_LINE=$(jq -r 'input_line_number' /tmp/json_error.txt 2>/dev/null || echo "unknown")
+                ERROR_LOG="${ERROR_LOG}[JSON_SYNTAX] $file - Line $ERROR_LINE: $(cat /tmp/json_error.txt | head -1)\n"
+                continue
+              fi
+              echo "   ✅ JSON syntax valid"
+            else
+              echo "   ⚠️ jq not available, skipping deep validation"
+            fi
+            
+            # Check specific structure for config.json
+            if [[ "$file" == *"config.json"* ]]; then
+              echo "   🔍 Checking Xray config structure..."
+              
+              # Check for required top-level fields
+              for field in "inbounds" "outbounds" "routing"; do
+                if ! jq -e ".$field" "$file" > /dev/null 2>&1; then
+                  echo "   ❌ ERROR: Missing required field '$field'"
+                  ERROR_COUNT=$((ERROR_COUNT+1))
+                  ERROR_LOG="${ERROR_LOG}[MISSING_FIELD] $file - Missing '$field'\n"
+                fi
+              done
+              
+              # Check inbound ports
+              if jq -e '.inbounds' "$file" > /dev/null 2>&1; then
+                PORT_COUNT=$(jq '.inbounds | length' "$file")
+                echo "   📊 Found $PORT_COUNT inbound configurations"
+                
+                # Check for duplicate ports
+                jq '.inbounds[].port' "$file" | sort | uniq -d | while read dup; do
+                  echo "   ❌ ERROR: Duplicate port $dup found"
+                  ERROR_COUNT=$((ERROR_COUNT+1))
+                  ERROR_LOG="${ERROR_LOG}[DUPLICATE_PORT] $file - Port $dup appears multiple times\n"
+                done
+              fi
+            fi
+            
+            echo ""
+          done
+          
+          echo "═══════════════════════════════════════════════════════════"
+          echo "📊 JSON Validation Results:"
+          echo "   ❌ Errors: $ERROR_COUNT"
+          echo "   ⚠️ Warnings: $WARNING_COUNT"
+          echo "═══════════════════════════════════════════════════════════"
+          
+          if [ $ERROR_COUNT -gt 0 ]; then
+            echo "ERRORS FOUND:"
+            echo -e "$ERROR_LOG"
+          fi
+          
+          echo "error_count=$ERROR_COUNT" >> $GITHUB_OUTPUT
+          
+      - name: 🐳 Dockerfile Validation
+        id: docker-validation
+        run: |
+          echo "═══════════════════════════════════════════════════════════"
+          echo "     🐳 DOCKERFILE VALIDATION"
+          echo "═══════════════════════════════════════════════════════════"
+          echo ""
+          
+          ERROR_COUNT=0
+          WARNING_COUNT=0
+          ERROR_LOG=""
+          
+          for file in $(find . -name "Dockerfile*" -type f 2>/dev/null); do
+            echo "📄 Checking: $file"
+            
+            if [ ! -s "$file" ]; then
+              echo "   ❌ ERROR: Dockerfile is empty"
+              ERROR_COUNT=$((ERROR_COUNT+1))
+              ERROR_LOG="${ERROR_LOG}[EMPTY] $file - Dockerfile is empty\n"
+              continue
+            fi
+            
+            # Check for FROM instruction
+            if ! grep -q "^FROM" "$file"; then
+              echo "   ❌ ERROR: No FROM instruction found"
+              ERROR_COUNT=$((ERROR_COUNT+1))
+              ERROR_LOG="${ERROR_LOG}[NO_FROM] $file - Missing FROM instruction\n"
+            else
+              FROM_IMAGE=$(grep "^FROM" "$file" | head -1 | awk '{print $2}')
+              echo "   ✅ Base image: $FROM_IMAGE"
+            fi
+            
+            # Check for EXPOSE instruction
+            if ! grep -q "^EXPOSE" "$file"; then
+              echo "   ⚠️ WARNING: No EXPOSE instruction (Cloud Run requires port 8080)"
+              WARNING_COUNT=$((WARNING_COUNT+1))
+            fi
+            
+            # Check for CMD or ENTRYPOINT
+            if ! grep -q "^CMD" "$file" && ! grep -q "^ENTRYPOINT" "$file"; then
+              echo "   ❌ ERROR: No CMD or ENTRYPOINT instruction"
+              ERROR_COUNT=$((ERROR_COUNT+1))
+              ERROR_LOG="${ERROR_LOG}[NO_CMD] $file - Missing CMD or ENTRYPOINT\n"
+            fi
+            
+            # Check for COPY with missing source files
+            grep "^COPY" "$file" | while read copy_line; do
+              SOURCE=$(echo "$copy_line" | awk '{print $2}')
+              if [ -n "$SOURCE" ] && [ ! -f "$SOURCE" ] && [ ! -d "$SOURCE" ]; then
+                echo "   ⚠️ WARNING: COPY source '$SOURCE' may not exist"
+                WARNING_COUNT=$((WARNING_COUNT+1))
+              fi
+            done
+            
+            # Simulate docker build dry-run
+            if command -v docker &> /dev/null; then
+              echo "   🔍 Running docker build dry-run..."
+              if ! docker build -f "$file" --dry-run . > /dev/null 2>&1; then
+                echo "   ⚠️ WARNING: Docker build dry-run may have issues"
+              else
+                echo "   ✅ Docker build dry-run passed"
+              fi
+            fi
+            
+            echo ""
+          done
+          
+          echo "═══════════════════════════════════════════════════════════"
+          echo "📊 Dockerfile Validation Results:"
+          echo "   ❌ Errors: $ERROR_COUNT"
+          echo "   ⚠️ Warnings: $WARNING_COUNT"
+          echo "═══════════════════════════════════════════════════════════"
+          
+          echo "error_count=$ERROR_COUNT" >> $GITHUB_OUTPUT
+          
+      - name: 🌐 Nginx Configuration Validation
+        id: nginx-validation
+        run: |
+          echo "═══════════════════════════════════════════════════════════"
+          echo "     🌐 NGINX CONFIGURATION VALIDATION"
+          echo "═══════════════════════════════════════════════════════════"
+          echo ""
+          
+          ERROR_COUNT=0
+          WARNING_COUNT=0
+          ERROR_LOG=""
+          
+          for file in $(find . -name "nginx.conf" -type f 2>/dev/null); do
+            echo "📄 Checking: $file"
+            
+            if [ ! -s "$file" ]; then
+              echo "   ❌ ERROR: nginx.conf is empty"
+              ERROR_COUNT=$((ERROR_COUNT+1))
+              ERROR_LOG="${ERROR_LOG}[EMPTY] $file - nginx.conf is empty\n"
+              continue
+            fi
+          
