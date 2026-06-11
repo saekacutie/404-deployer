@@ -595,6 +595,149 @@
             color: var(--green);
         }
 
+        /* FIXED MISSING STYLES */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: var(--font-size-sm);
+        }
+
+        .info-label {
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: var(--green);
+            word-break: break-all;
+        }
+
+        .speed-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .speed-item {
+            text-align: center;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+
+        .speed-label {
+            font-size: var(--font-size-sm);
+            color: var(--text-dim);
+            margin: 4px 0;
+        }
+
+        .speed-value {
+            font-size: var(--font-size-xl);
+            font-weight: bold;
+            color: var(--green);
+            margin: 8px 0;
+        }
+
+        .speed-value.download { color: var(--blue); }
+        .speed-value.upload { color: var(--cyan); }
+        .speed-value.latency { color: var(--yellow); }
+
+        .log-container {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            max-height: 150px;
+            overflow-y: auto;
+            margin-top: 12px;
+        }
+
+        .log-entry {
+            display: flex;
+            gap: 8px;
+            margin: 4px 0;
+            font-size: var(--font-size-sm);
+            color: var(--text-dim);
+        }
+
+        .log-entry .time {
+            color: var(--green);
+            min-width: 70px;
+        }
+
+        .log-entry .message {
+            flex: 1;
+            color: var(--text);
+        }
+
+        .config-wrapper {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .copy-btn {
+            background: var(--green);
+            color: var(--bg);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all var(--transition-fast);
+        }
+
+        .copy-btn:hover {
+            background: var(--accent);
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.3);
+        }
+
+        .config-display {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            color: var(--green);
+            font-family: var(--font-mono);
+            font-size: var(--font-size-sm);
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .status-dot.yellow { background: var(--yellow); }
+
+        .ping-display {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-dim);
+            font-size: var(--font-size-sm);
+        }
+
+        .graph-container {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            height: 150px;
+            margin: 12px 0;
+        }
+
         @media (max-width: 480px) {
             .auth-card {
                 padding: 16px;
@@ -616,6 +759,14 @@
 
             .session-info {
                 grid-template-columns: 1fr;
+            }
+
+            .speed-row {
+                grid-template-columns: 1fr;
+            }
+
+            .config-wrapper {
+                flex-direction: column;
             }
         }
     </style>
@@ -1000,418 +1151,185 @@
             security.setAuthenticated();
             setTimeout(() => {
                 showPortal();
-                displayUUID.textContent = security.sessionUUID;
-                addLog('Authentication successful');
-            }, 1000);
+                initializePortal();
+            }, 1500);
         } else {
-            const attempts = security.recordAttempt();
-            attemptCount.textContent = attempts + '/' + security.maxAttempts;
-
+            security.recordAttempt();
+            showQuizMessage('Incorrect! Try again', 'error');
+            attemptCount.textContent = `${security.attempts}/3`;
             if (security.isMaxAttemptsReached()) {
-                showQuizMessage('Max attempts reached. Generate new UUID', 'error');
-                quizSection.style.display = 'none';
-                submitQuizBtn.style.display = 'none';
-                loginBtn.style.display = 'block';
-            } else {
-                showQuizMessage('Incorrect. Try again (' + attempts + '/' + security.maxAttempts + ')', 'error');
+                loginBtn.disabled = true;
+                showQuizMessage('Max attempts reached. Refresh to try again', 'error');
             }
         }
     }
 
-    function showQuizMessage(message, type) {
-        quizMessage.textContent = message;
+    function showQuizMessage(msg, type) {
         quizMessage.className = 'status-message ' + type;
-        setTimeout(() => {
-            quizMessage.className = 'status-message';
-        }, 3000);
+        quizMessage.textContent = msg;
     }
 
-    function showAuthMessage(message, type) {
-        loginMessage.textContent = message;
+    function showLoginMessage(msg, type) {
         loginMessage.className = 'status-message ' + type;
-        setTimeout(() => {
-            loginMessage.className = 'status-message';
-        }, 3000);
+        loginMessage.textContent = msg;
     }
+
+    function initializePortal() {
+        displayUUID.textContent = security.sessionUUID;
+        infoHost.textContent = currentHost;
+        infoIp.textContent = 'Detecting...';
+        infoCountry.textContent = 'Detecting...';
+        
+        // Initialize dropdowns
+        populateAddressDropdown();
+        populateSNIDropdown();
+        populateProtocolButtons();
+        populateTransportButtons();
+
+        updateUptime();
+        setInterval(updateUptime, 1000);
+    }
+
+    function populateAddressDropdown() {
+        addressDropdown.innerHTML = '';
+        ADDRESSES.forEach(addr => {
+            const item = document.createElement('div');
+            item.className = 'dropdown-item';
+            item.textContent = addr;
+            item.addEventListener('click', () => selectAddress(addr));
+            addressDropdown.appendChild(item);
+        });
+    }
+
+    function populateSNIDropdown() {
+        sniDropdown.innerHTML = '';
+        SNI_LIST.forEach(sni => {
+            const item = document.createElement('div');
+            item.className = 'dropdown-item';
+            item.textContent = sni;
+            item.addEventListener('click', () => selectSNI(sni));
+            sniDropdown.appendChild(item);
+        });
+    }
+
+    function populateProtocolButtons() {
+        protocolBar.innerHTML = '';
+        PROTOCOLS.forEach(proto => {
+            const btn = document.createElement('button');
+            btn.className = 'btn' + (proto === selectedProtocol ? ' active' : '');
+            btn.textContent = PROTOCOL_LABELS[proto];
+            btn.addEventListener('click', () => selectProto(proto, btn));
+            protocolBar.appendChild(btn);
+        });
+    }
+
+    function populateTransportButtons() {
+        transportBar.innerHTML = '';
+        TRANSPORTS.forEach(trans => {
+            const btn = document.createElement('button');
+            btn.className = 'btn' + (trans === selectedTransport ? ' active' : '');
+            btn.textContent = TRANSPORT_LABELS[trans];
+            btn.addEventListener('click', () => selectTransport(trans, btn));
+            transportBar.appendChild(btn);
+        });
+    }
+
+    function selectAddress(addr) {
+        selectedAddress = addr;
+        addressSelected.textContent = addr;
+        updateConfig();
+    }
+
+    function selectSNI(sni) {
+        selectedSNI = sni;
+        sniSelected.textContent = sni;
+        updateConfig();
+    }
+
+    function selectProto(proto, btn) {
+        selectedProtocol = proto;
+        document.querySelectorAll('#protocol-bar .btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        updateConfig();
+    }
+
+    function selectTransport(trans, btn) {
+        selectedTransport = trans;
+        document.querySelectorAll('#transport-bar .btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        updateConfig();
+    }
+
+    function updateConfig() {
+        const path = PATHS[selectedProtocol] || '';
+        const config = `${selectedAddress}:443\nPath: ${path}\nTransport: ${selectedTransport}\nPassword: ${PASS}`;
+        configDisplay.textContent = config;
+    }
+
+    function updateUptime() {
+        const now = Math.floor(Date.now() / 1000);
+        const uptime = now - GLOBAL_SERVER_START_TIME;
+        const hours = Math.floor(uptime / 3600);
+        const minutes = Math.floor((uptime % 3600) / 60);
+        const seconds = uptime % 60;
+        runtimeDisplay.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    // ============ EVENT LISTENERS ============
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            initializeAuth();
+            showAuthScreen();
+        }, 2000);
+    });
 
     genNewUUIDBtn.addEventListener('click', () => {
         initializeAuth();
-        quizSection.style.display = 'none';
-        submitQuizBtn.style.display = 'none';
-        loginBtn.style.display = 'block';
-        loginMessage.className = 'status-message';
-        quizMessage.className = 'status-message';
-        accessCodeInput.value = '';
     });
 
     loginBtn.addEventListener('click', () => {
-        const accessCode = accessCodeInput.value.trim();
-        
-        if (accessCode && accessCode.toLowerCase() === 'saeka-admin') {
-            security.setAuthenticated();
-            showPortal();
-            displayUUID.textContent = security.sessionUUID;
-            addLog('Admin access granted');
-        } else if (!accessCode) {
+        const code = accessCodeInput.value.trim();
+        if (code === PASS || code === '') {
             displayQuiz();
-            statusBadge.textContent = 'QUIZ';
+            loginBtn.style.display = 'none';
         } else {
-            showAuthMessage('Invalid access code', 'error');
+            showLoginMessage('Invalid access code', 'error');
         }
     });
 
     submitQuizBtn.addEventListener('click', verifyQuizAnswer);
 
+    addressDropdownBtn.addEventListener('click', () => {
+        addressDropdown.classList.toggle('show');
+    });
+
+    sniDropdownBtn.addEventListener('click', () => {
+        sniDropdown.classList.toggle('show');
+    });
+
+    copyBtn.addEventListener('click', () => {
+        const text = configDisplay.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            copyBtn.textContent = 'COPIED!';
+            setTimeout(() => { copyBtn.textContent = 'COPY'; }, 2000);
+        });
+    });
+
     logoutBtn.addEventListener('click', () => {
-        if (confirm('Are you sure you want to logout?')) {
-            authContainer.classList.add('active');
-            mainContent.style.display = 'none';
-            initializeAuth();
-            addLog('User logged out');
-        }
-    });
-
-    // ============ PORTAL FUNCTIONS ============
-    function addLog(message) {
-        const now = new Date();
-        const time = now.toTimeString().split(' ')[0];
-        const entry = document.createElement('div');
-        entry.className = 'log-entry';
-        entry.innerHTML = '<span class="time">' + time + '</span><span class="message">' + message + '</span>';
-        logContainer.appendChild(entry);
-        logContainer.scrollTop = logContainer.scrollHeight;
-        while (logContainer.children.length > 25) {
-            logContainer.removeChild(logContainer.firstChild);
-        }
-    }
-
-    function initializeSharedStats() {
-        try {
-            const stored = JSON.parse(localStorage.getItem('saeka_portal_stats') || '{}');
-            visitorCount = (stored.visitors || 0) + 1;
-            activeUsers = Math.max((stored.activeUsers || 1), Math.floor(Math.random() * 50) + 1);
-            
-            localStorage.setItem('saeka_portal_stats', JSON.stringify({
-                visitors: visitorCount, activeUsers: activeUsers, lastUpdate: Date.now()
-            }));
-        } catch (e) {
-            visitorCount = 1;
-            activeUsers = Math.floor(Math.random() * 50) + 1;
-        }
-        
-        visitorCountEl.textContent = visitorCount;
-        activeUsersEl.textContent = activeUsers;
-    }
-
-    infoHost.textContent = currentHost;
-
-    fetch('https://ipapi.co/json/')
-        .then(response => response.json())
-        .then(data => {
-            infoIp.textContent = data.ip || 'N/A';
-            infoCountry.textContent = (data.country_name || 'UNKNOWN') + ' ' + (data.flag?.emoji || '🌍');
-            addLog('IP location: ' + (data.country_name || 'unknown'));
-        })
-        .catch(() => {
-            infoIp.textContent = 'N/A';
-            infoCountry.textContent = '🌍 LOCAL';
-            addLog('IP fetch failed - using local');
-        });
-
-    initializeSharedStats();
-
-    function updateRuntime() {
-        const currentTime = Math.floor(Date.now() / 1000);
-        const diffSec = currentTime - GLOBAL_SERVER_START_TIME;
-        const days = Math.floor(diffSec / 86400);
-        const hours = Math.floor((diffSec % 86400) / 3600);
-        const minutes = Math.floor((diffSec % 3600) / 60);
-        const seconds = diffSec % 60;
-        
-        let runtimeStr = '';
-        if (days > 0) runtimeStr += days + 'D ';
-        runtimeStr += String(hours).padStart(2, '0') + ':' +
-                      String(minutes).padStart(2, '0') + ':' +
-                      String(seconds).padStart(2, '0');
-        runtimeDisplay.textContent = runtimeStr;
-    }
-    
-    updateRuntime();
-    setInterval(updateRuntime, 1000);
-
-    function simulateNetworkActivity() {
-        const now = Date.now();
-        const timeDiff = (now - lastUpdateTime) / 1000;
-        
-        if (timeDiff >= 0.5) {
-            const baseDownload = Math.random() * 800 + 200;
-            const baseUpload = Math.random() * 300 + 100;
-            const variance = 0.8 + Math.random() * 0.4;
-            currentDownloadSpeed = Math.floor(baseDownload * variance);
-            currentUploadSpeed = Math.floor(baseUpload * variance);
-            
-            totalDataReceived += (currentDownloadSpeed * timeDiff) / 1000;
-            totalDataSent += (currentUploadSpeed * timeDiff) / 1000;
-            
-            let dlDisplay, dlUnit;
-            if (currentDownloadSpeed >= 1024) {
-                dlDisplay = (currentDownloadSpeed / 1024).toFixed(2);
-                dlUnit = 'MB/s';
-            } else {
-                dlDisplay = currentDownloadSpeed.toFixed(1);
-                dlUnit = 'KB/s';
-            }
-            speedDownload.textContent = dlDisplay;
-            speedDownloadUnit.textContent = dlUnit;
-            
-            let ulDisplay, ulUnit;
-            if (currentUploadSpeed >= 1024) {
-                ulDisplay = (currentUploadSpeed / 1024).toFixed(2);
-                ulUnit = 'MB/s';
-            } else {
-                ulDisplay = currentUploadSpeed.toFixed(1);
-                ulUnit = 'KB/s';
-            }
-            speedUpload.textContent = ulDisplay;
-            speedUploadUnit.textContent = ulUnit;
-            
-            const latency = Math.floor(Math.random() * 100 + 10);
-            speedLatency.textContent = latency;
-            
-            speedHistory.push(currentDownloadSpeed);
-            if (speedHistory.length > 30) {
-                speedHistory.shift();
-            }
-            
-            updateGraph();
-            lastUpdateTime = now;
-        }
-    }
-
-    function updateGraph() {
-        graphContainer.innerHTML = '';
-        if (speedHistory.length === 0) {
-            for (let i = 0; i < 30; i++) {
-                const bar = document.createElement('div');
-                bar.className = 'graph-bar';
-                bar.style.height = '5px';
-                graphContainer.appendChild(bar);
-            }
-            return;
-        }
-        
-        const maxSpeed = Math.max(...speedHistory, 1000);
-        speedHistory.forEach(speed => {
-            const bar = document.createElement('div');
-            bar.className = 'graph-bar';
-            const percentage = (speed / maxSpeed) * 100;
-            bar.style.height = Math.max(5, percentage) + '%';
-            graphContainer.appendChild(bar);
-        });
-    }
-
-    setInterval(simulateNetworkActivity, 100);
-    simulateNetworkActivity();
-
-    function buildDropdown(container, items, selected, callback) {
-        container.innerHTML = '';
-        items.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'dropdown-item';
-            div.textContent = item;
-            if (item === selected) div.classList.add('selected');
-            div.addEventListener('click', (e) => {
-                e.stopPropagation();
-                callback(item);
-                closeAllDropdowns();
-                container.querySelectorAll('.dropdown-item').forEach(d => d.classList.remove('selected'));
-                div.classList.add('selected');
-                overlay.classList.remove('show');
-            });
-            container.appendChild(div);
-        });
-    }
-
-    function closeAllDropdowns() {
-        addressDropdown.classList.remove('show');
-        sniDropdown.classList.remove('show');
-    }
-
-    buildDropdown(addressDropdown, ADDRESSES, selectedAddress, (val) => {
-        if (!val || val.trim() === '') return;
-        selectedAddress = String(val).trim();
-        addressSelected.textContent = 'SELECTED: ' + selectedAddress;
-        addressDropdownBtn.textContent = selectedAddress + ' ▾';
-        updateConfigDisplay();
-        addLog('Address changed to ' + selectedAddress);
-    });
-    addressDropdownBtn.textContent = String(selectedAddress).trim() + ' ▾';
-    addressSelected.textContent = 'SELECTED: ' + String(selectedAddress).trim();
-
-    buildDropdown(sniDropdown, SNI_LIST, selectedSNI, (val) => {
-        if (!val || val.trim() === '') return;
-        selectedSNI = String(val).trim();
-        sniSelected.textContent = 'SELECTED: ' + selectedSNI;
-        sniDropdownBtn.textContent = selectedSNI + ' ▾';
-        updateConfigDisplay();
-        addLog('SNI changed to ' + selectedSNI);
-    });
-    sniDropdownBtn.textContent = String(selectedSNI).trim() + ' ▾';
-    sniSelected.textContent = 'SELECTED: ' + String(selectedSNI).trim();
-
-    addressDropdownBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (!addressDropdown.classList.contains('show')) {
-            closeAllDropdowns();
-            addressDropdown.classList.add('show');
-            overlay.classList.add('show');
-        } else {
-            closeAllDropdowns();
-            overlay.classList.remove('show');
-        }
-    });
-    
-    sniDropdownBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (!sniDropdown.classList.contains('show')) {
-            closeAllDropdowns();
-            sniDropdown.classList.add('show');
-            overlay.classList.add('show');
-        } else {
-            closeAllDropdowns();
-            overlay.classList.remove('show');
-        }
-    });
-    
-    document.addEventListener('click', () => {
-        closeAllDropdowns();
-        overlay.classList.remove('show');
-    });
-
-    overlay.addEventListener('click', () => {
-        closeAllDropdowns();
-        overlay.classList.remove('show');
-    });
-
-    function getPath() {
-        let path = PATHS[selectedProtocol];
-        if (selectedTransport === 'hu') path += '-hu';
-        else if (selectedTransport === 'xh') path += '-xh';
-        return path;
-    }
-
-    function buildConfig() {
-        const addr = selectedAddress;
-        const sni = selectedSNI;
-        const host = currentHost;
-        const path = getPath();
-        const encPath = encodeURIComponent(path);
-
-        switch (selectedProtocol) {
-            case 'vless':
-                return 'vless://' + PASS + '@' + addr + ':443?encryption=none&flow=none&type=ws&host=' +
-                       host + '&headerType=none&path=' + encPath + '&security=tls&fp=chrome&sni=' +
-                       sni + '&alpn=http%2F1.1#VLESS-' + host;
-            case 'trojan':
-                return 'trojan://' + PASS + '@' + addr + ':443?type=ws&host=' + host +
-                       '&path=' + encPath + '&security=tls&fp=chrome&sni=' + sni +
-                       '&alpn=http%2F1.1#TROJAN-' + host;
-            case 'vmess': {
-                const vmessObj = {
-                    v: '2', ps: 'VMESS-' + host, add: addr, port: '443', id: PASS, aid: '0',
-                    scy: 'auto', net: 'ws', type: 'none', host: host, path: path,
-                    tls: 'tls', sni: sni, alpn: 'http/1.1'
-                };
-                return 'vmess://' + btoa(JSON.stringify(vmessObj));
-            }
-            case 'ss':
-                return 'ss://' + btoa('chacha20-ietf-poly1305:' + PASS) + '@' + addr + ':443?obfs=websocket&obfs-host=' +
-                       host + '&obfs-uri=' + encPath + '#SS-' + host;
-            default:
-                return '// Unknown protocol';
-        }
-    }
-
-    function updateConfigDisplay() {
-        const config = buildConfig();
-        configDisplay.textContent = config;
-    }
-
-    PROTOCOLS.forEach(proto => {
-        const btn = document.createElement('button');
-        btn.className = 'btn';
-        btn.textContent = PROTOCOL_LABELS[proto];
-        if (proto === selectedProtocol) btn.classList.add('active');
-        btn.addEventListener('click', () => {
-            protocolBar.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            selectedProtocol = proto;
-            updateConfigDisplay();
-            addLog('Protocol: ' + PROTOCOL_LABELS[proto]);
-        });
-        protocolBar.appendChild(btn);
-    });
-
-    TRANSPORTS.forEach(trans => {
-        const btn = document.createElement('button');
-        btn.className = 'btn';
-        btn.textContent = TRANSPORT_LABELS[trans];
-        if (trans === selectedTransport) btn.classList.add('active');
-        btn.addEventListener('click', () => {
-            transportBar.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            selectedTransport = trans;
-            updateConfigDisplay();
-            addLog('Transport: ' + TRANSPORT_LABELS[trans]);
-        });
-        transportBar.appendChild(btn);
-    });
-
-    copyBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const config = configDisplay.textContent;
-        if (!config || config === '// Select options to generate config') {
-            addLog('No config to copy');
-            return;
-        }
-        navigator.clipboard.writeText(config).then(() => {
-            copyBtn.classList.add('copied');
-            addLog('Config copied to clipboard');
-            setTimeout(() => {
-                copyBtn.classList.remove('copied');
-            }, 2000);
-        }).catch(() => {
-            addLog('Failed to copy config');
-        });
-    });
-
-    // ============ LOADING & INITIALIZATION ============
-    const loadingSpans = [d4, d0, d4b];
-    let activeIndex = 0;
-    
-    function animateLoading() {
-        loadingSpans.forEach((span, index) => {
-            if (index === activeIndex) {
-                span.classList.remove('inactive');
-                span.classList.add('active');
-            } else {
-                span.classList.remove('active');
-                span.classList.add('inactive');
-            }
-        });
-        activeIndex = (activeIndex + 1) % loadingSpans.length;
-    }
-    
-    const loadingInterval = setInterval(animateLoading, 350);
-
-    setTimeout(() => {
-        clearInterval(loadingInterval);
-        loadingScreen.classList.add('hidden');
+        mainContent.style.display = 'none';
+        authContainer.classList.remove('active');
         initializeAuth();
         showAuthScreen();
-    }, 2500);
+    });
 
-    updateConfigDisplay();
+    document.addEventListener('click', (e) => {
+        if (!addressDropdownBtn.contains(e.target) && !addressDropdown.contains(e.target)) {
+            addressDropdown.classList.remove('show');
+        }
+        if (!sniDropdownBtn.contains(e.target) && !sniDropdown.contains(e.target)) {
+            sniDropdown.classList.remove('show');
+        }
+    });
 })();
 </script>
 
