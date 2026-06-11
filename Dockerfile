@@ -1,5 +1,6 @@
 FROM openresty/openresty:alpine
-RUN apk add --no-cache ca-certificates wget unzip netcat-openbsd curl jq
+
+RUN apk add --no-cache ca-certificates wget unzip curl jq busybox-extras
 
 # Download Xray with retry and version pinning for stability
 RUN RETRY=0; XRAY_VERSION="1.8.12"; until [ $RETRY -ge 5 ]; do \
@@ -11,6 +12,9 @@ RUN RETRY=0; XRAY_VERSION="1.8.12"; until [ $RETRY -ge 5 ]; do \
     chmod +x /usr/local/bin/xray && \
     /usr/local/bin/xray -version && \
     rm -rf /tmp/xray.zip
+
+# Create log directory for Xray
+RUN mkdir -p /var/log/xray && touch /var/log/xray/access.log /var/log/xray/error.log
 
 COPY config.json /etc/xray.json
 COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
@@ -38,8 +42,6 @@ sleep 5
 # Verify Xray is running
 if ! kill -0 $XRAY_PID 2>/dev/null; then
     echo "[$(date)] ERROR: Xray failed to start (PID: $XRAY_PID)"
-    sleep 2
-    tail -20 /var/log/xray/*.log 2>/dev/null || echo "No logs available"
     exit 1
 fi
 
@@ -48,6 +50,8 @@ echo "[$(date)] Xray started (PID: $XRAY_PID). Waiting for ports..."
 # Port check with overall timeout
 PORT_TIMEOUT=120
 START=$(date +%s)
+# Only check ports that exist in config.json - adjust this list to match your actual config
+# Default for 12 inbounds: 10000-10011
 PORTS="10000 10001 10002 10003 10004 10005 10006 10007 10008 10009 10010 10011"
 
 for port in $PORTS; do
