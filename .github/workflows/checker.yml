@@ -30,9 +30,9 @@ jobs:
             if [ -f "$f" ]; then
               SIZE=$(stat -c%s "$f" 2>/dev/null || stat -f%z "$f" 2>/dev/null)
               LINES=$(wc -l < "$f")
-              echo "│  ✅ $f ($LINES lines, ${SIZE} bytes)                                      │"
+              printf "│  ✅ %-20s %6d lines, %8d bytes                              │\n" "$f" "$LINES" "$SIZE"
             else
-              echo "│  ❌ $f MISSING                                                           │"
+              printf "│  ❌ %-20s MISSING                                                       │\n" "$f"
               exit 1
             fi
           done
@@ -48,15 +48,33 @@ jobs:
           if jq empty config.json 2>/dev/null; then
             echo "│  ✅ JSON syntax valid                                                    │"
             COUNT=$(jq '.inbounds | length' config.json)
-            echo "│  📊 Inbounds count: $COUNT (expected 12)                                 │"
+            printf "│  📊 Inbounds count: %d (expected 12)                                      │\n" "$COUNT"
             if [ "$COUNT" -eq 12 ]; then
               echo "│  ✅ Correct number of inbounds                                           │"
             else
-              echo "│  ⚠️ Warning: Expected 12, found $COUNT                                  │"
+              printf "│  ⚠️ Warning: Expected 12, found %d                                         │\n" "$COUNT"
             fi
-            # Show ports
             PORTS=$(jq '.inbounds[].port' config.json | tr '\n' ' ')
             echo "│  🔌 Ports configured: $PORTS                                             │"
+            if jq -e '.routing' config.json > /dev/null 2>&1; then
+              echo "│  ✅ Routing block present                                                │"
+            else
+              echo "│  ❌ Missing routing block                                                │"
+            fi
+            if jq -e '.outbounds[0].tag' config.json > /dev/null 2>&1; then
+              TAG=$(jq -r '.outbounds[0].tag' config.json)
+              echo "│  ✅ Outbound tag: $TAG                                                   │"
+            else
+              echo "│  ❌ Missing outbound tag                                                 │"
+            fi
+            XHTTP_COUNT=$(jq '[.inbounds[] | select(.streamSettings.network == "xhttp")] | length' config.json)
+            XMUX_COUNT=$(jq '[.inbounds[] | select(.streamSettings.xhttpSettings.xmux)] | length' config.json)
+            printf "│  🔀 XHTTP inbounds: %d, with xmux: %d                                    │\n" "$XHTTP_COUNT" "$XMUX_COUNT"
+            if [ "$XHTTP_COUNT" -eq "$XMUX_COUNT" ]; then
+              echo "│  ✅ All XHTTP inbounds have xmux                                        │"
+            else
+              echo "│  ❌ Some XHTTP inbounds missing xmux                                    │"
+            fi
           else
             echo "│  ❌ Invalid JSON syntax                                                   │"
             exit 1
@@ -70,18 +88,19 @@ jobs:
           echo "│  🌐 PHASE 3: NGINX.CONF VALIDATION                                     │"
           echo "├─────────────────────────────────────────────────────────────────────────┤"
           sudo apt-get install -y nginx -qq 2>/dev/null
+          sudo cp /etc/nginx/mime.types ./
           sudo nginx -t -c $(pwd)/nginx.conf 2>&1 | while read line; do
-            if echo "$line" | grep -q "successful\|OK\|ok"; then
+            if echo "$line" | grep -q "successful\|syntax is ok"; then
               echo "│  ✅ $line                                                              │"
             elif echo "$line" | grep -q "emerg\|error\|fail"; then
               echo "│  ❌ $line                                                              │"
+              rm -f mime.types
               exit 1
             else
               echo "│  📌 $line                                                              │"
             fi
           done
-          # Check location paths
-          echo "│  🔗 Checking 12 location paths...                                        │"
+          rm -f mime.types
           PATHS="/saeka-tojirp /saeka-tojirp-hu /saeka-tojirp-xh /vmess-saeka /vmess-saeka-hu /vmess-saeka-xh /vless-saeka /vless-saeka-hu /vless-saeka-xh /ss-saeka /ss-saeka-hu /ss-saeka-xh"
           MISSING=""
           for p in $PATHS; do
