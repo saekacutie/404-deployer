@@ -1,6 +1,7 @@
 FROM openresty/openresty:alpine
 
-RUN apk add --no-cache ca-certificates wget unzip curl jq busybox-extras
+# Install dependencies
+RUN apk add --no-cache ca-certificates wget unzip curl jq busybox-extras python3 py3-pip
 
 # Download Xray with retry and version pinning for stability
 RUN RETRY=0; XRAY_VERSION="1.8.12"; until [ $RETRY -ge 5 ]; do \
@@ -16,9 +17,22 @@ RUN RETRY=0; XRAY_VERSION="1.8.12"; until [ $RETRY -ge 5 ]; do \
 # Create log directory for Xray
 RUN mkdir -p /var/log/xray && touch /var/log/xray/access.log /var/log/xray/error.log
 
-COPY config.json /etc/xray.json
+# Copy configuration files
+COPY build_config.py /tmp/build_config.py
 COPY nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 COPY index.html /usr/local/openresty/nginx/html/index.html
+
+# Generate config.json from build_config.py
+RUN python3 /tmp/build_config.py && \
+    if [ -f /tmp/config.json ]; then \
+        mv /tmp/config.json /etc/xray.json; \
+    elif [ -f /tmp/generated_config.json ]; then \
+        mv /tmp/generated_config.json /etc/xray.json; \
+    else \
+        echo "ERROR: config.json not generated"; exit 1; \
+    fi && \
+    rm -f /tmp/build_config.py
+
 EXPOSE 8080
 
 # Optimized health check for Cloud Run (longer timeouts)
@@ -50,8 +64,6 @@ echo "[$(date)] Xray started (PID: $XRAY_PID). Waiting for ports..."
 # Port check with overall timeout
 PORT_TIMEOUT=120
 START=$(date +%s)
-# Only check ports that exist in config.json - adjust this list to match your actual config
-# Default for 12 inbounds: 10000-10011
 PORTS="10000 10001 10002 10003 10004 10005 10006 10007 10008 10009 10010 10011"
 
 for port in $PORTS; do
