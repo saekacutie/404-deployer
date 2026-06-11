@@ -39,57 +39,57 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=15s --start-period=60s --retries=3 \
     CMD curl -f http://localhost:8080/health || exit 1
 
-# Startup script
+# Startup script - using printf to avoid heredoc issues
 RUN mkdir -p /startup
-RUN cat > /startup/start.sh << 'EOF'
-#!/bin/sh
-set -e
+RUN printf '#!/bin/sh\n\
+set -e\n\
+\n\
+echo "[$(date)] Starting services..."\n\
+\n\
+# Start Xray\n\
+echo "[$(date)] Launching Xray..."\n\
+/usr/local/bin/xray run -c /etc/xray.json &\n\
+XRAY_PID=$!\n\
+sleep 5\n\
+\n\
+if ! kill -0 $XRAY_PID 2>/dev/null; then\n\
+    echo "[$(date)] ERROR: Xray failed to start"\n\
+    exit 1\n\
+fi\n\
+echo "[$(date)] Xray started (PID: $XRAY_PID)"\n\
+\n\
+# Start Node.js backend\n\
+cd /app && node server.js &\n\
+NODE_PID=$!\n\
+sleep 3\n\
+\n\
+if ! kill -0 $NODE_PID 2>/dev/null; then\n\
+    echo "[$(date)] ERROR: Node.js failed to start"\n\
+    exit 1\n\
+fi\n\
+echo "[$(date)] Node.js started (PID: $NODE_PID)"\n\
+\n\
+# Wait for Xray ports\n\
+echo "[$(date)] Waiting for Xray ports..."\n\
+PORT_TIMEOUT=120\n\
+START_TIME=$(date +%s)\n\
+\n\
+for port in 10000 10001 10002 10003 10004 10005 10006 10007 10008 10009 10010 10011; do\n\
+    while ! nc -z 127.0.0.1 $port 2>/dev/null; do\n\
+        ELAPSED=$(($(date +%s) - START_TIME))\n\
+        if [ $ELAPSED -gt $PORT_TIMEOUT ]; then\n\
+            echo "[$(date)] ERROR: Port $port timeout"\n\
+            kill $XRAY_PID $NODE_PID 2>/dev/null || true\n\
+            exit 1\n\
+        fi\n\
+        sleep 1\n\
+    done\n\
+    echo "[$(date)] Port $port open"\n\
+done\n\
+\n\
+echo "[$(date)] Starting OpenResty..."\n\
+exec /usr/local/openresty/bin/openresty -g "daemon off;"\n\
+' > /startup/start.sh
 
-echo "[$(date)] Starting services..."
-
-# Start Xray
-/usr/local/bin/xray run -c /etc/xray.json &
-XRAY_PID=$!
-sleep 5
-
-if ! kill -0 $XRAY_PID 2>/dev/null; then
-    echo "[$(date)] ERROR: Xray failed to start"
-    exit 1
-fi
-echo "[$(date)] Xray started (PID: $XRAY_PID)"
-
-# Start Node.js backend
-cd /app && node server.js &
-NODE_PID=$!
-sleep 3
-
-if ! kill -0 $NODE_PID 2>/dev/null; then
-    echo "[$(date)] ERROR: Node.js failed to start"
-    exit 1
-fi
-echo "[$(date)] Node.js started (PID: $NODE_PID)"
-
-# Wait for Xray ports
-echo "[$(date)] Waiting for Xray ports..."
-PORT_TIMEOUT=120
-START=$(date +%s)
-
-for port in 10000 10001 10002 10003 10004 10005 10006 10007 10008 10009 10010 10011; do
-    while ! nc -z 127.0.0.1 $port 2>/dev/null; do
-        ELAPSED=$(($(date +%s) - START))
-        if [ $ELAPSED -gt $PORT_TIMEOUT ]; then
-            echo "[$(date)] ERROR: Port $port timeout"
-            kill $XRAY_PID $NODE_PID 2>/dev/null || true
-            exit 1
-        fi
-        sleep 1
-    done
-    echo "[$(date)] ✓ Port $port open"
-done
-
-echo "[$(date)] Starting OpenResty..."
-exec /usr/local/openresty/bin/openresty -g 'daemon off;'
-EOF
-
-chmod +x /startup/start.sh
+RUN chmod +x /startup/start.sh
 CMD ["/startup/start.sh"]
