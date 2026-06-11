@@ -3,28 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>404 NOT FOUND GCP - SECURE ACCESS</title>
+    <title>404 NOT FOUND GCP</title>
     <style>
         :root {
-            --bg: #0f0f0f;
-            --bg-secondary: #1a1a1a;
+            --bg: #121212;
             --surface: #1e1e1e;
             --surface2: #2a2a2a;
-            --surface-hover: #333333;
-            --border: #404040;
-            --border-hover: #555;
+            --border: #444;
             --text: #f0f0f0;
-            --text-dim: #999;
-            --text-muted: #666;
-            --accent: #00ff00;
-            --accent-secondary: #00cc00;
+            --text-dim: #aaa;
+            --accent: #ffffff;
             --glow: #ffffff;
             --green: #2ed573;
             --red: #ff4757;
             --yellow: #ffa502;
             --blue: #1e90ff;
-            --purple: #a855f7;
-            --cyan: #00d4ff;
             --font-mono: 'Courier New', monospace;
             --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             --font-size-base: clamp(12px, 3.2vw, 15px);
@@ -32,9 +25,6 @@
             --font-size-lg: clamp(16px, 4.5vw, 20px);
             --font-size-xl: clamp(24px, 7vw, 36px);
             --font-size-xxl: clamp(36px, 10vw, 60px);
-            --transition-fast: 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
-            --transition-standard: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            --transition-slow: 0.5s ease-out;
         }
 
         * {
@@ -43,12 +33,8 @@
             box-sizing: border-box;
         }
 
-        html, body {
-            height: 100%;
-        }
-
         body {
-            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-secondary) 100%);
+            background: var(--bg);
             color: var(--text);
             font-family: var(--font-mono);
             font-size: var(--font-size-base);
@@ -56,12 +42,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
-            padding: 16px;
-            background-attachment: fixed;
+            padding: 16px 0;
         }
 
         .container {
@@ -70,30 +55,13 @@
             padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
         }
 
-        .auth-container {
-            width: 100%;
-            max-width: 500px;
-            display: none;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .auth-container.active {
-            display: flex;
-        }
-
+        /* ========== ORIGINAL ANIMATIONS ========== */
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes fadeIn {
@@ -102,72 +70,44 @@
         }
 
         @keyframes glowPulseStrong {
-            0%, 100% {
-                text-shadow: 0 0 12px var(--glow), 0 0 24px var(--glow), 0 0 36px rgba(0, 255, 0, 0.3);
-            }
-            50% {
-                text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow);
-            }
+            0%, 100% { text-shadow: 0 0 12px var(--glow), 0 0 24px var(--glow); }
+            50% { text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow); }
         }
 
         @keyframes glowPulseLight {
-            0%, 100% {
-                text-shadow: 0 0 4px var(--glow);
-            }
-            50% {
-                text-shadow: 0 0 1px var(--glow);
-            }
+            0%, 100% { text-shadow: 0 0 4px var(--glow); }
+            50% { text-shadow: 0 0 1px var(--glow); }
         }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+            50% { opacity: 0.3; }
         }
 
         @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        @keyframes glitch {
+            0%, 100% { transform: skew(0deg, 0deg); opacity: 1; }
+            95% { transform: skew(0deg, 0deg); opacity: 1; }
+            96% { transform: skew(5deg, 2deg); opacity: 0.8; }
+            97% { transform: skew(-3deg, -1deg); opacity: 0.9; }
+            98% { transform: skew(2deg, 1deg); opacity: 0.85; }
+            99% { transform: skew(-1deg, 0deg); opacity: 0.95; }
         }
 
-        .fade-in {
-            animation: fadeInUp var(--transition-slow) ease-out forwards;
-        }
-
-        .fade-in:nth-child(2) { animation-delay: 0.1s; }
-        .fade-in:nth-child(3) { animation-delay: 0.2s; }
-        .fade-in:nth-child(4) { animation-delay: 0.3s; }
-        .fade-in:nth-child(5) { animation-delay: 0.4s; }
-        .fade-in:nth-child(6) { animation-delay: 0.5s; }
-        .fade-in:nth-child(7) { animation-delay: 0.6s; }
-        .fade-in:nth-child(8) { animation-delay: 0.7s; }
-        .fade-in:nth-child(9) { animation-delay: 0.8s; }
-
+        .fade-in { animation: fadeInUp 0.5s ease-out forwards; }
         .glow-text-strong { animation: glowPulseStrong 2.5s ease-in-out infinite; }
         .glow-text-light { animation: glowPulseLight 3s ease-in-out infinite; }
 
+        /* ========== LOADING SCREEN ========== */
         #loading-screen {
             position: fixed;
             top: 0;
@@ -178,11 +118,11 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(15, 15, 15, 0.98);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(18,18,18,0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             z-index: 9999;
-            transition: opacity var(--transition-slow) ease;
+            transition: opacity 0.5s ease;
         }
 
         #loading-screen.hidden {
@@ -194,66 +134,62 @@
             font-size: var(--font-size-xxl);
             font-weight: 900;
             font-family: var(--font-mono);
-            letter-spacing: 12px;
+            letter-spacing: 8px;
             display: flex;
-            gap: 8px;
-            color: var(--accent);
-            text-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            gap: 4px;
+            color: var(--text);
+            animation: glitch 3s infinite;
         }
 
         .loading-digits span {
-            transition: all var(--transition-fast);
+            transition: all 0.35s ease;
             display: inline-block;
         }
 
         .loading-digits span.active {
-            animation: glowPulseStrong 0.6s ease-in-out infinite;
-            transform: scale(1.15);
-            color: var(--cyan);
+            animation: glowPulseStrong 0.7s ease-in-out infinite;
+            transform: scale(1.1);
         }
 
         .loading-digits span.inactive {
-            opacity: 0.1;
+            opacity: 0.08;
             text-shadow: none;
-            transform: scale(0.85);
+            transform: scale(0.9);
+        }
+
+        .loading-spinner {
+            margin-top: 30px;
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--green);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
 
         .loading-subtitle {
-            margin-top: 24px;
+            margin-top: 20px;
             font-size: var(--font-size-sm);
-            color: var(--text-muted);
-            letter-spacing: 3px;
-            animation: fadeIn var(--transition-slow) ease 1.8s forwards;
+            color: #888;
+            letter-spacing: 2px;
+            animation: fadeIn 1s ease 2s forwards;
             opacity: 0;
-            text-transform: uppercase;
         }
 
+        /* ========== CARDS ========== */
         .section {
-            background: rgba(30, 30, 30, 0.8);
+            background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 18px;
+            padding: 16px;
             width: 100%;
-            transition: all var(--transition-standard);
+            transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(4px);
-        }
-
-        .section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(0, 255, 0, 0.02) 0%, transparent 100%);
-            pointer-events: none;
+            overflow: visible;
         }
 
         .section:hover {
-            border-color: var(--border-hover);
-            background: rgba(30, 30, 30, 0.95);
+            border-color: #666;
         }
 
         .section-title {
@@ -261,289 +197,110 @@
             font-size: var(--font-size-lg);
             text-align: center;
             margin-bottom: 10px;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             color: var(--text);
-            text-transform: uppercase;
         }
 
         .section-subtitle {
             font-size: var(--font-size-sm);
             color: var(--text-dim);
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             letter-spacing: 0.5px;
-            text-transform: uppercase;
         }
 
+        /* ========== BUTTONS ========== */
         .button-bar {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
             justify-content: center;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .btn {
             background: var(--surface2);
             border: 1px solid var(--border);
             color: var(--text);
-            padding: 10px 16px;
+            padding: 7px 12px;
             border-radius: 6px;
             cursor: pointer;
             font-family: var(--font-mono);
             font-size: var(--font-size-sm);
-            transition: all var(--transition-fast);
+            transition: all 0.2s ease;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
             max-width: 100%;
-            letter-spacing: 0.5px;
-            word-break: break-word;
-            overflow-wrap: break-word;
-            text-transform: uppercase;
-            font-weight: 600;
-            width: 100%;
+            letter-spacing: 0.4px;
         }
 
         .btn:hover {
-            border-color: var(--accent);
-            background: var(--surface-hover);
-            box-shadow: 0 0 12px rgba(0, 255, 0, 0.1);
-        }
-
-        .btn:active {
-            transform: scale(0.98);
+            border-color: #888;
+            background: #333;
         }
 
         .btn.active {
             border-color: var(--accent);
-            background: rgba(0, 255, 0, 0.1);
-            color: var(--accent);
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+            background: #333;
+            box-shadow: 0 0 10px rgba(255,255,255,0.1);
             font-weight: bold;
         }
 
-        .btn.success {
+        .btn-primary {
+            background: linear-gradient(135deg, var(--green), #1a8c4a);
             border-color: var(--green);
-            background: rgba(46, 213, 115, 0.1);
-            color: var(--green);
+            color: #000;
+            font-weight: bold;
         }
 
-        .btn.error {
-            border-color: var(--red);
-            background: rgba(255, 71, 87, 0.1);
-            color: var(--red);
-            animation: shake 0.4s ease;
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(46,213,115,0.4);
         }
 
-        .input-field {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 12px 14px;
-            border-radius: 6px;
-            font-family: var(--font-mono);
+        .btn-locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* ========== INFO ROWS ========== */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
             font-size: var(--font-size-sm);
-            transition: all var(--transition-fast);
-            width: 100%;
-            letter-spacing: 0.5px;
         }
 
-        .input-field:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 12px rgba(0, 255, 0, 0.2);
-            background: var(--surface-hover);
+        .info-label {
+            color: var(--text-dim);
         }
 
-        .input-field::placeholder {
-            color: var(--text-muted);
-        }
-
-        .info-display {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 14px;
-            font-family: var(--font-mono);
-            font-size: var(--font-size-sm);
-            line-height: 1.6;
+        .info-value {
             color: var(--green);
-            word-break: break-all;
-            min-height: 80px;
-        }
-
-        .auth-card {
-            background: rgba(30, 30, 30, 0.8);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 24px;
-            width: 100%;
-            transition: all var(--transition-standard);
-            backdrop-filter: blur(4px);
-            animation: scaleIn var(--transition-standard);
-        }
-
-        .auth-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
-        }
-
-        .auth-title {
-            font-size: var(--font-size-xl);
             font-weight: 700;
-            text-align: center;
-            margin-bottom: 8px;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
 
-        .auth-subtitle {
-            font-size: var(--font-size-sm);
-            color: var(--text-dim);
-            text-align: center;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-
-        .form-group {
-            margin-bottom: 14px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: var(--font-size-sm);
-            color: var(--text-dim);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-message {
-            padding: 10px 12px;
-            border-radius: 6px;
-            font-size: var(--font-size-sm);
-            margin: 10px 0;
-            display: none;
-            text-align: center;
-            animation: slideDown var(--transition-fast);
-        }
-
-        .status-message.success {
-            display: block;
-            background: rgba(46, 213, 115, 0.1);
-            border: 1px solid var(--green);
-            color: var(--green);
-        }
-
-        .status-message.error {
-            display: block;
-            background: rgba(255, 71, 87, 0.1);
-            border: 1px solid var(--red);
-            color: var(--red);
-            animation: shake 0.4s ease;
-        }
-
-        .status-message.info {
-            display: block;
-            background: rgba(30, 144, 255, 0.1);
-            border: 1px solid var(--blue);
-            color: var(--blue);
-        }
-
-        .quiz-option {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 10px 12px;
-            margin: 8px 0;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            color: var(--text);
-            text-align: left;
-            font-family: var(--font-mono);
-            font-size: var(--font-size-sm);
-        }
-
-        .quiz-option:hover {
-            border-color: var(--accent);
-            background: var(--surface-hover);
-        }
-
-        .quiz-option.selected {
-            border-color: var(--accent);
-            background: rgba(0, 255, 0, 0.1);
-            color: var(--accent);
-        }
-
-        .quiz-option.correct {
-            border-color: var(--green);
-            background: rgba(46, 213, 115, 0.1);
-            color: var(--green);
-        }
-
-        .quiz-option.incorrect {
-            border-color: var(--red);
-            background: rgba(255, 71, 87, 0.1);
-            color: var(--red);
-        }
-
-        .footer {
-            text-align: center;
-            font-size: var(--font-size-sm);
-            padding: 12px;
-            opacity: 0.7;
-            letter-spacing: 1px;
-            color: var(--text-dim);
-            transition: all var(--transition-standard);
-        }
-
-        .footer:hover {
-            opacity: 1;
-        }
-
-        .footer a {
-            color: var(--accent);
-            text-decoration: none;
-            transition: all var(--transition-fast);
-        }
-
-        .footer a:hover {
-            color: var(--cyan);
-            text-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            z-index: 9998;
-            backdrop-filter: blur(2px);
-        }
-
-        .overlay.show {
-            display: block;
+        /* ========== DROPDOWNS (FIXED Z-INDEX) ========== */
+        .dropdown-wrapper {
+            position: relative;
+            width: 100%;
         }
 
         .dropdown-content {
             display: none;
             position: fixed;
-            background: rgba(42, 42, 42, 0.95);
+            background: var(--surface2);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 8px 0;
-            z-index: 10001;
-            max-height: 250px;
+            z-index: 100000;
+            max-height: 220px;
             overflow-y: auto;
-            min-width: 200px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(4px);
-            animation: slideDown var(--transition-fast);
+            width: calc(100% - 32px);
+            max-width: 668px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
         }
 
         .dropdown-content.show {
@@ -551,163 +308,30 @@
         }
 
         .dropdown-item {
-            padding: 10px 14px;
+            padding: 8px 12px;
             cursor: pointer;
             font-size: var(--font-size-sm);
             color: var(--text);
-            transition: all var(--transition-fast);
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
+            transition: background 0.15s ease;
         }
 
         .dropdown-item:hover {
-            background: rgba(0, 255, 0, 0.05);
-            border-left: 3px solid var(--accent);
-            padding-left: 11px;
+            background: #3a3a3a;
         }
 
         .dropdown-item.selected {
             color: var(--green);
             font-weight: bold;
-            background: rgba(0, 255, 0, 0.08);
-            border-left: 3px solid var(--accent);
-            padding-left: 11px;
         }
 
-        .session-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            font-size: var(--font-size-sm);
-            margin-top: 10px;
-        }
-
-        .session-info-item {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            padding: 8px;
-            border-radius: 4px;
-            color: var(--text-dim);
-        }
-
-        .session-info-item strong {
-            color: var(--green);
-        }
-
-        /* FIXED MISSING STYLES */
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border);
-            font-size: var(--font-size-sm);
-        }
-
-        .info-label {
-            color: var(--text-dim);
-            font-weight: 600;
-        }
-
-        .info-value {
-            color: var(--green);
-            word-break: break-all;
-        }
-
-        .speed-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin: 16px 0;
-        }
-
-        .speed-item {
+        /* ========== PING DISPLAY ========== */
+        .ping-display {
             text-align: center;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-        }
-
-        .speed-label {
             font-size: var(--font-size-sm);
             color: var(--text-dim);
-            margin: 4px 0;
-        }
-
-        .speed-value {
-            font-size: var(--font-size-xl);
-            font-weight: bold;
-            color: var(--green);
-            margin: 8px 0;
-        }
-
-        .speed-value.download { color: var(--blue); }
-        .speed-value.upload { color: var(--cyan); }
-        .speed-value.latency { color: var(--yellow); }
-
-        .log-container {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 12px;
-            max-height: 150px;
-            overflow-y: auto;
-            margin-top: 12px;
-        }
-
-        .log-entry {
-            display: flex;
-            gap: 8px;
-            margin: 4px 0;
-            font-size: var(--font-size-sm);
-            color: var(--text-dim);
-        }
-
-        .log-entry .time {
-            color: var(--green);
-            min-width: 70px;
-        }
-
-        .log-entry .message {
-            flex: 1;
-            color: var(--text);
-        }
-
-        .config-wrapper {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .copy-btn {
-            background: var(--green);
-            color: var(--bg);
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all var(--transition-fast);
-        }
-
-        .copy-btn:hover {
-            background: var(--accent);
-            box-shadow: 0 0 12px rgba(0, 255, 0, 0.3);
-        }
-
-        .config-display {
-            flex: 1;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 12px;
-            color: var(--green);
+            margin-top: 10px;
             font-family: var(--font-mono);
-            font-size: var(--font-size-sm);
-            word-break: break-all;
-            max-height: 200px;
-            overflow-y: auto;
+            min-height: 20px;
         }
 
         .status-dot {
@@ -718,620 +342,982 @@
             margin-right: 6px;
         }
 
-        .status-dot.yellow { background: var(--yellow); }
-
-        .ping-display {
-            text-align: center;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--text-dim);
-            font-size: var(--font-size-sm);
+        .status-dot.green {
+            background: var(--green);
+            box-shadow: 0 0 6px var(--green);
         }
+
+        .status-dot.yellow {
+            background: var(--yellow);
+            box-shadow: 0 0 6px var(--yellow);
+            animation: pulse 1s infinite;
+        }
+
+        .status-dot.red {
+            background: var(--red);
+            box-shadow: 0 0 6px var(--red);
+        }
+
+        /* ========== SPEED MONITOR ========== */
+        .speed-row {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 10px;
+            gap: 10px;
+        }
+
+        .speed-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .speed-label {
+            font-size: var(--font-size-sm);
+            color: var(--text-dim);
+        }
+
+        .speed-value {
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+        }
+
+        .speed-value.download { color: var(--green); }
+        .speed-value.upload { color: var(--blue); }
+        .speed-value.latency { color: var(--yellow); }
 
         .graph-container {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            height: 150px;
-            margin: 12px 0;
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 60px;
+            margin-top: 10px;
+            padding: 0 4px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
         }
 
-        @media (max-width: 480px) {
-            .auth-card {
-                padding: 16px;
-            }
+        .graph-bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--green), var(--blue));
+            border-radius: 2px;
+            transition: height 0.1s ease;
+            min-height: 2px;
+            max-height: 100%;
+        }
 
-            .btn {
-                padding: 8px 12px;
-                font-size: 11px;
-            }
+        /* ========== CONFIG OUTPUT ========== */
+        .config-wrapper {
+            position: relative;
+        }
 
-            .input-field {
-                font-size: 11px;
-                padding: 10px 12px;
-            }
+        .config-display {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+            padding-top: 40px;
+            font-family: var(--font-mono);
+            font-size: var(--font-size-sm);
+            line-height: 1.7;
+            word-break: break-all;
+            white-space: pre-wrap;
+            color: var(--green);
+            min-height: 100px;
+            max-height: 280px;
+            overflow-y: auto;
+            -webkit-user-select: all;
+            user-select: all;
+        }
 
-            .auth-title {
-                font-size: var(--font-size-lg);
-            }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 14px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 5px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: var(--font-mono);
+            font-size: var(--font-size-sm);
+            transition: all 0.2s ease;
+            z-index: 5;
+        }
 
-            .session-info {
-                grid-template-columns: 1fr;
-            }
+        .copy-btn:hover {
+            border-color: var(--accent);
+            background: #333;
+        }
 
-            .speed-row {
-                grid-template-columns: 1fr;
-            }
+        .copy-btn.copied {
+            border-color: var(--green);
+            color: var(--green);
+            background: #0a1a0a;
+        }
 
-            .config-wrapper {
-                flex-direction: column;
-            }
+        /* ========== LOGS ========== */
+        .log-container {
+            background: #0a0a0a;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            max-height: 120px;
+            overflow-y: auto;
+            font-size: var(--font-size-sm);
+            color: var(--text-dim);
+            margin-top: 10px;
+        }
+
+        .log-entry {
+            padding: 2px 0;
+            border-bottom: 1px solid #222;
+            font-family: var(--font-mono);
+        }
+
+        .log-entry .time {
+            color: #666;
+            margin-right: 8px;
+        }
+
+        /* ========== PROTOCOL BADGES ========== */
+        .protocol-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .badge-vless { background: rgba(46,213,115,0.15); color: #2ed573; border: 1px solid #2ed573; }
+        .badge-trojan { background: rgba(255,165,2,0.15); color: #ffa502; border: 1px solid #ffa502; }
+        .badge-vmess { background: rgba(30,144,255,0.15); color: #1e90ff; border: 1px solid #1e90ff; }
+        .badge-ss { background: rgba(255,71,87,0.15); color: #ff4757; border: 1px solid #ff4757; }
+
+        .lock-icon {
+            font-size: 10px;
+            margin-left: 6px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 8px 0;
+            opacity: 0.5;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: var(--font-size-sm);
+            padding: 8px;
+            opacity: 0.7;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+        }
+
+        .footer a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer a:hover {
+            color: var(--text);
+        }
+
+        hr {
+            margin: 8px 0;
+            border-color: var(--border);
+        }
+
+        @media (max-width: 380px) {
+            .btn { font-size: 10px; padding: 5px 8px; }
+            .config-display { font-size: 10px; padding: 10px; padding-top: 34px; }
+            .copy-btn { top: 8px; right: 8px; font-size: 9px; padding: 3px 8px; }
+            .section { padding: 10px; }
         }
     </style>
 </head>
 <body>
 
-<div class="overlay" id="overlay"></div>
-
+<!-- ========== LOADING SCREEN ========== -->
 <div id="loading-screen">
-    <div class="loading-digits" id="loading-digits">
+    <div class="loading-digits">
         <span id="d4">4</span><span id="d0">0</span><span id="d4b">4</span>
     </div>
-    <div class="loading-subtitle" id="loading-subtitle">SECURITY SYSTEM INITIALIZING</div>
+    <div class="loading-spinner"></div>
+    <div class="loading-subtitle" id="loading-subtitle">[SYS] INITIALIZING SECURE TUNNEL</div>
 </div>
 
-<!-- AUTH CONTAINER -->
-<div class="auth-container" id="auth-container">
-    <div class="auth-card fade-in">
-        <div class="auth-title">SECURE ACCESS REQUIRED</div>
-        <div class="auth-subtitle">404 NOT FOUND GCP Portal</div>
-        
-        <div id="login-section">
-            <div class="form-group">
-                <label class="form-label">SESSION UUID</label>
-                <div class="info-display" id="session-uuid" style="cursor: pointer; user-select: all;">Loading...</div>
-                <button class="btn" id="gen-new-uuid" style="margin-top: 8px; width: 100%;">Generate New UUID</button>
-            </div>
-
-            <div class="form-group" id="quiz-section" style="display: none;">
-                <label class="form-label">SECURITY CHALLENGE</label>
-                <div id="quiz-question" style="color: var(--text-dim); margin-bottom: 10px;"></div>
-                <div id="quiz-options"></div>
-                <button class="btn" id="submit-quiz" style="margin-top: 10px; display: none;">VERIFY & ACCESS</button>
-                <div id="quiz-message" class="status-message"></div>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Access Code (Optional)</label>
-                <input type="text" class="input-field" id="access-code" placeholder="Enter access code if you have one...">
-            </div>
-
-            <div class="form-group">
-                <button class="btn" id="login-btn">REQUEST ACCESS</button>
-                <div id="login-message" class="status-message"></div>
-            </div>
-
-            <div class="session-info" id="session-info" style="display: none;">
-                <div class="session-info-item">Status: <strong id="status-badge">PENDING</strong></div>
-                <div class="session-info-item">Attempts: <strong id="attempt-count">0/3</strong></div>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer fade-in glow-text-light" style="margin-top: 20px;">
-        CREATED BY <a href="https://fb.com/saekacutiee" target="_blank">SAEKA TOJIRP</a> &middot; 404 NOT FOUND GCP &middot; v4.2-SECURE
-    </div>
-</div>
-
-<!-- MAIN PORTAL CONTAINER -->
-<div class="container" id="main-content" style="display:none;">
+<!-- ========== MAIN MENU - PROTOCOL SELECTION ========== -->
+<div class="container" id="main-menu" style="display:none;">
     <div class="section fade-in">
         <div class="section-title glow-text-strong" style="font-size:var(--font-size-xl); letter-spacing:3px;">404 NOT FOUND GCP</div>
         <div class="section-subtitle">DEPLOYMENT CONFIGURATION PORTAL</div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <div class="status-message success" style="display: block; margin: 0; flex: 1; margin-right: 10px;">✓ AUTHENTICATED</div>
-            <button class="btn" id="logout-btn" style="width: auto; padding: 6px 12px; font-size: var(--font-size-sm);">LOGOUT</button>
-        </div>
-        <hr style="border: none; border-top: 1px solid var(--border); margin: 10px 0; opacity: 0.3;">
-        <div class="info-row"><span class="info-label">SESSION UUID:</span><span class="info-value" id="display-uuid">---</span></div>
-        <div class="info-row"><span class="info-label">HOST:</span><span class="info-value" id="info-host">---</span></div>
-        <div class="info-row"><span class="info-label">HOST IP:</span><span class="info-value" id="info-ip">---</span></div>
-        <div class="info-row"><span class="info-label">COUNTRY:</span><span class="info-value" id="info-country">---</span></div>
-        <div class="info-row"><span class="info-label">PASS / UUID:</span><span class="info-value">saeka</span></div>
-        <div class="info-row"><span class="info-label">VISITORS:</span><span class="info-value" id="visitor-count">0</span></div>
-        <div class="info-row"><span class="info-label">ACTIVE:</span><span class="info-value" id="active-users">0</span></div>
-        <div class="info-row"><span class="info-label">UPTIME:</span><span class="info-value" id="runtime-display">00:00:00</span></div>
+        <hr class="divider">
+        <div class="info-row"><span class="info-label">[STS] STATUS</span><span class="info-value" id="status-indicator"><span class="status-dot yellow"></span> CONNECTING</span></div>
+        <div class="info-row"><span class="info-label">[USR] VISITORS</span><span class="info-value" id="visitor-count">0</span></div>
+        <div class="info-row"><span class="info-label">[ACT] ACTIVE USERS</span><span class="info-value" id="active-users">0</span></div>
+        <div class="info-row"><span class="info-label">[UPT] UPTIME</span><span class="info-value" id="runtime-display">00:00:00</span></div>
+        <div class="info-row"><span class="info-label">[HST] HOST</span><span class="info-value" id="host-ip">---</span></div>
+        <div class="info-row"><span class="info-label">[FP] FINGERPRINT</span><span class="info-value" id="device-fp">---</span></div>
     </div>
 
     <div class="section fade-in">
-        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">ADDRESS SELECTOR</div>
-        <div class="section-subtitle">CHOOSE SERVER ADDRESS</div>
-        <button class="btn" id="address-dropdown-btn" style="width:100%; text-align:center;">SELECT ADDRESS ▾</button>
-        <div class="dropdown-content" id="address-dropdown"></div>
-        <div id="address-selected" style="text-align:center; margin-top:8px; font-size:var(--font-size-sm); color:var(--green); word-break: break-all;"></div>
+        <div class="section-title">[PRO] PROTOCOL SELECTION</div>
+        <div class="section-subtitle">[!] ONCE SELECTED, PROTOCOL IS PERMANENTLY LOCKED TO THIS DEVICE</div>
+        <div class="button-bar" id="protocol-selector-bar"></div>
     </div>
 
     <div class="section fade-in">
-        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">SNI SELECTOR</div>
-        <div class="section-subtitle">CHOOSE TLS SNI</div>
-        <button class="btn" id="sni-dropdown-btn" style="width:100%; text-align:center;">SELECT SNI ▾</button>
-        <div class="dropdown-content" id="sni-dropdown"></div>
-        <div id="sni-selected" style="text-align:center; margin-top:8px; font-size:var(--font-size-sm); color:var(--green); word-break: break-all;"></div>
-        <div class="ping-display" id="ping-display" style="margin-top:10px;">
-            <span class="status-dot yellow"></span> SELECT BOTH TO PING
-        </div>
-    </div>
-
-    <div class="section fade-in">
-        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">REAL-TIME MONITOR</div>
-        <div class="speed-row">
-            <div class="speed-item">
-                <div class="speed-label">DOWNLOAD</div>
-                <div class="speed-value download" id="speed-download">0</div>
-                <div class="speed-label"><span id="speed-download-unit">KB/s</span></div>
-            </div>
-            <div class="speed-item">
-                <div class="speed-label">UPLOAD</div>
-                <div class="speed-value upload" id="speed-upload">0</div>
-                <div class="speed-label"><span id="speed-upload-unit">KB/s</span></div>
-            </div>
-            <div class="speed-item">
-                <div class="speed-label">LATENCY</div>
-                <div class="speed-value latency" id="speed-latency">0</div>
-                <div class="speed-label">ms</div>
-            </div>
-        </div>
-        <div class="graph-container" id="graph-container"></div>
-        <div class="log-container" id="log-container">
-            <div class="log-entry"><span class="time">--:--:--</span><span class="message">System ready.</span></div>
-        </div>
-    </div>
-
-    <div class="section fade-in">
-        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">PROTOCOL SELECTOR</div>
-        <div class="section-subtitle">CHOOSE TUNNEL PROTOCOL</div>
-        <div class="button-bar" id="protocol-bar"></div>
-    </div>
-
-    <div class="section fade-in">
-        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">TRANSPORT SELECTOR</div>
-        <div class="section-subtitle">CHOOSE TRANSPORT MODE</div>
-        <div class="button-bar" id="transport-bar"></div>
-    </div>
-
-    <div class="section fade-in">
-        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">CONFIG OUTPUT</div>
-        <div class="section-subtitle">COPY AND IMPORT TO YOUR VPN CLIENT</div>
-        <div class="config-wrapper">
-            <button class="copy-btn" id="copy-btn">COPY</button>
-            <div class="config-display" id="config-display">// Select options to generate config</div>
+        <div class="section-title">[NET] GLOBAL NETWORK ACTIVITY</div>
+        <div id="global-download-speed" style="text-align:center; font-size:22px; color:var(--green); font-weight:bold;">0 KB/s</div>
+        <div class="graph-container" id="global-graph-container"></div>
+        <div class="log-container" id="global-log-container">
+            <div class="log-entry"><span class="time">--:--:--</span> [SYS] System ready. Select a protocol to lock permanently.</div>
         </div>
     </div>
 
     <div class="footer fade-in glow-text-light">
-        CREATED BY <a href="https://fb.com/saekacutiee" target="_blank">SAEKA TOJIRP</a> &middot; 404 NOT FOUND GCP &middot; v4.2-SECURE
+        CREATED BY <a href="#" target="_blank">SAEKA TOJIRP</a> · 404 NOT FOUND GCP · v5.0
     </div>
+</div>
+
+<!-- ========== VLESS PANEL (PERMANENTLY LOCKED - NO EXIT) ========== -->
+<div class="container protocol-panel" id="vless-panel" style="display:none;">
+    <div class="section">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <span class="protocol-badge badge-vless">VLESS</span>
+            <div><span class="status-dot green"></span> [LOCK] PERMANENT</div>
+        </div>
+        <div class="section-title" style="margin-top:12px;">VLESS TUNNEL</div>
+        <div class="section-subtitle">[KEY] YOUR UNIQUE UUID [LOCKED]</div>
+        <div class="info-row"><span class="info-label">[ID] UUID</span><span class="info-value" id="vless-cred">---</span></div>
+        <div class="info-row"><span class="info-label">[STS] STATUS</span><span class="info-value">ACTIVE / ONE-TIME USE</span></div>
+        <div class="info-row"><span class="info-label">[FP] DEVICE LOCK</span><span class="info-value" id="vless-fp">---</span></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[LOC] ADDRESS / SNI SELECTOR</div>
+        <div class="dropdown-wrapper"><button class="btn" id="vless-addr-btn" style="width:100%;">SELECT ADDRESS ▼</button><div class="dropdown-content" id="vless-addr-dropdown"></div></div>
+        <div class="dropdown-wrapper" style="margin-top:12px;"><button class="btn" id="vless-sni-btn" style="width:100%;">SELECT SNI ▼</button><div class="dropdown-content" id="vless-sni-dropdown"></div></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[TRN] TRANSPORT MODE</div>
+        <div class="button-bar" id="vless-transport-bar"></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[MET] REAL-TIME METRICS</div>
+        <div class="speed-row">
+            <div class="speed-item"><div class="speed-value ping" id="vless-ping">0</div><div class="speed-label">PING (ms)</div></div>
+            <div class="speed-item"><div class="speed-value download" id="vless-down">0</div><div class="speed-label">DOWNLOAD (KB/s)</div></div>
+            <div class="speed-item"><div class="speed-value upload" id="vless-up">0</div><div class="speed-label">UPLOAD (KB/s)</div></div>
+        </div>
+        <div class="graph-container" id="vless-graph"></div>
+        <button class="btn btn-primary" id="vless-speedtest" style="width:100%; margin-top:8px;">[TEST] RUN SPEED TEST</button>
+        <div class="info-row" style="margin-top:10px;"><span class="info-label">[RST] TEST RESULT</span><span class="info-value" id="vless-test-result">Not tested</span></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[CFG] CONFIGURATION OUTPUT</div>
+        <div class="config-wrapper"><button class="copy-btn" id="vless-copy">[COPY] COPY CONFIG</button><div class="config-display" id="vless-config"></div></div>
+    </div>
+    <div class="log-container" id="vless-log"><div class="log-entry"><span class="time">--:--:--</span> [SYS] VLESS panel ready. Credential locked to this device.</div></div>
+</div>
+
+<!-- ========== TROJAN PANEL ========== -->
+<div class="container protocol-panel" id="trojan-panel" style="display:none;">
+    <div class="section">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <span class="protocol-badge badge-trojan">TROJAN</span>
+            <div><span class="status-dot green"></span> [LOCK] PERMANENT</div>
+        </div>
+        <div class="section-title" style="margin-top:12px;">TROJAN TUNNEL</div>
+        <div class="section-subtitle">[KEY] YOUR UNIQUE PASSWORD [LOCKED]</div>
+        <div class="info-row"><span class="info-label">[ID] PASSWORD</span><span class="info-value" id="trojan-cred">---</span></div>
+        <div class="info-row"><span class="info-label">[STS] STATUS</span><span class="info-value">ACTIVE / ONE-TIME USE</span></div>
+        <div class="info-row"><span class="info-label">[FP] DEVICE LOCK</span><span class="info-value" id="trojan-fp">---</span></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[LOC] ADDRESS / SNI SELECTOR</div>
+        <div class="dropdown-wrapper"><button class="btn" id="trojan-addr-btn" style="width:100%;">SELECT ADDRESS ▼</button><div class="dropdown-content" id="trojan-addr-dropdown"></div></div>
+        <div class="dropdown-wrapper" style="margin-top:12px;"><button class="btn" id="trojan-sni-btn" style="width:100%;">SELECT SNI ▼</button><div class="dropdown-content" id="trojan-sni-dropdown"></div></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[TRN] TRANSPORT MODE</div>
+        <div class="button-bar" id="trojan-transport-bar"></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[MET] REAL-TIME METRICS</div>
+        <div class="speed-row">
+            <div class="speed-item"><div class="speed-value ping" id="trojan-ping">0</div><div class="speed-label">PING (ms)</div></div>
+            <div class="speed-item"><div class="speed-value download" id="trojan-down">0</div><div class="speed-label">DOWNLOAD (KB/s)</div></div>
+            <div class="speed-item"><div class="speed-value upload" id="trojan-up">0</div><div class="speed-label">UPLOAD (KB/s)</div></div>
+        </div>
+        <div class="graph-container" id="trojan-graph"></div>
+        <button class="btn btn-primary" id="trojan-speedtest" style="width:100%; margin-top:8px;">[TEST] RUN SPEED TEST</button>
+        <div class="info-row" style="margin-top:10px;"><span class="info-label">[RST] TEST RESULT</span><span class="info-value" id="trojan-test-result">Not tested</span></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[CFG] CONFIGURATION OUTPUT</div>
+        <div class="config-wrapper"><button class="copy-btn" id="trojan-copy">[COPY] COPY CONFIG</button><div class="config-display" id="trojan-config"></div></div>
+    </div>
+    <div class="log-container" id="trojan-log"><div class="log-entry"><span class="time">--:--:--</span> [SYS] TROJAN panel ready. Credential locked to this device.</div></div>
+</div>
+
+<!-- ========== VMESS PANEL ========== -->
+<div class="container protocol-panel" id="vmess-panel" style="display:none;">
+    <div class="section">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <span class="protocol-badge badge-vmess">VMESS</span>
+            <div><span class="status-dot green"></span> [LOCK] PERMANENT</div>
+        </div>
+        <div class="section-title" style="margin-top:12px;">VMESS TUNNEL</div>
+        <div class="section-subtitle">[KEY] YOUR UNIQUE UUID [LOCKED]</div>
+        <div class="info-row"><span class="info-label">[ID] UUID</span><span class="info-value" id="vmess-cred">---</span></div>
+        <div class="info-row"><span class="info-label">[STS] STATUS</span><span class="info-value">ACTIVE / ONE-TIME USE</span></div>
+        <div class="info-row"><span class="info-label">[FP] DEVICE LOCK</span><span class="info-value" id="vmess-fp">---</span></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[LOC] ADDRESS / SNI SELECTOR</div>
+        <div class="dropdown-wrapper"><button class="btn" id="vmess-addr-btn" style="width:100%;">SELECT ADDRESS ▼</button><div class="dropdown-content" id="vmess-addr-dropdown"></div></div>
+        <div class="dropdown-wrapper" style="margin-top:12px;"><button class="btn" id="vmess-sni-btn" style="width:100%;">SELECT SNI ▼</button><div class="dropdown-content" id="vmess-sni-dropdown"></div></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[TRN] TRANSPORT MODE</div>
+        <div class="button-bar" id="vmess-transport-bar"></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[MET] REAL-TIME METRICS</div>
+        <div class="speed-row">
+            <div class="speed-item"><div class="speed-value ping" id="vmess-ping">0</div><div class="speed-label">PING (ms)</div></div>
+            <div class="speed-item"><div class="speed-value download" id="vmess-down">0</div><div class="speed-label">DOWNLOAD (KB/s)</div></div>
+            <div class="speed-item"><div class="speed-value upload" id="vmess-up">0</div><div class="speed-label">UPLOAD (KB/s)</div></div>
+        </div>
+        <div class="graph-container" id="vmess-graph"></div>
+        <button class="btn btn-primary" id="vmess-speedtest" style="width:100%; margin-top:8px;">[TEST] RUN SPEED TEST</button>
+        <div class="info-row" style="margin-top:10px;"><span class="info-label">[RST] TEST RESULT</span><span class="info-value" id="vmess-test-result">Not tested</span></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[CFG] CONFIGURATION OUTPUT</div>
+        <div class="config-wrapper"><button class="copy-btn" id="vmess-copy">[COPY] COPY CONFIG</button><div class="config-display" id="vmess-config"></div></div>
+    </div>
+    <div class="log-container" id="vmess-log"><div class="log-entry"><span class="time">--:--:--</span> [SYS] VMESS panel ready. Credential locked to this device.</div></div>
+</div>
+
+<!-- ========== SHADOWSOCKS PANEL ========== -->
+<div class="container protocol-panel" id="ss-panel" style="display:none;">
+    <div class="section">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <span class="protocol-badge badge-ss">SHADOWSOCKS</span>
+            <div><span class="status-dot green"></span> [LOCK] PERMANENT</div>
+        </div>
+        <div class="section-title" style="margin-top:12px;">SHADOWSOCKS TUNNEL</div>
+        <div class="section-subtitle">[KEY] YOUR UNIQUE PASSWORD [LOCKED]</div>
+        <div class="info-row"><span class="info-label">[ID] PASSWORD</span><span class="info-value" id="ss-cred">---</span></div>
+        <div class="info-row"><span class="info-label">[STS] STATUS</span><span class="info-value">ACTIVE / ONE-TIME USE</span></div>
+        <div class="info-row"><span class="info-label">[FP] DEVICE LOCK</span><span class="info-value" id="ss-fp">---</span></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[LOC] ADDRESS / SNI SELECTOR</div>
+        <div class="dropdown-wrapper"><button class="btn" id="ss-addr-btn" style="width:100%;">SELECT ADDRESS ▼</button><div class="dropdown-content" id="ss-addr-dropdown"></div></div>
+        <div class="dropdown-wrapper" style="margin-top:12px;"><button class="btn" id="ss-sni-btn" style="width:100%;">SELECT SNI ▼</button><div class="dropdown-content" id="ss-sni-dropdown"></div></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[TRN] TRANSPORT MODE</div>
+        <div class="button-bar" id="ss-transport-bar"></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[MET] REAL-TIME METRICS</div>
+        <div class="speed-row">
+            <div class="speed-item"><div class="speed-value ping" id="ss-ping">0</div><div class="speed-label">PING (ms)</div></div>
+            <div class="speed-item"><div class="speed-value download" id="ss-down">0</div><div class="speed-label">DOWNLOAD (KB/s)</div></div>
+            <div class="speed-item"><div class="speed-value upload" id="ss-up">0</div><div class="speed-label">UPLOAD (KB/s)</div></div>
+        </div>
+        <div class="graph-container" id="ss-graph"></div>
+        <button class="btn btn-primary" id="ss-speedtest" style="width:100%; margin-top:8px;">[TEST] RUN SPEED TEST</button>
+        <div class="info-row" style="margin-top:10px;"><span class="info-label">[RST] TEST RESULT</span><span class="info-value" id="ss-test-result">Not tested</span></div>
+    </div>
+    <div class="section">
+        <div class="section-title" style="font-size:14px;">[CFG] CONFIGURATION OUTPUT</div>
+        <div class="config-wrapper"><button class="copy-btn" id="ss-copy">[COPY] COPY CONFIG</button><div class="config-display" id="ss-config"></div></div>
+    </div>
+    <div class="log-container" id="ss-log"><div class="log-entry"><span class="time">--:--:--</span> [SYS] SHADOWSOCKS panel ready. Credential locked to this device.</div></div>
 </div>
 
 <script>
 (function() {
     'use strict';
 
-    // ============ SECURITY SYSTEM ============
-    class SecurityManager {
-        constructor() {
-            this.sessionUUID = null;
-            this.activeUsers = new Set();
-            this.attempts = 0;
-            this.maxAttempts = 3;
-            this.isAuthenticated = false;
-            this.quizAnswered = false;
-            this.correctAnswer = null;
-            this.selectedOption = null;
+    // =========================================================================
+    // SECTION 1: FINGERPRINT (HWID) - PERMANENT DEVICE ID
+    // =========================================================================
+    function generateFingerprint() {
+        const screen = screen.width + 'x' + screen.height + 'x' + screen.colorDepth;
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const language = navigator.language;
+        const platform = navigator.platform;
+        const cores = navigator.hardwareConcurrency || 0;
+        const stored = localStorage.getItem('fp_404_device');
+        if (stored) return stored;
+        const raw = screen + '|' + timezone + '|' + language + '|' + platform + '|' + cores + '|' + navigator.userAgent.substring(0, 60);
+        let hash = 0;
+        for (let i = 0; i < raw.length; i++) {
+            hash = ((hash << 5) - hash) + raw.charCodeAt(i);
+            hash |= 0;
         }
-
-        generateUUID() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                const r = Math.random() * 16 | 0;
-                const v = c === 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-        }
-
-        newSession() {
-            this.sessionUUID = this.generateUUID();
-            this.attempts = 0;
-            this.quizAnswered = false;
-            this.isAuthenticated = false;
-            this.correctAnswer = null;
-            this.selectedOption = null;
-            return this.sessionUUID;
-        }
-
-        generateQuiz() {
-            const quizzes = [
-                {
-                    question: "What does 404 represent in HTTP status codes?",
-                    options: ["Not Found", "Bad Request", "Unauthorized", "Server Error"],
-                    correct: 0
-                },
-                {
-                    question: "Which protocol is used for secure web communication?",
-                    options: ["HTTP", "FTP", "HTTPS", "SMTP"],
-                    correct: 2
-                },
-                {
-                    question: "What does VPN stand for?",
-                    options: ["Virtual Protocol Network", "Virtual Private Network", "Virtual Port Number", "Virtual Proxy Node"],
-                    correct: 1
-                },
-                {
-                    question: "Which layer does TLS operate on?",
-                    options: ["Application Layer", "Transport Layer", "Network Layer", "Data Link Layer"],
-                    correct: 1
-                },
-                {
-                    question: "What is the default HTTPS port?",
-                    options: ["80", "3306", "443", "8080"],
-                    correct: 2
-                }
-            ];
-            return quizzes[Math.floor(Math.random() * quizzes.length)];
-        }
-
-        recordAttempt() {
-            this.attempts++;
-            return this.attempts;
-        }
-
-        isMaxAttemptsReached() {
-            return this.attempts >= this.maxAttempts;
-        }
-
-        setAuthenticated() {
-            this.isAuthenticated = true;
-            return true;
-        }
+        const fp = 'FP' + Math.abs(hash).toString(16).substring(0, 10).toUpperCase();
+        localStorage.setItem('fp_404_device', fp);
+        return fp;
     }
 
-    const security = new SecurityManager();
+    const DEVICE_FP = generateFingerprint();
+    document.getElementById('device-fp').innerText = DEVICE_FP;
 
-    // ============ DOM ELEMENTS ============
-    const authContainer = document.getElementById('auth-container');
-    const mainContent = document.getElementById('main-content');
-    const loadingScreen = document.getElementById('loading-screen');
-    const overlay = document.getElementById('overlay');
-
-    // Auth elements
-    const sessionUUIDDisplay = document.getElementById('session-uuid');
-    const genNewUUIDBtn = document.getElementById('gen-new-uuid');
-    const loginBtn = document.getElementById('login-btn');
-    const accessCodeInput = document.getElementById('access-code');
-    const loginMessage = document.getElementById('login-message');
-    const quizSection = document.getElementById('quiz-section');
-    const quizQuestion = document.getElementById('quiz-question');
-    const quizOptions = document.getElementById('quiz-options');
-    const submitQuizBtn = document.getElementById('submit-quiz');
-    const quizMessage = document.getElementById('quiz-message');
-    const sessionInfo = document.getElementById('session-info');
-    const statusBadge = document.getElementById('status-badge');
-    const attemptCount = document.getElementById('attempt-count');
-    const logoutBtn = document.getElementById('logout-btn');
-    const displayUUID = document.getElementById('display-uuid');
-
-    // Portal elements
-    const infoHost = document.getElementById('info-host');
-    const infoIp = document.getElementById('info-ip');
-    const infoCountry = document.getElementById('info-country');
-    const visitorCountEl = document.getElementById('visitor-count');
-    const activeUsersEl = document.getElementById('active-users');
-    const runtimeDisplay = document.getElementById('runtime-display');
-    const addressDropdownBtn = document.getElementById('address-dropdown-btn');
-    const addressDropdown = document.getElementById('address-dropdown');
-    const addressSelected = document.getElementById('address-selected');
-    const sniDropdownBtn = document.getElementById('sni-dropdown-btn');
-    const sniDropdown = document.getElementById('sni-dropdown');
-    const sniSelected = document.getElementById('sni-selected');
-    const protocolBar = document.getElementById('protocol-bar');
-    const transportBar = document.getElementById('transport-bar');
-    const pingDisplay = document.getElementById('ping-display');
-    const configDisplay = document.getElementById('config-display');
-    const copyBtn = document.getElementById('copy-btn');
-    const speedDownload = document.getElementById('speed-download');
-    const speedUpload = document.getElementById('speed-upload');
-    const speedLatency = document.getElementById('speed-latency');
-    const speedDownloadUnit = document.getElementById('speed-download-unit');
-    const speedUploadUnit = document.getElementById('speed-upload-unit');
-    const graphContainer = document.getElementById('graph-container');
-    const logContainer = document.getElementById('log-container');
-    const d4 = document.getElementById('d4');
-    const d0 = document.getElementById('d0');
-    const d4b = document.getElementById('d4b');
-
-    // Config constants
-    const GLOBAL_SERVER_START_TIME = Math.floor(Date.now() / 1000);
-    const PASS = 'saeka';
-    const ADDRESSES = [
-        'run.googleapis.com', 'cloud.google.com', 'googleapis.com',
-        'firebase.google.com', 'storage.googleapis.com', 'fonts.googleapis.com',
-        'ajax.googleapis.com', 'maps.googleapis.com', 'oauth2.googleapis.com', 'www.googleapis.com'
-    ];
-    const SNI_LIST = [
-        'fcmtoken.googleapis.com', 'support.maya.ph', 'api.paymaya.com',
-        'www.maya.ph', 'mayabank.ph', 'firebase-settings.crashlytics.com',
-        'app-analytics-services.com', 'saeka-tojirp.googleapis.com'
-    ];
-    const PROTOCOLS = ['vless', 'trojan', 'vmess', 'ss'];
-    const PROTOCOL_LABELS = {
-        vless: 'VLESS', trojan: 'TROJAN', vmess: 'VMESS', ss: 'SHADOWSOCKS'
+    // =========================================================================
+    // SECTION 2: CREDENTIALS DATABASE (100 UNIQUE - 25 PER PROTOCOL)
+    // =========================================================================
+    const CREDENTIALS = {
+        vless: [
+            "f47ac10b-58cc-4372-a567-0e02b2c3d479", "8a5e9a2b-4c3d-4e8f-9a1b-2c3d4e5f6a7b",
+            "b3c4d5e6-f7a8-4b9c-0d1e-2f3a4b5c6d7e", "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+            "2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e", "3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f",
+            "4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a", "5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b",
+            "6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c", "7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d",
+            "8b9c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e", "9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f",
+            "0d1e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a", "a1b2c3d4-e5f6-4789-a0b1-c2d3e4f5a6b7",
+            "b2c3d4e5-f6a7-4890-b1c2-d3e4f5a6b7c8", "c3d4e5f6-a7b8-49a1-b2c3-d4e5f6a7b8c9",
+            "d4e5f6a7-b8c9-4ab2-c3d4-e5f6a7b8c9d0", "e5f6a7b8-c9d0-4bc3-d4e5-f6a7b8c9d0e1",
+            "f6a7b8c9-d0e1-4cd4-e5f6-a7b8c9d0e1f2", "a7b8c9d0-e1f2-4de5-f6a7-b8c9d0e1f2a3",
+            "b8c9d0e1-f2a3-4ef6-a7b8-c9d0e1f2a3b4", "c9d0e1f2-a3b4-4fa7-b8c9-d0e1f2a3b4c5",
+            "d0e1f2a3-b4c5-4ab8-c9d0-e1f2a3b4c5d6", "e1f2a3b4-c5d6-4bc9-d0e1-f2a3b4c5d6e7"
+        ],
+        trojan: [
+            "Tj8kLp9xQm2wR5nV7yZ1aC3bF4dG6hJ8", "Xr2Vb7Nc4Lp9Kw1Mt5Zy8Qd3Fh6Jg0As",
+            "Ye5Wc8Rf1Tg4Yh7Kj2Lp0Qw3Ea6Sd9Zx", "Uo2Ip6Nm3Qw8Rt5Xy1Zc4Fv7Bg9Hj0Kl",
+            "Aa3Bb6Cc9Dd2Ee5Ff8Gg1Hh4Ii7Jj0Kk", "Lm2Np4Qr6St8Uv0Wx1Yz3Ab5Cd7Ef9Gh",
+            "Qw1Er2Ty3Ui4Op5As6Df7Gh8Jk9Lz0Xc", "Zx2Cv3Bn4Nm5As6Df7Gh8Jk9Qw1Er2Ty",
+            "Pl0Ok9Ij8Uh7Yg6Tf5Rd4Es3Wa2Qz1Xc", "Mn2Bb3Vc4Xz5As6Df7Gh8Jk9Qw1Er2Ty",
+            "Ka2Lp4Mn6Qw8Rt0Xy2Zc4Fv6Bg8Hj0Kl", "Zx1Cv3Bn5Nm7As9Df2Gh4Jk6Qw8Er0Ty",
+            "Qw3Er5Ty7Ui9Op1As3Df5Gh7Jk9Lz1Xc", "Lm4Np6Qr8St0Uv2Wx4Yz6Ab8Cd0Ef2Gh",
+            "Tj6Kp8Lp0Qm2Rw4Rn6Vy8Zy0Aa2Cc4Ee", "Xr8Vb0Nc2Lp4Kw6Mt8Zy0Qd2Fh4Jg6As",
+            "Ye0Wc2Rf4Tg6Yh8Kj0Lp2Qw4Ea6Sd8Zx", "Uo2Ip4Nm6Qw8Rt0Xy2Zc4Fv6Bg8Hj0Kl",
+            "As3Df6Gh9Jk2Lp5Qw8Er1Ty4Ui7Op0", "Zx5Cv8Bn1Nm4As7Df0Gh3Jk6Qw9Er2Ty",
+            "Qw7Er0Ty3Ui6Op9As2Df5Gh8Jk1Lz4Xc", "Lm0Np3Qr6St9Uv2Wx5Yz8Ab1Cd4Ef7Gh"
+        ],
+        vmess: [
+            "9a8b7c6d-5e4f-4a3b-2c1d-0e9f8a7b6c5d", "a1b2c3d4-e5f6-4789-a0b1-c2d3e4f5a6b7",
+            "b2c3d4e5-f6a7-4890-b1c2-d3e4f5a6b7c8", "c3d4e5f6-a7b8-49a1-b2c3-d4e5f6a7b8c9",
+            "d4e5f6a7-b8c9-4ab2-c3d4-e5f6a7b8c9d0", "e5f6a7b8-c9d0-4bc3-d4e5-f6a7b8c9d0e1",
+            "f6a7b8c9-d0e1-4cd4-e5f6-a7b8c9d0e1f2", "a7b8c9d0-e1f2-4de5-f6a7-b8c9d0e1f2a3",
+            "b8c9d0e1-f2a3-4ef6-a7b8-c9d0e1f2a3b4", "c9d0e1f2-a3b4-4fa7-b8c9-d0e1f2a3b4c5",
+            "d0e1f2a3-b4c5-4ab8-c9d0-e1f2a3b4c5d6", "e1f2a3b4-c5d6-4bc9-d0e1-f2a3b4c5d6e7",
+            "f2a3b4c5-d6e7-4cd0-e1f2-a3b4c5d6e7f8", "a3b4c5d6-e7f8-4de1-f2a3-b4c5d6e7f8a9",
+            "b4c5d6e7-f8a9-4ef2-a3b4-c5d6e7f8a9b0", "c5d6e7f8-a9b0-4fa3-b4c5-d6e7f8a9b0c1",
+            "d6e7f8a9-b0c1-4ab4-c5d6-e7f8a9b0c1d2", "e7f8a9b0-c1d2-4bc5-d6e7-f8a9b0c1d2e3",
+            "f8a9b0c1-d2e3-4cd6-e7f8-a9b0c1d2e3f4", "a9b0c1d2-e3f4-4de7-f8a9-b0c1d2e3f4a5",
+            "b0c1d2e3-f4a5-4ef8-a9b0-c1d2e3f4a5b6", "c1d2e3f4-a5b6-4fa9-b0c1-d2e3f4a5b6c7",
+            "d2e3f4a5-b6c7-4ab0-c1d2-e3f4a5b6c7d8", "e3f4a5b6-c7d8-4bc1-d2e3-f4a5b6c7d8e9"
+        ],
+        ss: [
+            "Ss9Kx2Lp5Mv8Nq1Rt4Wy7Zb3Cg6Fh0Jd", "Pu3Wm6Nq9Rt2Xv5Yz8Cb1Fg4Jh7Kd0Ll",
+            "Ka2Lp4Mn6Qw8Rt0Xy2Zc4Fv6Bg8Hj0Kl", "Zx1Cv3Bn5Nm7As9Df2Gh4Jk6Qw8Er0Ty",
+            "Qw3Er5Ty7Ui9Op1As3Df5Gh7Jk9Lz1Xc", "Lm4Np6Qr8St0Uv2Wx4Yz6Ab8Cd0Ef2Gh",
+            "Tj6Kp8Lp0Qm2Rw4Rn6Vy8Zy0Aa2Cc4Ee", "Xr8Vb0Nc2Lp4Kw6Mt8Zy0Qd2Fh4Jg6As",
+            "Ye0Wc2Rf4Tg6Yh8Kj0Lp2Qw4Ea6Sd8Zx", "Uo2Ip4Nm6Qw8Rt0Xy2Zc4Fv6Bg8Hj0Kl",
+            "As3Df6Gh9Jk2Lp5Qw8Er1Ty4Ui7Op0", "Zx5Cv8Bn1Nm4As7Df0Gh3Jk6Qw9Er2Ty",
+            "Qw7Er0Ty3Ui6Op9As2Df5Gh8Jk1Lz4Xc", "Lm0Np3Qr6St9Uv2Wx5Yz8Ab1Cd4Ef7Gh",
+            "Tj3Kp6Lp9Qm2Rw5Rn8Vy1Zy4Aa7Cc0Ee", "Xr5Vb8Nc1Lp4Kw7Mt0Zy3Qd6Fh9Jg2As",
+            "Ye2Wc5Rf8Tg1Yh4Kj7Lp0Qw3Ea6Sd9Zx", "Uo7Ip0Nm3Qw6Rt9Xy2Zc5Fv8Bg1Hj4Kl",
+            "As4Df7Gh0Jk3Lp6Qw9Er2Ty5Ui8Op1", "Zx6Cv9Bn2Nm5As8Df1Gh4Jk7Qw0Er3Ty"
+        ]
     };
-    const PATHS = {
-        trojan: '/saeka-tojirp', vmess: '/vmess-saeka', vless: '/vless-saeka', ss: '/ss-saeka'
-    };
+
+    let usedCredentials = JSON.parse(localStorage.getItem('used_creds_404') || '{"vless":[],"trojan":[],"vmess":[],"ss":[]}');
+    function saveUsed() { localStorage.setItem('used_creds_404', JSON.stringify(usedCredentials)); }
+
+    // =========================================================================
+    // SECTION 3: CHECK EXISTING PERMANENT LOCK
+    // =========================================================================
+    let lockedProtocol = localStorage.getItem('perm_protocol_404');
+    let lockedCredential = localStorage.getItem('perm_credential_404');
+    let lockedFingerprint = localStorage.getItem('perm_fingerprint_404');
+    const isPermanentlyLocked = lockedProtocol && lockedCredential && lockedFingerprint === DEVICE_FP;
+
+    // =========================================================================
+    // SECTION 4: CONFIGURATION CONSTANTS
+    // =========================================================================
+    const ADDRESSES = [window.location.hostname, 'run.googleapis.com', 'cloud.google.com', 'googleapis.com', 'firebase.google.com', 'storage.googleapis.com'];
+    const SNI_LIST = [window.location.hostname, 'fcmtoken.googleapis.com', 'support.maya.ph', 'api.paymaya.com', 'www.maya.ph', 'mayabank.ph'];
     const TRANSPORTS = ['ws', 'hu', 'xh'];
-    const TRANSPORT_LABELS = {
-        ws: 'WebSocket', hu: 'HTTP Upgrade', xh: 'XHTTP'
+    const TRANS_LABEL = { ws: 'WebSocket', hu: 'HTTP Upgrade', xh: 'XHTTP' };
+    const PATHS = { vless: '/vless-saeka', trojan: '/saeka-tojirp', vmess: '/vmess-saeka', ss: '/ss-saeka' };
+
+    // Panel state storage
+    const panelState = {
+        vless: { address: ADDRESSES[0], sni: SNI_LIST[0], transport: 'ws', history: [] },
+        trojan: { address: ADDRESSES[0], sni: SNI_LIST[0], transport: 'ws', history: [] },
+        vmess: { address: ADDRESSES[0], sni: SNI_LIST[0], transport: 'ws', history: [] },
+        ss: { address: ADDRESSES[0], sni: SNI_LIST[0], transport: 'ws', history: [] }
     };
 
-    let selectedAddress = ADDRESSES[0];
-    let selectedSNI = SNI_LIST[0];
-    let selectedProtocol = 'vless';
-    let selectedTransport = 'ws';
-    const currentHost = window.location.hostname || 'localhost';
-    const pingCache = {};
-    let pingInProgress = false;
+    let globalHistory = [];
+    let globalStartTime = Math.floor(Date.now() / 1000);
+    let activePanel = null;
 
-    let totalDataSent = 0;
-    let totalDataReceived = 0;
-    let lastUpdateTime = Date.now();
-    let currentDownloadSpeed = 0;
-    let currentUploadSpeed = 0;
-    const speedHistory = [];
-    let visitorCount = 0;
-    let activeUsers = 0;
-
-    // ============ SECURITY FUNCTIONS ============
-    function showAuthScreen() {
-        loadingScreen.classList.add('hidden');
-        authContainer.classList.add('active');
-        mainContent.style.display = 'none';
+    // =========================================================================
+    // SECTION 5: HELPER FUNCTIONS
+    // =========================================================================
+    function addLog(panelId, message) {
+        const logDiv = document.getElementById(panelId);
+        if (!logDiv) return;
+        const time = new Date().toTimeString().split(' ')[0];
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.innerHTML = '<span class="time">' + time + '</span> ' + message;
+        logDiv.appendChild(entry);
+        logDiv.scrollTop = logDiv.scrollHeight;
+        while (logDiv.children.length > 30) logDiv.removeChild(logDiv.firstChild);
     }
 
-    function showPortal() {
-        authContainer.classList.remove('active');
-        mainContent.style.display = 'flex';
+    function addGlobalLog(message) {
+        const logDiv = document.getElementById('global-log-container');
+        if (!logDiv) return;
+        const time = new Date().toTimeString().split(' ')[0];
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.innerHTML = '<span class="time">' + time + '</span> ' + message;
+        logDiv.appendChild(entry);
+        logDiv.scrollTop = logDiv.scrollHeight;
+        while (logDiv.children.length > 30) logDiv.removeChild(logDiv.firstChild);
     }
 
-    function initializeAuth() {
-        security.newSession();
-        sessionUUIDDisplay.textContent = security.sessionUUID;
-        sessionInfo.style.display = 'grid';
-        statusBadge.textContent = 'WAITING';
+    function showPopup(title, message, type, duration, showProgress) {
+        const existing = document.querySelector('.popup-modal');
+        if (existing) existing.remove();
+        const popup = document.createElement('div');
+        popup.className = 'popup-modal';
+        let iconHtml = '';
+        if (type === 'spinner') iconHtml = '<div class="loading-spinner" style="margin:0 auto 16px;"></div>';
+        else if (type === 'lock') iconHtml = '<div style="font-size:40px; margin-bottom:16px;">[LOCK]</div>';
+        else if (type === 'check') iconHtml = '<div style="font-size:40px; margin-bottom:16px;">[OK]</div>';
+        else iconHtml = '<div class="loading-spinner" style="margin:0 auto 16px;"></div>';
+        popup.innerHTML = '<div class="popup-content" style="background:#1e1e1e; border:1px solid #2ed573; border-radius:32px; padding:32px; text-align:center; max-width:320px;">' + iconHtml + '<div class="popup-title">' + title + '</div><div class="popup-message" style="color:#aaa; margin-top:8px;">' + message + '</div></div>';
+        document.body.appendChild(popup);
+        if (duration) setTimeout(() => popup.remove(), duration);
+        return popup;
     }
 
-    function displayQuiz() {
-        const quiz = security.generateQuiz();
-        security.correctAnswer = quiz.correct;
-
-        quizQuestion.textContent = quiz.question;
-        quizOptions.innerHTML = '';
-
-        quiz.options.forEach((option, index) => {
-            const optionBtn = document.createElement('div');
-            optionBtn.className = 'quiz-option';
-            optionBtn.textContent = option;
-            optionBtn.addEventListener('click', () => selectQuizOption(index, optionBtn));
-            quizOptions.appendChild(optionBtn);
-        });
-
-        quizSection.style.display = 'block';
-        submitQuizBtn.style.display = 'block';
-        loginBtn.style.display = 'none';
+    function claimCredential(protocol) {
+        const available = CREDENTIALS[protocol].filter(c => !usedCredentials[protocol].includes(c));
+        if (available.length === 0) return null;
+        const cred = available[0];
+        usedCredentials[protocol].push(cred);
+        saveUsed();
+        return cred;
     }
 
-    function selectQuizOption(index, element) {
-        document.querySelectorAll('.quiz-option').forEach(opt => {
-            opt.classList.remove('selected');
-        });
-        element.classList.add('selected');
-        security.selectedOption = index;
+    function getPath(protocol, transport) {
+        let path = PATHS[protocol];
+        if (transport === 'hu') path += '-hu';
+        else if (transport === 'xh') path += '-xh';
+        return path;
     }
 
-    function verifyQuizAnswer() {
-        if (security.selectedOption === null) {
-            showQuizMessage('Please select an answer', 'error');
+    function buildConfig(protocol, credential, address, sni, transport) {
+        const host = window.location.hostname;
+        const path = getPath(protocol, transport);
+        const encPath = encodeURIComponent(path);
+        switch (protocol) {
+            case 'vless':
+                return 'vless://' + credential + '@' + address + ':443?encryption=none&type=ws&host=' + host + '&path=' + encPath + '&security=tls&sni=' + sni + '&alpn=http%2F1.1#VLESS-' + host;
+            case 'trojan':
+                return 'trojan://' + credential + '@' + address + ':443?type=ws&host=' + host + '&path=' + encPath + '&security=tls&sni=' + sni + '&alpn=http%2F1.1#TROJAN-' + host;
+            case 'vmess': {
+                const obj = { v: '2', ps: 'VMESS-' + host, add: address, port: '443', id: credential, aid: '0', net: 'ws', host: host, path: path, tls: 'tls', sni: sni };
+                return 'vmess://' + btoa(JSON.stringify(obj));
+            }
+            case 'ss': {
+                const ssUser = btoa('aes-256-gcm:' + credential);
+                const plugin = 'obfs-local;obfs=websocket;obfs-host=' + host + ';obfs-uri=' + path + ';sni=' + sni;
+                return 'ss://' + ssUser + '@' + address + ':443?plugin=' + encodeURIComponent(plugin) + '#SS-' + host;
+            }
+            default: return '';
+        }
+    }
+
+    function updateConfigDisplay(protocol) {
+        const state = panelState[protocol];
+        const credential = localStorage.getItem('perm_credential_404');
+        if (!credential) return;
+        const config = buildConfig(protocol, credential, state.address, state.sni, state.transport);
+        const configDiv = document.getElementById(protocol + '-config');
+        if (configDiv) configDiv.innerText = config;
+    }
+
+    // =========================================================================
+    // SECTION 6: PING & SPEED TEST
+    // =========================================================================
+    async function measurePing(protocol, address) {
+        const start = performance.now();
+        try {
+            await fetch('https://' + address + '/health', { mode: 'no-cors', cache: 'no-store' });
+            return Math.round(performance.now() - start);
+        } catch(e) {
+            return 0;
+        }
+    }
+
+    function simulateTraffic(protocol) {
+        const down = Math.floor(Math.random() * 800 + 150);
+        const up = Math.floor(Math.random() * 300 + 50);
+        const downSpan = document.getElementById(protocol + '-down');
+        const upSpan = document.getElementById(protocol + '-up');
+        if (downSpan) downSpan.innerText = down;
+        if (upSpan) upSpan.innerText = up;
+        const state = panelState[protocol];
+        state.history.push(down);
+        if (state.history.length > 25) state.history.shift();
+        updateGraph(protocol, state.history);
+        globalHistory.push(down);
+        if (globalHistory.length > 25) globalHistory.shift();
+        updateGlobalGraph(globalHistory);
+        const globalSpeed = document.getElementById('global-download-speed');
+        if (globalSpeed) globalSpeed.innerText = down + ' KB/s';
+    }
+
+    function updateGraph(protocol, data) {
+        const container = document.getElementById(protocol + '-graph');
+        if (!container) return;
+        container.innerHTML = '';
+        if (!data || data.length === 0) {
+            for (let i = 0; i < 20; i++) { const bar = document.createElement('div'); bar.className = 'graph-bar'; bar.style.height = '5px'; container.appendChild(bar); }
             return;
         }
+        const maxVal = Math.max(...data, 800);
+        data.forEach(v => { const bar = document.createElement('div'); bar.className = 'graph-bar'; const p = (v / maxVal) * 100; bar.style.height = Math.max(4, p) + '%'; container.appendChild(bar); });
+    }
 
-        if (security.selectedOption === security.correctAnswer) {
-            showQuizMessage('Correct! Access Granted', 'success');
-            security.quizAnswered = true;
-            security.setAuthenticated();
-            setTimeout(() => {
-                showPortal();
-                initializePortal();
-            }, 1500);
-        } else {
-            security.recordAttempt();
-            showQuizMessage('Incorrect! Try again', 'error');
-            attemptCount.textContent = `${security.attempts}/3`;
-            if (security.isMaxAttemptsReached()) {
-                loginBtn.disabled = true;
-                showQuizMessage('Max attempts reached. Refresh to try again', 'error');
-            }
+    function updateGlobalGraph(data) {
+        const container = document.getElementById('global-graph-container');
+        if (!container) return;
+        container.innerHTML = '';
+        if (!data || data.length === 0) {
+            for (let i = 0; i < 20; i++) { const bar = document.createElement('div'); bar.className = 'graph-bar'; bar.style.height = '5px'; container.appendChild(bar); }
+            return;
         }
+        const maxVal = Math.max(...data, 800);
+        data.forEach(v => { const bar = document.createElement('div'); bar.className = 'graph-bar'; const p = (v / maxVal) * 100; bar.style.height = Math.max(4, p) + '%'; container.appendChild(bar); });
     }
 
-    function showQuizMessage(msg, type) {
-        quizMessage.className = 'status-message ' + type;
-        quizMessage.textContent = msg;
-    }
-
-    function showLoginMessage(msg, type) {
-        loginMessage.className = 'status-message ' + type;
-        loginMessage.textContent = msg;
-    }
-
-    function initializePortal() {
-        displayUUID.textContent = security.sessionUUID;
-        infoHost.textContent = currentHost;
-        infoIp.textContent = 'Detecting...';
-        infoCountry.textContent = 'Detecting...';
-        
-        // Initialize dropdowns
-        populateAddressDropdown();
-        populateSNIDropdown();
-        populateProtocolButtons();
-        populateTransportButtons();
-
-        updateUptime();
-        setInterval(updateUptime, 1000);
-    }
-
-    function populateAddressDropdown() {
-        addressDropdown.innerHTML = '';
-        ADDRESSES.forEach(addr => {
-            const item = document.createElement('div');
-            item.className = 'dropdown-item';
-            item.textContent = addr;
-            item.addEventListener('click', () => selectAddress(addr));
-            addressDropdown.appendChild(item);
-        });
-    }
-
-    function populateSNIDropdown() {
-        sniDropdown.innerHTML = '';
-        SNI_LIST.forEach(sni => {
-            const item = document.createElement('div');
-            item.className = 'dropdown-item';
-            item.textContent = sni;
-            item.addEventListener('click', () => selectSNI(sni));
-            sniDropdown.appendChild(item);
-        });
-    }
-
-    function populateProtocolButtons() {
-        protocolBar.innerHTML = '';
-        PROTOCOLS.forEach(proto => {
-            const btn = document.createElement('button');
-            btn.className = 'btn' + (proto === selectedProtocol ? ' active' : '');
-            btn.textContent = PROTOCOL_LABELS[proto];
-            btn.addEventListener('click', () => selectProto(proto, btn));
-            protocolBar.appendChild(btn);
-        });
-    }
-
-    function populateTransportButtons() {
-        transportBar.innerHTML = '';
-        TRANSPORTS.forEach(trans => {
-            const btn = document.createElement('button');
-            btn.className = 'btn' + (trans === selectedTransport ? ' active' : '');
-            btn.textContent = TRANSPORT_LABELS[trans];
-            btn.addEventListener('click', () => selectTransport(trans, btn));
-            transportBar.appendChild(btn);
-        });
-    }
-
-    function selectAddress(addr) {
-        selectedAddress = addr;
-        addressSelected.textContent = addr;
-        updateConfig();
-    }
-
-    function selectSNI(sni) {
-        selectedSNI = sni;
-        sniSelected.textContent = sni;
-        updateConfig();
-    }
-
-    function selectProto(proto, btn) {
-        selectedProtocol = proto;
-        document.querySelectorAll('#protocol-bar .btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        updateConfig();
-    }
-
-    function selectTransport(trans, btn) {
-        selectedTransport = trans;
-        document.querySelectorAll('#transport-bar .btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        updateConfig();
-    }
-
-    function updateConfig() {
-        const path = PATHS[selectedProtocol] || '';
-        const config = `${selectedAddress}:443\nPath: ${path}\nTransport: ${selectedTransport}\nPassword: ${PASS}`;
-        configDisplay.textContent = config;
-    }
-
-    function updateUptime() {
-        const now = Math.floor(Date.now() / 1000);
-        const uptime = now - GLOBAL_SERVER_START_TIME;
-        const hours = Math.floor(uptime / 3600);
-        const minutes = Math.floor((uptime % 3600) / 60);
-        const seconds = uptime % 60;
-        runtimeDisplay.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    }
-
-    // ============ EVENT LISTENERS ============
-    window.addEventListener('load', () => {
+    async function runSpeedTest(protocol) {
+        const state = panelState[protocol];
+        showPopup('SPEED TEST', 'Testing connection to ' + state.address + '...', 'spinner', 3000, true);
+        addLog(protocol + '-log', '[TEST] Starting speed test...');
+        const ping = await measurePing(protocol, state.address);
+        const duration = 2500;
+        let total = 0;
+        const interval = setInterval(() => { total += Math.random() * 500000; }, 100);
         setTimeout(() => {
-            initializeAuth();
-            showAuthScreen();
-        }, 2000);
-    });
+            clearInterval(interval);
+            const mbps = ((total / (duration / 1000)) / 125000).toFixed(2);
+            const result = mbps + ' Mbps / ' + ping + 'ms';
+            const resultSpan = document.getElementById(protocol + '-test-result');
+            if (resultSpan) resultSpan.innerText = result;
+            addLog(protocol + '-log', '[TEST] Complete: ' + result);
+            showPopup('COMPLETE', result, 'check', 2000, false);
+        }, duration);
+    }
 
-    genNewUUIDBtn.addEventListener('click', () => {
-        initializeAuth();
-    });
-
-    loginBtn.addEventListener('click', () => {
-        const code = accessCodeInput.value.trim();
-        if (code === PASS || code === '') {
-            displayQuiz();
-            loginBtn.style.display = 'none';
-        } else {
-            showLoginMessage('Invalid access code', 'error');
-        }
-    });
-
-    submitQuizBtn.addEventListener('click', verifyQuizAnswer);
-
-    addressDropdownBtn.addEventListener('click', () => {
-        addressDropdown.classList.toggle('show');
-    });
-
-    sniDropdownBtn.addEventListener('click', () => {
-        sniDropdown.classList.toggle('show');
-    });
-
-    copyBtn.addEventListener('click', () => {
-        const text = configDisplay.textContent;
-        navigator.clipboard.writeText(text).then(() => {
-            copyBtn.textContent = 'COPIED!';
-            setTimeout(() => { copyBtn.textContent = 'COPY'; }, 2000);
+    // =========================================================================
+    // SECTION 7: DROPDOWN SETUP
+    // =========================================================================
+    function setupDropdown(protocol, type, items, currentVal, onChange) {
+        const btnId = protocol + '-' + type + '-btn';
+        const dropdownId = protocol + '-' + type + '-dropdown';
+        const btn = document.getElementById(btnId);
+        const dropdown = document.getElementById(dropdownId);
+        if (!btn || !dropdown) return;
+        dropdown.innerHTML = '';
+        items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'dropdown-item';
+            div.innerText = item;
+            if (item === currentVal) div.classList.add('selected');
+            div.onclick = (e) => {
+                e.stopPropagation();
+                onChange(item);
+                btn.innerText = item + ' ▼';
+                dropdown.classList.remove('show');
+                addLog(protocol + '-log', '[CFG] ' + type.toUpperCase() + ' changed to ' + item);
+                updateConfigDisplay(protocol);
+            };
+            dropdown.appendChild(div);
         });
-    });
+        btn.innerText = currentVal + ' ▼';
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            const show = !dropdown.classList.contains('show');
+            dropdown.classList.toggle('show');
+            if (show) {
+                const rect = btn.getBoundingClientRect();
+                dropdown.style.top = (rect.bottom + window.scrollY + 4) + 'px';
+                dropdown.style.left = (rect.left + window.scrollX) + 'px';
+                dropdown.style.width = Math.max(rect.width, 220) + 'px';
+            }
+        };
+    }
 
-    logoutBtn.addEventListener('click', () => {
-        mainContent.style.display = 'none';
-        authContainer.classList.remove('active');
-        initializeAuth();
-        showAuthScreen();
-    });
+    function setupTransportBar(protocol) {
+        const bar = document.getElementById(protocol + '-transport-bar');
+        if (!bar) return;
+        bar.innerHTML = '';
+        TRANSPORTS.forEach(t => {
+            const btn = document.createElement('button');
+            btn.className = 'btn';
+            btn.innerText = TRANS_LABEL[t];
+            if (t === panelState[protocol].transport) btn.classList.add('active');
+            btn.onclick = () => {
+                bar.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                panelState[protocol].transport = t;
+                addLog(protocol + '-log', '[CFG] Transport changed to ' + TRANS_LABEL[t]);
+                updateConfigDisplay(protocol);
+            };
+            bar.appendChild(btn);
+        });
+    }
 
-    document.addEventListener('click', (e) => {
-        if (!addressDropdownBtn.contains(e.target) && !addressDropdown.contains(e.target)) {
-            addressDropdown.classList.remove('show');
+    // =========================================================================
+    // SECTION 8: PANEL INITIALIZATION
+    // =========================================================================
+    function initPanel(protocol, credential) {
+        const fpSpan = document.getElementById(protocol + '-fp');
+        const credSpan = document.getElementById(protocol + '-cred');
+        if (fpSpan) fpSpan.innerText = DEVICE_FP;
+        if (credSpan) credSpan.innerText = credential.substring(0, 16) + '...';
+        
+        setupDropdown(protocol, 'addr', ADDRESSES, panelState[protocol].address, (val) => { panelState[protocol].address = val; updateConfigDisplay(protocol); });
+        setupDropdown(protocol, 'sni', SNI_LIST, panelState[protocol].sni, (val) => { panelState[protocol].sni = val; updateConfigDisplay(protocol); });
+        setupTransportBar(protocol);
+        
+        const copyBtn = document.getElementById(protocol + '-copy');
+        if (copyBtn) {
+            copyBtn.onclick = () => {
+                const configDiv = document.getElementById(protocol + '-config');
+                const text = configDiv.innerText;
+                navigator.clipboard.writeText(text);
+                copyBtn.innerText = '[OK] COPIED';
+                copyBtn.classList.add('copied');
+                setTimeout(() => { copyBtn.innerText = '[COPY] COPY CONFIG'; copyBtn.classList.remove('copied'); }, 2000);
+                addLog(protocol + '-log', '[COPY] Configuration copied');
+            };
         }
-        if (!sniDropdownBtn.contains(e.target) && !sniDropdown.contains(e.target)) {
-            sniDropdown.classList.remove('show');
+        
+        const speedBtn = document.getElementById(protocol + '-speedtest');
+        if (speedBtn) speedBtn.onclick = () => runSpeedTest(protocol);
+        
+        updateConfigDisplay(protocol);
+        
+        for (let i = 0; i < 20; i++) panelState[protocol].history.push(Math.floor(Math.random() * 100 + 50));
+        updateGraph(protocol, panelState[protocol].history);
+        
+        setInterval(() => simulateTraffic(protocol), 1000);
+        setInterval(async () => {
+            const pingSpan = document.getElementById(protocol + '-ping');
+            if (pingSpan) {
+                const ping = await measurePing(protocol, panelState[protocol].address);
+                pingSpan.innerText = ping || '--';
+            }
+        }, 2500);
+    }
+
+    // =========================================================================
+    // SECTION 9: LOCK PROTOCOL (PERMANENT - NO EXIT)
+    // =========================================================================
+     async function lockProtocol(protocol) {
+        if (isPermanentlyLocked) {
+            showPopup('LOCKED', 'Protocol already locked to this device.', 'lock', 2000, false);
+            return;
         }
-    });
+        const popup = showPopup('LOCKING', 'Generating unique credential for ' + protocol.toUpperCase() + '...', 'spinner', null, true);
+        await new Promise(r => setTimeout(r, 1200));
+        const credential = claimCredential(protocol);
+        if (!credential) {
+            if (popup) popup.remove();
+            showPopup('ERROR', 'No credentials available for ' + protocol.toUpperCase(), 'lock', 2000, false);
+            return;
+        }
+        localStorage.setItem('perm_protocol_404', protocol);
+        localStorage.setItem('perm_credential_404', credential);
+        localStorage.setItem('perm_fingerprint_404', DEVICE_FP);
+        if (popup) popup.remove();
+        showPopup('READY', protocol.toUpperCase() + ' tunnel ready. Credential locked.', 'check', 1800, false);
+        document.getElementById('main-menu').style.display = 'none';
+        document.getElementById(protocol + '-panel').style.display = 'flex';
+        addGlobalLog('[SYS] User selected ' + protocol.toUpperCase() + ' - permanently locked');
+        initPanel(protocol, credential);
+        activePanel = protocol;
+    }
+
+    // =========================================================================
+    // SECTION 10: LOAD EXISTING LOCKED PROTOCOL
+    // =========================================================================
+    function loadExistingLock() {
+        if (isPermanentlyLocked && lockedProtocol && lockedCredential) {
+            document.getElementById('main-menu').style.display = 'none';
+            document.getElementById(lockedProtocol + '-panel').style.display = 'flex';
+            addGlobalLog('[SYS] Loaded existing permanent protocol: ' + lockedProtocol.toUpperCase());
+            initPanel(lockedProtocol, lockedCredential);
+            activePanel = lockedProtocol;
+            return true;
+        }
+        return false;
+    }
+
+    // =========================================================================
+    // SECTION 11: PROTOCOL SELECTOR UI
+    // =========================================================================
+    function initProtocolSelector() {
+        const protocols = [
+            { name: 'VLESS', proto: 'vless', color: '#2ed573' },
+            { name: 'TROJAN', proto: 'trojan', color: '#ffa502' },
+            { name: 'VMESS', proto: 'vmess', color: '#1e90ff' },
+            { name: 'SHADOWSOCKS', proto: 'ss', color: '#ff4757' }
+        ];
+        const bar = document.getElementById('protocol-selector-bar');
+        if (!bar) return;
+        bar.innerHTML = '';
+        protocols.forEach(p => {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-primary';
+            btn.style.background = 'linear-gradient(135deg, ' + p.color + ', ' + p.color + 'cc)';
+            btn.style.border = 'none';
+            btn.style.color = '#000';
+            btn.innerText = p.name;
+            btn.onclick = () => lockProtocol(p.proto);
+            bar.appendChild(btn);
+        });
+    }
+
+    // =========================================================================
+    // SECTION 12: GLOBAL STATS
+    // =========================================================================
+    async function updateGlobalStats() {
+        try {
+            const res = await fetch('/health');
+            const statusSpan = document.getElementById('status-indicator');
+            if (statusSpan) {
+                if (res.ok) statusSpan.innerHTML = '<span class="status-dot green"></span> ONLINE';
+                else statusSpan.innerHTML = '<span class="status-dot yellow"></span> DEGRADED';
+            }
+        } catch(e) {
+            const statusSpan = document.getElementById('status-indicator');
+            if (statusSpan) statusSpan.innerHTML = '<span class="status-dot red"></span> OFFLINE [LOCAL]';
+        }
+        const visitorEl = document.getElementById('visitor-count');
+        const activeEl = document.getElementById('active-users');
+        if (visitorEl) visitorEl.innerText = Math.floor(Math.random() * 900) + 150;
+        if (activeEl) activeEl.innerText = Math.floor(Math.random() * 45) + 6;
+        const hostEl = document.getElementById('host-ip');
+        if (hostEl) hostEl.innerText = window.location.hostname;
+        const runtime = Math.floor(Date.now() / 1000) - globalStartTime;
+        const h = String(Math.floor(runtime / 3600)).padStart(2, '0');
+        const m = String(Math.floor((runtime % 3600) / 60)).padStart(2, '0');
+        const s = String(runtime % 60).padStart(2, '0');
+        const runtimeEl = document.getElementById('runtime-display');
+        if (runtimeEl) runtimeEl.innerText = h + ':' + m + ':' + s;
+    }
+
+    // =========================================================================
+    // SECTION 13: LOADING ANIMATION WITH FORCE UNSTICK
+    // =========================================================================
+    function animateLoading() {
+        const digits = [document.getElementById('d4'), document.getElementById('d0'), document.getElementById('d4b')];
+        let index = 0;
+        const interval = setInterval(() => {
+            digits.forEach((digit, i) => {
+                if (digit) {
+                    if (i === index) {
+                        digit.classList.add('active');
+                        digit.classList.remove('inactive');
+                    } else {
+                        digit.classList.add('inactive');
+                        digit.classList.remove('active');
+                    }
+                }
+            });
+            index = (index + 1) % 3;
+        }, 150);
+        const subtitle = document.getElementById('loading-subtitle');
+        const messages = ['[SYS] INITIALIZING', '[NET] ESTABLISHING LINK', '[SEC] VERIFYING', '[OK] READY'];
+        let msgIdx = 0;
+        const msgInt = setInterval(() => {
+            if (subtitle && msgIdx < messages.length - 1) {
+                msgIdx++;
+                subtitle.innerText = messages[msgIdx];
+            }
+        }, 400);
+        setTimeout(() => {
+            clearInterval(interval);
+            clearInterval(msgInt);
+            digits.forEach(d => { if (d) d.classList.remove('active', 'inactive'); });
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+                loadingScreen.classList.add('hidden');
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    const loaded = loadExistingLock();
+                    if (!loaded) {
+                        document.getElementById('main-menu').style.display = 'flex';
+                        addGlobalLog('[SYS] Portal ready. Select a protocol to lock permanently.');
+                    } else {
+                        addGlobalLog('[SYS] Loaded existing permanent protocol.');
+                    }
+                }, 200);
+            }
+        }, 2000);
+    }
+
+    // =========================================================================
+    // SECTION 14: FORCE UNSTICK SAFEGUARD
+    // =========================================================================
+    setTimeout(function() {
+        const loadingScreen = document.getElementById('loading-screen');
+        const mainMenu = document.getElementById('main-menu');
+        if (loadingScreen && loadingScreen.style.display !== 'none' && !loadingScreen.classList.contains('hidden')) {
+            loadingScreen.classList.add('hidden');
+            setTimeout(function() {
+                loadingScreen.style.display = 'none';
+                const loaded = loadExistingLock();
+                if (!loaded && mainMenu) mainMenu.style.display = 'flex';
+            }, 100);
+        }
+    }, 3500);
+
+    // =========================================================================
+    // SECTION 15: INITIALIZATION
+    // =========================================================================
+    for (let i = 0; i < 20; i++) globalHistory.push(Math.floor(Math.random() * 100 + 50));
+    updateGlobalGraph(globalHistory);
+    initProtocolSelector();
+    updateGlobalStats();
+    setInterval(updateGlobalStats, 5000);
+    document.addEventListener('click', () => { document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show')); });
+    animateLoading();
 })();
 </script>
+
+<style>
+    .popup-modal {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.94); backdrop-filter: blur(12px); z-index: 200000;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .popup-content { background: #1e1e1e; border: 1px solid #2ed573; border-radius: 32px; padding: 32px; text-align: center; max-width: 320px; }
+    .popup-title { font-size: 20px; font-weight: bold; margin-bottom: 8px; }
+    .popup-message { font-size: 12px; color: #aaa; }
+    .copy-btn.copied { border-color: #2ed573; color: #2ed573; background: #0a1a0a; }
+    .protocol-panel { display: none; }
+</style>
 
 </body>
 </html>
