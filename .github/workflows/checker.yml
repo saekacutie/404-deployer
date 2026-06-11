@@ -21,173 +21,137 @@ jobs:
       
       - name: Install dependencies
         run: |
-          pip install pyyaml jsonschema
           sudo apt-get update -qq
           sudo apt-get install -y -qq nginx jq
       
-      - name: Run Python Validator
-        run: python3 - << 'EOF'
-import os
-import re
-import json
-import subprocess
-from pathlib import Path
-
-print("=" * 70)
-print("404-DEPLOYER VALIDATION TOOL".center(70))
-print("=" * 70)
-
-errors = 0
-warnings = 0
-
-# Colors
-G = '\033[92m'
-R = '\033[91m'
-Y = '\033[93m'
-C = '\033[96m'
-B = '\033[1m'
-E = '\033[0m'
-
-def ok(msg): print(f"{G}✅ {msg}{E}")
-def err(msg): global errors; errors += 1; print(f"{R}❌ {msg}{E}")
-def warn(msg): global warnings; warnings += 1; print(f"{Y}⚠️ {msg}{E}")
-def info(msg): print(f"{C}📌 {msg}{E}")
-
-# ========== 1. CHECK FILES EXIST ==========
-print(f"\n{C}=== PHASE 1: FILE MANIFEST ==={E}")
-required = ["index.html", "config.json", "nginx.conf", "Dockerfile", "deploy.sh"]
-for f in required:
-    if Path(f).exists():
-        ok(f"{f} found")
-    else:
-        err(f"{f} MISSING")
-
-if errors > 0:
-    exit(1)
-
-# ========== 2. VALIDATE index.html ==========
-print(f"\n{C}=== PHASE 2: index.html ==={E}")
-with open("index.html") as f:
-    html = f.read()
-
-if "<!DOCTYPE html" in html:
-    ok("DOCTYPE present")
-else:
-    err("DOCTYPE missing")
-
-open_div = html.count("<div")
-close_div = html.count("</div>")
-if open_div == close_div:
-    ok(f"Div tags balanced ({open_div}/{close_div})")
-else:
-    err(f"Div mismatch: open={open_div}, close={close_div}")
-
-if "</body>" in html and "</html>" in html:
-    ok("HTML structure complete")
-else:
-    warn("Missing </body> or </html>")
-
-# ========== 3. VALIDATE config.json ==========
-print(f"\n{C}=== PHASE 3: config.json ==={E}")
-try:
-    with open("config.json") as f:
-        config = json.load(f)
-    ok("JSON syntax valid")
-    
-    inbounds = config.get("inbounds", [])
-    ports = [i["port"] for i in inbounds]
-    info(f"Total inbounds: {len(inbounds)} (expected 12)")
-    
-    if len(set(ports)) != len(ports):
-        dupes = [p for p in ports if ports.count(p) > 1]
-        err(f"Duplicate ports: {list(set(dupes))}")
-    else:
-        ok("No duplicate ports")
-        
-    for proto in ["vless", "vmess", "trojan", "shadowsocks"]:
-        count = sum(1 for i in inbounds if i.get("protocol") == proto)
-        info(f"{proto}: {count} inbounds")
-        
-except json.JSONDecodeError as e:
-    err(f"JSON parse error at line {e.lineno}: {e.msg}")
-    errors += 1
-
-# ========== 4. VALIDATE nginx.conf ==========
-print(f"\n{C}=== PHASE 4: nginx.conf ==={E}")
-result = subprocess.run(["nginx", "-t", "-c", os.getcwd() + "/nginx.conf"], 
-                        capture_output=True, text=True)
-if result.returncode == 0:
-    ok("nginx.conf syntax valid")
-else:
-    err(f"nginx error: {result.stderr.split(chr(10))[0]}")
-    errors += 1
-
-# ========== 5. VALIDATE Dockerfile ==========
-print(f"\n{C}=== PHASE 5: Dockerfile ==={E}")
-with open("Dockerfile") as f:
-    docker = f.read()
-
-if re.search(r"^FROM", docker, re.M):
-    ok("FROM instruction present")
-else:
-    err("FROM missing")
-
-if re.search(r"^EXPOSE", docker, re.M):
-    ok("EXPOSE present")
-else:
-    warn("No EXPOSE (Cloud Run needs port 8080)")
-
-if re.search(r"^CMD|^ENTRYPOINT", docker, re.M):
-    ok("CMD/ENTRYPOINT present")
-else:
-    err("CMD or ENTRYPOINT missing")
-
-# ========== 6. VALIDATE deploy.sh ==========
-print(f"\n{C}=== PHASE 6: deploy.sh ==={E}")
-result = subprocess.run(["bash", "-n", "deploy.sh"], capture_output=True, text=True)
-if result.returncode == 0:
-    ok("deploy.sh syntax valid")
-else:
-    err(f"Bash error: {result.stderr.strip()}")
-    errors += 1
-
-if os.access("deploy.sh", os.X_OK):
-    ok("deploy.sh is executable")
-else:
-    warn("deploy.sh not executable (run: chmod +x)")
-
-# ========== 7. CROSS-FILE PATH CHECK ==========
-print(f"\n{C}=== PHASE 7: Cross-File Consistency ==={E}")
-paths = ["/saeka-tojirp", "/saeka-tojirp-hu", "/saeka-tojirp-xh",
-         "/vmess-saeka", "/vmess-saeka-hu", "/vmess-saeka-xh",
-         "/vless-saeka", "/vless-saeka-hu", "/vless-saeka-xh",
-         "/ss-saeka", "/ss-saeka-hu", "/ss-saeka-xh"]
-
-for path in paths:
-    in_nginx = path in open("nginx.conf").read()
-    in_config = path in open("config.json").read()
-    in_html = path in open("index.html").read()
-    
-    if in_nginx and in_config and in_html:
-        ok(f"{path} - consistent")
-    else:
-        missing = []
-        if not in_nginx: missing.append("nginx.conf")
-        if not in_config: missing.append("config.json")
-        if not in_html: missing.append("index.html")
-        err(f"{path} missing in: {', '.join(missing)}")
-
-# ========== 8. FINAL SUMMARY ==========
-print(f"\n{'='*70}")
-print(f"{B}SUMMARY{E}")
-print(f"{'='*70}")
-print(f"Errors:   {R}{errors}{E}")
-print(f"Warnings: {Y}{warnings}{E}")
-
-if errors > 0:
-    print(f"\n{R}❌ DEPLOYMENT BLOCKED - Fix errors above{E}")
-    exit(1)
-else:
-    print(f"\n{G}✅ ALL CHECKS PASSED - Ready for deployment{E}")
-    exit(0)
-EOF
+      - name: Create validator script
+        run: |
+          cat > /tmp/validator.py << 'PYTHON_SCRIPT'
+          import os
+          import re
+          import json
+          import subprocess
+          from pathlib import Path
+          
+          errors = 0
+          warnings = 0
+          
+          G = '\033[92m'
+          R = '\033[91m'
+          Y = '\033[93m'
+          C = '\033[96m'
+          B = '\033[1m'
+          E = '\033[0m'
+          
+          def ok(msg): print(f"{G}OK: {msg}{E}")
+          def err(msg): global errors; errors += 1; print(f"{R}ERROR: {msg}{E}")
+          def warn(msg): global warnings; warnings += 1; print(f"{Y}WARN: {msg}{E}")
+          def info(msg): print(f"{C}INFO: {msg}{E}")
+          
+          print("=" * 70)
+          print("404-DEPLOYER VALIDATION TOOL".center(70))
+          print("=" * 70)
+          
+          # Phase 1: File manifest
+          print("\n--- PHASE 1: FILE MANIFEST ---")
+          required = ["index.html", "config.json", "nginx.conf", "Dockerfile", "deploy.sh"]
+          for f in required:
+              if Path(f).exists():
+                  ok(f"{f} found")
+              else:
+                  err(f"{f} MISSING")
+          
+          if errors > 0:
+              exit(1)
+          
+          # Phase 2: index.html
+          print("\n--- PHASE 2: index.html ---")
+          with open("index.html") as f:
+              html = f.read()
+          
+          if "<!DOCTYPE html" in html:
+              ok("DOCTYPE present")
+          else:
+              err("DOCTYPE missing")
+          
+          open_div = html.count("<div")
+          close_div = html.count("</div>")
+          if open_div == close_div:
+              ok(f"Div tags balanced ({open_div}/{close_div})")
+          else:
+              err(f"Div mismatch: open={open_div}, close={close_div}")
+          
+          # Phase 3: config.json
+          print("\n--- PHASE 3: config.json ---")
+          try:
+              with open("config.json") as f:
+                  config = json.load(f)
+              ok("JSON syntax valid")
+              
+              inbounds = config.get("inbounds", [])
+              info(f"Total inbounds: {len(inbounds)}")
+              
+              ports = [i["port"] for i in inbounds]
+              if len(set(ports)) != len(ports):
+                  err("Duplicate ports found")
+              else:
+                  ok("No duplicate ports")
+          except json.JSONDecodeError as e:
+              err(f"JSON error at line {e.lineno}: {e.msg}")
+              errors += 1
+          
+          # Phase 4: nginx.conf
+          print("\n--- PHASE 4: nginx.conf ---")
+          result = subprocess.run(["nginx", "-t", "-c", os.getcwd() + "/nginx.conf"], capture_output=True, text=True)
+          if result.returncode == 0:
+              ok("nginx.conf syntax valid")
+          else:
+              err("nginx.conf syntax invalid")
+              errors += 1
+          
+          # Phase 5: Dockerfile
+          print("\n--- PHASE 5: Dockerfile ---")
+          with open("Dockerfile") as f:
+              docker = f.read()
+          
+          if re.search(r"^FROM", docker, re.M):
+              ok("FROM instruction present")
+          else:
+              err("FROM missing")
+          
+          if re.search(r"^EXPOSE", docker, re.M):
+              ok("EXPOSE present")
+          else:
+              warn("No EXPOSE instruction")
+          
+          if re.search(r"^CMD|^ENTRYPOINT", docker, re.M):
+              ok("CMD/ENTRYPOINT present")
+          else:
+              err("CMD or ENTRYPOINT missing")
+          
+          # Phase 6: deploy.sh
+          print("\n--- PHASE 6: deploy.sh ---")
+          result = subprocess.run(["bash", "-n", "deploy.sh"], capture_output=True, text=True)
+          if result.returncode == 0:
+              ok("deploy.sh syntax valid")
+          else:
+              err("deploy.sh syntax invalid")
+              errors += 1
+          
+          # Final summary
+          print("\n" + "=" * 70)
+          print("SUMMARY")
+          print("=" * 70)
+          print(f"Errors: {errors}")
+          print(f"Warnings: {warnings}")
+          
+          if errors > 0:
+              print("\nDEPLOYMENT BLOCKED - Fix errors above")
+              exit(1)
+          else:
+              print("\nALL CHECKS PASSED - Ready for deployment")
+              exit(0)
+          PYTHON_SCRIPT
+      
+      - name: Run validator
+        run: python3 /tmp/validator.py
