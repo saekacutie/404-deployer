@@ -391,3 +391,145 @@
       "tag": "vless-xh",
       "settings": {
         "clients": [
+          {"password": "Ss9Kx2Lp5Mv8Nq1Rt4Wy7Zb3Cg6Fh0Jd", "method": "aes-256-gcm"},
+          {"password": "Pu3Wm6Nq9Rt2Xv5Yz8Cb1Fg4Jh7Kd0Ll", "method": "aes-256-gcm"},
+          {"password": "Ka2Lp4Mn6Qw8Rt0Xy2Zc4Fv6Bg8Hj0Kl", "method": "aes-256-gcm"},
+          {"password": "Zx1Cv3Bn5Nm7As9Df2Gh4Jk6Qw8Er0Ty", "method": "aes-256-gcm"},
+          {"password": "Qw3Er5Ty7Ui9Op1As3Df5Gh7Jk9Lz1Xc", "method": "aes-256-gcm"},
+          {"password": "Lm4Np6Qr8St0Uv2Wx4Yz6Ab8Cd0Ef2Gh", "method": "aes-256-gcm"},
+          {"password": "Tj6Kp8Lp0Qm2Rw4Rn6Vy8Zy0Aa2Cc4Ee", "method": "aes-256-gcm"},
+          {"password": "Xr8Vb0Nc2Lp4Kw6Mt8Zy0Qd2Fh4Jg6As", "method": "aes-256-gcm"},
+          {"password": "Ye0Wc2Rf4Tg6Yh8Kj0Lp2Qw4Ea6Sd8Zx", "method": "aes-256-gcm"},
+          {"password": "Uo2Ip4Nm6Qw8Rt0Xy2Zc4Fv6Bg8Hj0Kl", "method": "aes-256-gcm"},
+          {"password": "As3Df6Gh9Jk2Lp5Qw8Er1Ty4Ui7Op0", "method": "aes-256-gcm"},
+          {"password": "Zx5Cv8Bn1Nm4As7Df0Gh3Jk6Qw9Er2Ty", "method": "aes-256-gcm"},
+          {"password": "Qw7Er0Ty3Ui6Op9As2Df5Gh8Jk1Lz4Xc", "method": "aes-256-gcm"},
+          {"password": "Lm0Np3Qr6St9Uv2Wx5Yz8Ab1Cd4Ef7Gh", "method": "aes-256-gcm"},
+          {"password": "Tj3Kp6Lp9Qm2Rw5Rn8Vy1Zy4Aa7Cc0Ee", "method": "aes-256-gcm"},
+          {"password": "Xr5Vb8Nc1Lp4Kw7Mt0Zy3Qd6Fh9Jg2As", "method": "aes-256-gcm"},
+          {"password": "Ye2Wc5Rf8Tg1Yh4Kj7Lp0Qw3Ea6Sd9Zx", "method": "aes-256-gcm"},
+          {"password": "Uo7Ip0Nm3Qw6Rt9Xy2Zc5Fv8Bg1Hj4Kl", "method": "aes-256-gcm"},
+          {"password": "As4Df7Gh0Jk3Lp6Qw9Er2Ty5Ui8Op1", "method": "aes-256-gcm"},
+          {"password": "Zx6Cv9Bn2Nm5As8Df1Gh4Jk7Qw0Er3Ty", "method": "aes-256-gcm"},
+          {"password": "Qw2Er5Ty8Ui1Op4As7Df0Gh3Jk6Lp9Xc", "method": "aes-256-gcm"},
+          {"password": "Lm5Np8Qr1St4Uv7Wx0Yz3Ab6Cd9Ef2Gh", "method": "aes-256-gcm"},
+          {"password": "Tj8Kp1Lp4Qm7Rw0Rn3Vy6Zy9Aa2Cc5Ee", "method": "aes-256-gcm"},
+          {"password": "Xr1Vb4Nc7Lp0Kw3Mt6Zy9Qd2Fh5Jg8As", "method": "aes-256-gcm"},
+          {"password": "Ye4Wc7Rf0Tg3Yh6Kj9Lp2Qw5Ea8Sd1Zx", "method": "aes-256-gcm"}
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {"path": "/ss-saeka"},
+        "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}
+      }
+    },
+    {
+      "port": 10010,
+      "listen": "127.0.0.1",
+      "protocol": "shadowsocks",
+      "tag": "ss-hu",
+      "settings": {
+        "clients": [
+          {"password": "Ss9Kx2Lp5Mv8Nq1Rt4Wy7Zb3Cg6Fh0Jd", "method": "aes-256-gcm"},
+          {"password": "Pu3Wm6Nq9Rt2Xv5Yz8Cb1Fg4Jh7Kd0Ll", "method": "aes-256-gcm"},
+          {"password": "Ka2Lp4Mn6Qw8Rt0Xy2Zc4Fv6Bg8Hj0Kl", "method": "aes-256-gcm"},
+          {"password": "Zx1Cv3Bn5Nm7As9Df2Gh4Jk6Qw8Er0Ty", "method": "aes-256-gcm"},
+          {"password": "Qw3Er5Ty7Ui9Op1As3Df5Gh7Jk9Lz1Xc", "method": "aes-256-gcm"},
+          {"password": "Lm4Np6Qr8St0Uv2Wx4Yz6Ab8Cd0Ef2Gh", "method": "aes-256-gcm"},
+          {"password": "Tj6Kp8Lp0Qm2Rw4Rn6Vy8Zy0Aa2Cc4Ee", "method": "aes-256-gcm"},
+          {"password": "Xr8Vb0Nc2Lp4Kw6Mt8Zy0Qd2Fh4Jg6As", "method": "aes-256-gcm"},
+          {"password": "Ye0Wc2Rf4Tg6Yh8Kj0Lp2Qw4Ea6Sd8Zx", "method": "aes-256-gcm"},
+          {"password": "Uo2Ip4Nm6Qw8Rt0Xy2Zc4Fv6Bg8Hj0Kl", "method": "aes-256-gcm"},
+          {"password": "As3Df6Gh9Jk2Lp5Qw8Er1Ty4Ui7Op0", "method": "aes-256-gcm"},
+          {"password": "Zx5Cv8Bn1Nm4As7Df0Gh3Jk6Qw9Er2Ty", "method": "aes-256-gcm"},
+          {"password": "Qw7Er0Ty3Ui6Op9As2Df5Gh8Jk1Lz4Xc", "method": "aes-256-gcm"},
+          {"password": "Lm0Np3Qr6St9Uv2Wx5Yz8Ab1Cd4Ef7Gh", "method": "aes-256-gcm"},
+          {"password": "Tj3Kp6Lp9Qm2Rw5Rn8Vy1Zy4Aa7Cc0Ee", "method": "aes-256-gcm"},
+          {"password": "Xr5Vb8Nc1Lp4Kw7Mt0Zy3Qd6Fh9Jg2As", "method": "aes-256-gcm"},
+          {"password": "Ye2Wc5Rf8Tg1Yh4Kj7Lp0Qw3Ea6Sd9Zx", "method": "aes-256-gcm"},
+          {"password": "Uo7Ip0Nm3Qw6Rt9Xy2Zc5Fv8Bg1Hj4Kl", "method": "aes-256-gcm"},
+          {"password": "As4Df7Gh0Jk3Lp6Qw9Er2Ty5Ui8Op1", "method": "aes-256-gcm"},
+          {"password": "Zx6Cv9Bn2Nm5As8Df1Gh4Jk7Qw0Er3Ty", "method": "aes-256-gcm"},
+          {"password": "Qw2Er5Ty8Ui1Op4As7Df0Gh3Jk6Lp9Xc", "method": "aes-256-gcm"},
+          {"password": "Lm5Np8Qr1St4Uv7Wx0Yz3Ab6Cd9Ef2Gh", "method": "aes-256-gcm"},
+          {"password": "Tj8Kp1Lp4Qm7Rw0Rn3Vy6Zy9Aa2Cc5Ee", "method": "aes-256-gcm"},
+          {"password": "Xr1Vb4Nc7Lp0Kw3Mt6Zy9Qd2Fh5Jg8As", "method": "aes-256-gcm"},
+          {"password": "Ye4Wc7Rf0Tg3Yh6Kj9Lp2Qw5Ea8Sd1Zx", "method": "aes-256-gcm"}
+        ]
+      },
+      "streamSettings": {
+        "network": "httpupgrade",
+        "httpupgradeSettings": {"path": "/ss-saeka-hu"},
+        "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}
+      }
+    },
+    {
+      "port": 10011,
+      "listen": "127.0.0.1",
+      "protocol": "shadowsocks",
+      "tag": "ss-xh",
+      "settings": {
+        "clients": [
+          {"password": "Ss9Kx2Lp5Mv8Nq1Rt4Wy7Zb3Cg6Fh0Jd", "method": "aes-256-gcm"},
+          {"password": "Pu3Wm6Nq9Rt2Xv5Yz8Cb1Fg4Jh7Kd0Ll", "method": "aes-256-gcm"},
+          {"password": "Ka2Lp4Mn6Qw8Rt0Xy2Zc4Fv6Bg8Hj0Kl", "method": "aes-256-gcm"},
+          {"password": "Zx1Cv3Bn5Nm7As9Df2Gh4Jk6Qw8Er0Ty", "method": "aes-256-gcm"},
+          {"password": "Qw3Er5Ty7Ui9Op1As3Df5Gh7Jk9Lz1Xc", "method": "aes-256-gcm"},
+          {"password": "Lm4Np6Qr8St0Uv2Wx4Yz6Ab8Cd0Ef2Gh", "method": "aes-256-gcm"},
+          {"password": "Tj6Kp8Lp0Qm2Rw4Rn6Vy8Zy0Aa2Cc4Ee", "method": "aes-256-gcm"},
+          {"password": "Xr8Vb0Nc2Lp4Kw6Mt8Zy0Qd2Fh4Jg6As", "method": "aes-256-gcm"},
+          {"password": "Ye0Wc2Rf4Tg6Yh8Kj0Lp2Qw4Ea6Sd8Zx", "method": "aes-256-gcm"},
+          {"password": "Uo2Ip4Nm6Qw8Rt0Xy2Zc4Fv6Bg8Hj0Kl", "method": "aes-256-gcm"},
+          {"password": "As3Df6Gh9Jk2Lp5Qw8Er1Ty4Ui7Op0", "method": "aes-256-gcm"},
+          {"password": "Zx5Cv8Bn1Nm4As7Df0Gh3Jk6Qw9Er2Ty", "method": "aes-256-gcm"},
+          {"password": "Qw7Er0Ty3Ui6Op9As2Df5Gh8Jk1Lz4Xc", "method": "aes-256-gcm"},
+          {"password": "Lm0Np3Qr6St9Uv2Wx5Yz8Ab1Cd4Ef7Gh", "method": "aes-256-gcm"},
+          {"password": "Tj3Kp6Lp9Qm2Rw5Rn8Vy1Zy4Aa7Cc0Ee", "method": "aes-256-gcm"},
+          {"password": "Xr5Vb8Nc1Lp4Kw7Mt0Zy3Qd6Fh9Jg2As", "method": "aes-256-gcm"},
+          {"password": "Ye2Wc5Rf8Tg1Yh4Kj7Lp0Qw3Ea6Sd9Zx", "method": "aes-256-gcm"},
+          {"password": "Uo7Ip0Nm3Qw6Rt9Xy2Zc5Fv8Bg1Hj4Kl", "method": "aes-256-gcm"},
+          {"password": "As4Df7Gh0Jk3Lp6Qw9Er2Ty5Ui8Op1", "method": "aes-256-gcm"},
+          {"password": "Zx6Cv9Bn2Nm5As8Df1Gh4Jk7Qw0Er3Ty", "method": "aes-256-gcm"},
+          {"password": "Qw2Er5Ty8Ui1Op4As7Df0Gh3Jk6Lp9Xc", "method": "aes-256-gcm"},
+          {"password": "Lm5Np8Qr1St4Uv7Wx0Yz3Ab6Cd9Ef2Gh", "method": "aes-256-gcm"},
+          {"password": "Tj8Kp1Lp4Qm7Rw0Rn3Vy6Zy9Aa2Cc5Ee", "method": "aes-256-gcm"},
+          {"password": "Xr1Vb4Nc7Lp0Kw3Mt6Zy9Qd2Fh5Jg8As", "method": "aes-256-gcm"},
+          {"password": "Ye4Wc7Rf0Tg3Yh6Kj9Lp2Qw5Ea8Sd1Zx", "method": "aes-256-gcm"}
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {"path": "/ss-saeka-xh", "mode": "auto"},
+        "sockopt": {"tcpFastOpen": true, "tcpNoDelay": true, "tcpKeepAliveInterval": 30}
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "UseIPv4",
+        "redirect": ""
+      },
+      "streamSettings": {
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpNoDelay": true,
+          "tcpKeepAliveInterval": 30
+        }
+      },
+      "tag": "direct"
+    }
+  ],
+  "routing": {
+    "domainStrategy": "IPIfnonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "ip": ["127.0.0.0/8"],
+        "outbound": "direct"
+      }
+    ]
+  }
+}
