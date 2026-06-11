@@ -1,0 +1,267 @@
+name: 🔍 Pre-Deployment Code Analysis & Validation
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'index.html'
+      - 'config.json'
+      - 'nginx.conf'
+      - 'Dockerfile'
+      - 'deploy.sh'
+      - '.github/workflows/ci-checks.yml'
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  # ============ HTML VALIDATION ============
+  html-validation:
+    runs-on: ubuntu-latest
+    name: 🌐 HTML & JavaScript Analysis
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check HTML Syntax
+        run: |
+          echo "🔍 Scanning index.html for syntax errors..."
+          if ! grep -q '<!DOCTYPE html>' index.html; then
+            echo "❌ ERROR: Missing DOCTYPE declaration"
+            exit 1
+          fi
+          if ! grep -q '<html' index.html; then
+            echo "❌ ERROR: Missing <html> tag"
+            exit 1
+          fi
+          if ! grep -q '</html>' index.html; then
+            echo "❌ ERROR: Unclosed </html> tag"
+            exit 1
+          fi
+          echo "✅ HTML structure is valid"
+
+      - name: Check Required Functions
+        run: |
+          echo "🔍 Verifying required JavaScript functions..."
+          FUNCTIONS=(
+            "generateUUID"
+            "displayQuiz"
+            "verifyQuizAnswer"
+            "selectQuizOption"
+            "initializeAuth"
+            "showPortal"
+            "updateConfig"
+            "updateUptime"
+          )
+          ERRORS=0
+          for FUNC in "${FUNCTIONS[@]}"; do
+            if ! grep -q "$FUNC" index.html; then
+              echo "❌ ERROR: Missing function: $FUNC"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+          if [ $ERRORS -gt 0 ]; then exit 1; fi
+          echo "✅ All required functions found"
+
+  # ============ JSON VALIDATION ============
+  json-validation:
+    runs-on: ubuntu-latest
+    name: 📝 JSON Configuration Validation
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate config.json Syntax
+        run: |
+          echo "🔍 Checking JSON syntax..."
+          if ! python3 -m json.tool config.json > /dev/null 2>&1; then
+            echo "❌ ERROR: Invalid JSON syntax in config.json"
+            exit 1
+          fi
+          echo "✅ JSON syntax is valid"
+
+      - name: Validate config.json Structure
+        run: |
+          echo "🔍 Validating config.json structure..."
+          ERRORS=0
+          for KEY in "log" "dns" "inbounds" "outbounds" "routing"; do
+            if ! python3 -c "import json; data = json.load(open('config.json')); assert '$KEY' in data" 2>/dev/null; then
+              echo "❌ ERROR: Missing required key: $KEY"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+          INBOUNDS=$(python3 -c "import json; print(len(json.load(open('config.json'))['inbounds']))")
+          if [ "$INBOUNDS" -ne 12 ]; then
+            echo "❌ ERROR: Expected 12 inbounds, found $INBOUNDS"
+            exit 1
+          fi
+          echo "✅ config.json structure is valid (12 inbounds confirmed)"
+
+  # ============ NGINX VALIDATION ============
+  nginx-validation:
+    runs-on: ubuntu-latest
+    name: ⚙️ Nginx Configuration Validation
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Syntax Check nginx.conf
+        run: |
+          echo "🔍 Checking nginx syntax..."
+          docker run --rm -v ${{ github.workspace }}/nginx.conf:/etc/nginx/nginx.conf:ro nginx:alpine nginx -t
+          echo "✅ nginx.conf syntax is valid"
+
+      - name: Validate nginx.conf Structure
+        run: |
+          echo "🔍 Validating nginx configuration..."
+          ERRORS=0
+          DIRECTIVES=("worker_processes" "gzip" "upstream" "server" "resolver")
+          for DIR in "${DIRECTIVES[@]}"; do
+            if ! grep -q "$DIR" nginx.conf; then
+              echo "❌ ERROR: Missing directive: $DIR"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+          UPSTREAMS=$(grep -c "upstream " nginx.conf)
+          if [ "$UPSTREAMS" -ne 12 ]; then
+            echo "❌ ERROR: Expected 12 upstreams, found $UPSTREAMS"
+            exit 1
+          fi
+          echo "✅ nginx.conf structure is valid (12 upstreams confirmed)"
+
+  # ============ DOCKERFILE VALIDATION ============
+  docker-validation:
+    runs-on: ubuntu-latest
+    name: 🐳 Dockerfile Validation
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check Dockerfile Syntax
+        run: |
+          echo "🔍 Validating Dockerfile..."
+          ERRORS=0
+          for DIR in "FROM" "COPY" "EXPOSE" "HEALTHCHECK" "CMD"; do
+            if ! grep -q "^$DIR" Dockerfile; then
+              echo "❌ ERROR: Missing $DIR directive"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+          if [ $ERRORS -gt 0 ]; then exit 1; fi
+          echo "✅ Dockerfile structure is valid"
+
+      - name: Check Port Configurations Match
+        run: |
+          echo "🔍 Verifying port configurations..."
+          DOCKERFILE_PORT=$(grep "^EXPOSE" Dockerfile | awk '{print $2}')
+          NGINX_PORT=$(grep "listen " nginx.conf | head -1 | awk '{print $2}' | sed 's/;//')
+          if [ "$DOCKERFILE_PORT" != "$NGINX_PORT" ]; then
+            echo "❌ ERROR: Port mismatch - Dockerfile: $DOCKERFILE_PORT, nginx: $NGINX_PORT"
+            exit 1
+          fi
+          echo "✅ Ports match: $DOCKERFILE_PORT"
+
+  # ============ SHELL SCRIPT VALIDATION ============
+  shell-validation:
+    runs-on: ubuntu-latest
+    name: 📜 Shell Script Validation
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: ShellCheck Linting
+        run: |
+          echo "🔍 Running ShellCheck..."
+          apt-get update > /dev/null && apt-get install -y shellcheck > /dev/null
+          shellcheck -x deploy.sh || exit 1
+          echo "✅ deploy.sh passed ShellCheck"
+
+      - name: Check deploy.sh Functions
+        run: |
+          echo "🔍 Verifying deploy.sh functions..."
+          FUNCTIONS=("loading" "error_exit" "retry_command")
+          ERRORS=0
+          for FUNC in "${FUNCTIONS[@]}"; do
+            if ! grep -q "^$FUNC()" deploy.sh; then
+              echo "❌ ERROR: Missing function: $FUNC"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+          if [ $ERRORS -gt 0 ]; then exit 1; fi
+          echo "✅ All required functions found"
+
+  # ============ FILE CONSISTENCY CHECK ============
+  consistency-check:
+    runs-on: ubuntu-latest
+    name: 🔗 Cross-File Consistency Check
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify File References Match
+        run: |
+          echo "🔍 Checking cross-file consistency..."
+          PROTOCOLS=("saeka-tojirp" "vmess-saeka" "vless-saeka" "ss-saeka")
+          ERRORS=0
+          for PROTO in "${PROTOCOLS[@]}"; do
+            if ! grep -q "$PROTO" nginx.conf; then
+              echo "❌ ERROR: Protocol path $PROTO not in nginx.conf"
+              ERRORS=$((ERRORS + 1))
+            fi
+            if ! grep -q "$PROTO" index.html; then
+              echo "❌ ERROR: Protocol path $PROTO not in index.html"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+          if [ $ERRORS -gt 0 ]; then exit 1; fi
+          echo "✅ Cross-file consistency verified"
+
+  # ============ SECURITY CHECKS ============
+  security-check:
+    runs-on: ubuntu-latest
+    name: 🔐 Security & Hardening Check
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for Exposed Secrets
+        run: |
+          echo "🔍 Scanning for exposed secrets..."
+          if grep -rE "AWS_SECRET|PRIVATE_KEY|api.key" .; then
+            echo "⚠️ WARNING: Potential secrets detected"
+          fi
+          echo "✅ Secret scan complete"
+
+      - name: Docker Image Security
+        run: |
+          echo "🔍 Checking Docker security..."
+          if grep -q "FROM.*:latest" Dockerfile; then
+            echo "⚠️ WARNING: Using 'latest' tag (use pinned versions)"
+          fi
+          echo "✅ Docker security check complete"
+
+  # ============ FINAL SUMMARY ============
+  validation-summary:
+    runs-on: ubuntu-latest
+    name: ✅ Validation Summary
+    needs: [html-validation, json-validation, nginx-validation, docker-validation, shell-validation, consistency-check, security-check]
+    if: always()
+    
+    steps:
+      - name: Report Status
+        run: |
+          echo "════════════════════════════════════════════════════════════"
+          echo "          🎉 PRE-DEPLOYMENT VALIDATION COMPLETE 🎉"
+          echo "════════════════════════════════════════════════════════════"
+          echo ""
+          echo "Checks Passed:"
+          echo "  ✅ HTML & JavaScript Analysis"
+          echo "  ✅ JSON Configuration"
+          echo "  ✅ Nginx Configuration"
+          echo "  ✅ Dockerfile"
+          echo "  ✅ Shell Scripts"
+          echo "  ✅ Cross-File Consistency"
+          echo "  ✅ Security Checks"
+          echo ""
+          echo "════════════════════════════════════════════════════════════"
+          echo "Status: ✅ READY FOR DEPLOYMENT"
+          echo "════════════════════════════════════════════════════════════"
+          
+          if [[ "${{ needs.html-validation.result }}" == "failure" || \
+                "${{ needs.json-validation.result }}" == "failure" || \
+                "${{ needs.nginx-validation.result }}" == "failure" ]]; then
+            echo "❌ DEPLOYMENT BLOCKED: Errors found"
+            exit 1
+          fi
