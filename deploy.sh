@@ -169,6 +169,9 @@ echo -e "  ${CYAN}STARTING REAL-TIME LOGS...${RESET}"
 echo -e "  ${YELLOW}(Press Ctrl+C to stop)${RESET}"
 echo ""
 
+npm install express cors ws
+node server.js
+
 # Tail logs with error handling
 gcloud run logs tail "$SERVICE_NAME" --region us-central1 --project="$PROJECT_ID" || {
     echo -e "  ${YELLOW}Note: Logs streaming interrupted (this is normal)${RESET}"
