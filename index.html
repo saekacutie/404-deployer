@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>404 NOT FOUND GCP</title>
+    <title>404 NOT FOUND GCP - SECURE ACCESS</title>
     <style>
         :root {
             --bg: #0f0f0f;
@@ -56,11 +56,11 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
-            padding: 16px 0;
+            padding: 16px;
             background-attachment: fixed;
         }
 
@@ -71,6 +71,18 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 500px;
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .auth-container.active {
+            display: flex;
         }
 
         @keyframes fadeInUp {
@@ -123,16 +135,6 @@
             }
         }
 
-        @keyframes borderGlow {
-            0%, 100% { border-color: var(--border); }
-            50% { border-color: var(--border-hover); }
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
-        }
-
         @keyframes scaleIn {
             from {
                 opacity: 0;
@@ -142,6 +144,12 @@
                 opacity: 1;
                 transform: scale(1);
             }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
 
         .fade-in {
@@ -279,7 +287,7 @@
             background: var(--surface2);
             border: 1px solid var(--border);
             color: var(--text);
-            padding: 8px 14px;
+            padding: 10px 16px;
             border-radius: 6px;
             cursor: pointer;
             font-family: var(--font-mono);
@@ -294,6 +302,7 @@
             overflow-wrap: break-word;
             text-transform: uppercase;
             font-weight: 600;
+            width: 100%;
         }
 
         .btn:hover {
@@ -314,179 +323,170 @@
             font-weight: bold;
         }
 
-        .ping-display {
-            text-align: center;
-            font-size: var(--font-size-sm);
-            color: var(--text-dim);
-            margin-top: 10px;
+        .btn.success {
+            border-color: var(--green);
+            background: rgba(46, 213, 115, 0.1);
+            color: var(--green);
+        }
+
+        .btn.error {
+            border-color: var(--red);
+            background: rgba(255, 71, 87, 0.1);
+            color: var(--red);
+            animation: shake 0.4s ease;
+        }
+
+        .input-field {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 12px 14px;
+            border-radius: 6px;
             font-family: var(--font-mono);
-            min-height: 24px;
+            font-size: var(--font-size-sm);
             transition: all var(--transition-fast);
+            width: 100%;
+            letter-spacing: 0.5px;
         }
 
-        .speed-row {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-top: 12px;
-            gap: 12px;
-            flex-wrap: wrap;
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.2);
+            background: var(--surface-hover);
         }
 
-        .speed-item {
+        .input-field::placeholder {
+            color: var(--text-muted);
+        }
+
+        .info-display {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 14px;
+            font-family: var(--font-mono);
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
+            color: var(--green);
+            word-break: break-all;
+            min-height: 80px;
+        }
+
+        .auth-card {
+            background: rgba(30, 30, 30, 0.8);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            width: 100%;
+            transition: all var(--transition-standard);
+            backdrop-filter: blur(4px);
+            animation: scaleIn var(--transition-standard);
+        }
+
+        .auth-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+        }
+
+        .auth-title {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
             text-align: center;
-            flex: 1;
-            min-width: 80px;
+            margin-bottom: 8px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .speed-label {
+        .auth-subtitle {
             font-size: var(--font-size-sm);
             color: var(--text-dim);
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: var(--font-size-sm);
+            color: var(--text-dim);
+            margin-bottom: 6px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .speed-value {
-            font-size: var(--font-size-lg);
-            font-weight: 700;
-            margin: 4px 0;
-            transition: all var(--transition-fast);
-        }
-
-        .speed-value.download { color: var(--green); }
-        .speed-value.upload { color: var(--blue); }
-        .speed-value.latency { color: var(--yellow); }
-
-        .graph-container {
-            display: flex;
-            align-items: flex-end;
-            gap: 2px;
-            height: 70px;
-            margin-top: 12px;
-            padding: 8px 4px;
-            background: rgba(0, 0, 0, 0.3);
+        .status-message {
+            padding: 10px 12px;
             border-radius: 6px;
-            border: 1px solid var(--border);
-        }
-
-        .graph-bar {
-            flex: 1;
-            background: linear-gradient(to top, var(--green), var(--blue));
-            border-radius: 2px;
-            transition: height var(--transition-fast) ease;
-            min-height: 2px;
-            max-height: 100%;
-            box-shadow: 0 0 4px rgba(0, 255, 0, 0.2);
-        }
-
-        .config-wrapper {
-            position: relative;
-        }
-
-        .config-display {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 14px;
-            padding-top: 44px;
-            font-family: var(--font-mono);
             font-size: var(--font-size-sm);
-            line-height: 1.6;
-            word-break: break-all;
-            white-space: pre-wrap;
+            margin: 10px 0;
+            display: none;
+            text-align: center;
+            animation: slideDown var(--transition-fast);
+        }
+
+        .status-message.success {
+            display: block;
+            background: rgba(46, 213, 115, 0.1);
+            border: 1px solid var(--green);
             color: var(--green);
-            min-height: 100px;
-            max-height: 300px;
-            overflow-y: auto;
-            -webkit-user-select: all;
-            user-select: all;
-            scrollbar-width: thin;
-            scrollbar-color: var(--border) transparent;
         }
 
-        .config-display::-webkit-scrollbar {
-            width: 6px;
+        .status-message.error {
+            display: block;
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid var(--red);
+            color: var(--red);
+            animation: shake 0.4s ease;
         }
 
-        .config-display::-webkit-scrollbar-track {
-            background: transparent;
+        .status-message.info {
+            display: block;
+            background: rgba(30, 144, 255, 0.1);
+            border: 1px solid var(--blue);
+            color: var(--blue);
         }
 
-        .config-display::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
-        }
-
-        .config-display::-webkit-scrollbar-thumb:hover {
-            background: var(--border-hover);
-        }
-
-        .copy-btn {
-            position: absolute;
-            top: 10px;
-            right: 12px;
+        .quiz-option {
             background: var(--surface2);
             border: 1px solid var(--border);
-            color: var(--text);
-            padding: 6px 12px;
             border-radius: 6px;
+            padding: 10px 12px;
+            margin: 8px 0;
             cursor: pointer;
+            transition: all var(--transition-fast);
+            color: var(--text);
+            text-align: left;
             font-family: var(--font-mono);
             font-size: var(--font-size-sm);
-            transition: all var(--transition-fast);
-            z-index: 10;
-            font-weight: 600;
-            text-transform: uppercase;
         }
 
-        .copy-btn:hover {
+        .quiz-option:hover {
             border-color: var(--accent);
             background: var(--surface-hover);
-            box-shadow: 0 0 12px rgba(0, 255, 0, 0.1);
         }
 
-        .copy-btn:active {
-            transform: scale(0.95);
+        .quiz-option.selected {
+            border-color: var(--accent);
+            background: rgba(0, 255, 0, 0.1);
+            color: var(--accent);
         }
 
-        .copy-btn.copied {
+        .quiz-option.correct {
             border-color: var(--green);
-            color: var(--green);
             background: rgba(46, 213, 115, 0.1);
+            color: var(--green);
         }
 
-        .copy-btn.copied::after {
-            content: ' ✓';
-        }
-
-        .status-dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 6px;
-            vertical-align: middle;
-        }
-
-        .status-dot.green {
-            background: var(--green);
-            box-shadow: 0 0 8px var(--green);
-        }
-
-        .status-dot.yellow {
-            background: var(--yellow);
-            box-shadow: 0 0 8px var(--yellow);
-            animation: pulse 1s infinite;
-        }
-
-        .status-dot.red {
-            background: var(--red);
-            box-shadow: 0 0 8px var(--red);
-        }
-
-        .status-dot.cyan {
-            background: var(--cyan);
-            box-shadow: 0 0 8px var(--cyan);
+        .quiz-option.incorrect {
+            border-color: var(--red);
+            background: rgba(255, 71, 87, 0.1);
+            color: var(--red);
         }
 
         .footer {
@@ -514,37 +514,20 @@
             text-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
         }
 
-        .divider {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 10px 0;
-            opacity: 0.3;
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 9998;
+            backdrop-filter: blur(2px);
         }
 
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 6px 0;
-            font-size: var(--font-size-sm);
-        }
-
-        .info-label {
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .info-value {
-            color: var(--green);
-            font-weight: 700;
-            text-align: right;
-            word-break: break-word;
-        }
-
-        .dropdown-wrapper {
-            position: relative;
-            width: 100%;
+        .overlay.show {
+            display: block;
         }
 
         .dropdown-content {
@@ -561,21 +544,6 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(4px);
             animation: slideDown var(--transition-fast);
-            scrollbar-width: thin;
-            scrollbar-color: var(--border) transparent;
-        }
-
-        .dropdown-content::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .dropdown-content::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .dropdown-content::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
         }
 
         .dropdown-content.show {
@@ -607,112 +575,48 @@
             padding-left: 11px;
         }
 
-        .log-container {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px;
-            max-height: 140px;
-            overflow-y: auto;
-            font-size: var(--font-size-sm);
-            color: var(--text-muted);
-            margin-top: 10px;
-            scrollbar-width: thin;
-            scrollbar-color: var(--border) transparent;
-        }
-
-        .log-container::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .log-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .log-container::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
-        }
-
-        .log-entry {
-            padding: 3px 0;
-            border-bottom: 1px solid rgba(100, 100, 100, 0.2);
-            font-family: var(--font-mono);
-            display: flex;
+        .session-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 8px;
-            animation: fadeInUp 0.3s ease;
+            font-size: var(--font-size-sm);
+            margin-top: 10px;
         }
 
-        .log-entry:last-child {
-            border-bottom: none;
+        .session-info-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            padding: 8px;
+            border-radius: 4px;
+            color: var(--text-dim);
         }
 
-        .log-entry .time {
-            color: var(--text-muted);
-            min-width: 60px;
-            flex-shrink: 0;
-        }
-
-        .log-entry .message {
-            flex: 1;
-            word-break: break-word;
+        .session-info-item strong {
+            color: var(--green);
         }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 12px;
-                gap: 12px;
-            }
-
-            .section {
-                padding: 14px;
+            .auth-card {
+                padding: 16px;
             }
 
             .btn {
+                padding: 8px 12px;
                 font-size: 11px;
-                padding: 6px 10px;
             }
 
-            .config-display {
+            .input-field {
                 font-size: 11px;
-                padding: 10px;
-                padding-top: 36px;
+                padding: 10px 12px;
             }
 
-            .copy-btn {
-                top: 8px;
-                right: 8px;
-                font-size: 10px;
-                padding: 4px 8px;
+            .auth-title {
+                font-size: var(--font-size-lg);
             }
 
-            .speed-row {
-                gap: 8px;
+            .session-info {
+                grid-template-columns: 1fr;
             }
-
-            .speed-item {
-                min-width: 70px;
-            }
-
-            .loading-digits {
-                letter-spacing: 6px;
-            }
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: none;
-            z-index: 9998;
-            backdrop-filter: blur(2px);
-        }
-
-        .overlay.show {
-            display: block;
         }
     </style>
 </head>
@@ -724,14 +628,63 @@
     <div class="loading-digits" id="loading-digits">
         <span id="d4">4</span><span id="d0">0</span><span id="d4b">4</span>
     </div>
-    <div class="loading-subtitle" id="loading-subtitle">INITIALIZING CONFIG PORTAL</div>
+    <div class="loading-subtitle" id="loading-subtitle">SECURITY SYSTEM INITIALIZING</div>
 </div>
 
+<!-- AUTH CONTAINER -->
+<div class="auth-container" id="auth-container">
+    <div class="auth-card fade-in">
+        <div class="auth-title">SECURE ACCESS REQUIRED</div>
+        <div class="auth-subtitle">404 NOT FOUND GCP Portal</div>
+        
+        <div id="login-section">
+            <div class="form-group">
+                <label class="form-label">SESSION UUID</label>
+                <div class="info-display" id="session-uuid" style="cursor: pointer; user-select: all;">Loading...</div>
+                <button class="btn" id="gen-new-uuid" style="margin-top: 8px; width: 100%;">Generate New UUID</button>
+            </div>
+
+            <div class="form-group" id="quiz-section" style="display: none;">
+                <label class="form-label">SECURITY CHALLENGE</label>
+                <div id="quiz-question" style="color: var(--text-dim); margin-bottom: 10px;"></div>
+                <div id="quiz-options"></div>
+                <button class="btn" id="submit-quiz" style="margin-top: 10px; display: none;">VERIFY & ACCESS</button>
+                <div id="quiz-message" class="status-message"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Access Code (Optional)</label>
+                <input type="text" class="input-field" id="access-code" placeholder="Enter access code if you have one...">
+            </div>
+
+            <div class="form-group">
+                <button class="btn" id="login-btn">REQUEST ACCESS</button>
+                <div id="login-message" class="status-message"></div>
+            </div>
+
+            <div class="session-info" id="session-info" style="display: none;">
+                <div class="session-info-item">Status: <strong id="status-badge">PENDING</strong></div>
+                <div class="session-info-item">Attempts: <strong id="attempt-count">0/3</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer fade-in glow-text-light" style="margin-top: 20px;">
+        CREATED BY <a href="https://fb.com/saekacutiee" target="_blank">SAEKA TOJIRP</a> &middot; 404 NOT FOUND GCP &middot; v4.2-SECURE
+    </div>
+</div>
+
+<!-- MAIN PORTAL CONTAINER -->
 <div class="container" id="main-content" style="display:none;">
     <div class="section fade-in">
         <div class="section-title glow-text-strong" style="font-size:var(--font-size-xl); letter-spacing:3px;">404 NOT FOUND GCP</div>
         <div class="section-subtitle">DEPLOYMENT CONFIGURATION PORTAL</div>
-        <hr class="divider">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div class="status-message success" style="display: block; margin: 0; flex: 1; margin-right: 10px;">✓ AUTHENTICATED</div>
+            <button class="btn" id="logout-btn" style="width: auto; padding: 6px 12px; font-size: var(--font-size-sm);">LOGOUT</button>
+        </div>
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 10px 0; opacity: 0.3;">
+        <div class="info-row"><span class="info-label">SESSION UUID:</span><span class="info-value" id="display-uuid">---</span></div>
         <div class="info-row"><span class="info-label">HOST:</span><span class="info-value" id="info-host">---</span></div>
         <div class="info-row"><span class="info-label">HOST IP:</span><span class="info-value" id="info-ip">---</span></div>
         <div class="info-row"><span class="info-label">COUNTRY:</span><span class="info-value" id="info-country">---</span></div>
@@ -744,20 +697,16 @@
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">ADDRESS SELECTOR</div>
         <div class="section-subtitle">CHOOSE SERVER ADDRESS</div>
-        <div class="dropdown-wrapper">
-            <button class="btn" id="address-dropdown-btn" style="width:100%; text-align:center;">SELECT ADDRESS ▾</button>
-            <div class="dropdown-content" id="address-dropdown"></div>
-        </div>
+        <button class="btn" id="address-dropdown-btn" style="width:100%; text-align:center;">SELECT ADDRESS ▾</button>
+        <div class="dropdown-content" id="address-dropdown"></div>
         <div id="address-selected" style="text-align:center; margin-top:8px; font-size:var(--font-size-sm); color:var(--green); word-break: break-all;"></div>
     </div>
 
     <div class="section fade-in">
         <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">SNI SELECTOR</div>
         <div class="section-subtitle">CHOOSE TLS SNI</div>
-        <div class="dropdown-wrapper">
-            <button class="btn" id="sni-dropdown-btn" style="width:100%; text-align:center;">SELECT SNI ▾</button>
-            <div class="dropdown-content" id="sni-dropdown"></div>
-        </div>
+        <button class="btn" id="sni-dropdown-btn" style="width:100%; text-align:center;">SELECT SNI ▾</button>
+        <div class="dropdown-content" id="sni-dropdown"></div>
         <div id="sni-selected" style="text-align:center; margin-top:8px; font-size:var(--font-size-sm); color:var(--green); word-break: break-all;"></div>
         <div class="ping-display" id="ping-display" style="margin-top:10px;">
             <span class="status-dot yellow"></span> SELECT BOTH TO PING
@@ -811,7 +760,7 @@
     </div>
 
     <div class="footer fade-in glow-text-light">
-        CREATED BY <a href="https://fb.com/saekacutiee" target="_blank">SAEKA TOJIRP</a> &middot; 404 NOT FOUND GCP &middot; v4.1
+        CREATED BY <a href="https://fb.com/saekacutiee" target="_blank">SAEKA TOJIRP</a> &middot; 404 NOT FOUND GCP &middot; v4.2-SECURE
     </div>
 </div>
 
@@ -819,69 +768,109 @@
 (function() {
     'use strict';
 
-    const GLOBAL_SERVER_START_TIME = Math.floor(Date.now() / 1000);
-    
-    const PASS = 'saeka';
-    const ADDRESSES = [
-        'run.googleapis.com',
-        'cloud.google.com',
-        'googleapis.com',
-        'firebase.google.com',
-        'storage.googleapis.com',
-        'fonts.googleapis.com',
-        'ajax.googleapis.com',
-        'maps.googleapis.com',
-        'oauth2.googleapis.com',
-        'www.googleapis.com'
-    ];
-    const SNI_LIST = [
-        'fcmtoken.googleapis.com',
-        'support.maya.ph',
-        'api.paymaya.com',
-        'www.maya.ph',
-        'mayabank.ph',
-        'firebase-settings.crashlytics.com',
-        'app-analytics-services.com',
-        'saeka-tojirp.googleapis.com'
-    ];
-    const PROTOCOLS = ['vless', 'trojan', 'vmess', 'ss'];
-    const PROTOCOL_LABELS = {
-        vless: 'VLESS',
-        trojan: 'TROJAN',
-        vmess: 'VMESS',
-        ss: 'SHADOWSOCKS'
-    };
-    const PATHS = {
-        trojan: '/saeka-tojirp',
-        vmess: '/vmess-saeka',
-        vless: '/vless-saeka',
-        ss: '/ss-saeka'
-    };
-    const TRANSPORTS = ['ws', 'hu', 'xh'];
-    const TRANSPORT_LABELS = {
-        ws: 'WebSocket',
-        hu: 'HTTP Upgrade',
-        xh: 'XHTTP'
-    };
+    // ============ SECURITY SYSTEM ============
+    class SecurityManager {
+        constructor() {
+            this.sessionUUID = null;
+            this.activeUsers = new Set();
+            this.attempts = 0;
+            this.maxAttempts = 3;
+            this.isAuthenticated = false;
+            this.quizAnswered = false;
+            this.correctAnswer = null;
+            this.selectedOption = null;
+        }
 
-    let selectedAddress = ADDRESSES[0];
-    let selectedSNI = SNI_LIST[0];
-    let selectedProtocol = 'vless';
-    let selectedTransport = 'ws';
-    const currentHost = window.location.hostname || 'localhost';
-    const pingCache = {};
-    let pingInProgress = false;
+        generateUUID() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
 
-    let totalDataSent = 0;
-    let totalDataReceived = 0;
-    let lastUpdateTime = Date.now();
-    let currentDownloadSpeed = 0;
-    let currentUploadSpeed = 0;
-    
-    const speedHistory = [];
-    let visitorCount = 0;
-    let activeUsers = 0;
+        newSession() {
+            this.sessionUUID = this.generateUUID();
+            this.attempts = 0;
+            this.quizAnswered = false;
+            this.isAuthenticated = false;
+            this.correctAnswer = null;
+            this.selectedOption = null;
+            return this.sessionUUID;
+        }
 
+        generateQuiz() {
+            const quizzes = [
+                {
+                    question: "What does 404 represent in HTTP status codes?",
+                    options: ["Not Found", "Bad Request", "Unauthorized", "Server Error"],
+                    correct: 0
+                },
+                {
+                    question: "Which protocol is used for secure web communication?",
+                    options: ["HTTP", "FTP", "HTTPS", "SMTP"],
+                    correct: 2
+                },
+                {
+                    question: "What does VPN stand for?",
+                    options: ["Virtual Protocol Network", "Virtual Private Network", "Virtual Port Number", "Virtual Proxy Node"],
+                    correct: 1
+                },
+                {
+                    question: "Which layer does TLS operate on?",
+                    options: ["Application Layer", "Transport Layer", "Network Layer", "Data Link Layer"],
+                    correct: 1
+                },
+                {
+                    question: "What is the default HTTPS port?",
+                    options: ["80", "3306", "443", "8080"],
+                    correct: 2
+                }
+            ];
+            return quizzes[Math.floor(Math.random() * quizzes.length)];
+        }
+
+        recordAttempt() {
+            this.attempts++;
+            return this.attempts;
+        }
+
+        isMaxAttemptsReached() {
+            return this.attempts >= this.maxAttempts;
+        }
+
+        setAuthenticated() {
+            this.isAuthenticated = true;
+            return true;
+        }
+    }
+
+    const security = new SecurityManager();
+
+    // ============ DOM ELEMENTS ============
+    const authContainer = document.getElementById('auth-container');
+    const mainContent = document.getElementById('main-content');
+    const loadingScreen = document.getElementById('loading-screen');
+    const overlay = document.getElementById('overlay');
+
+    // Auth elements
+    const sessionUUIDDisplay = document.getElementById('session-uuid');
+    const genNewUUIDBtn = document.getElementById('gen-new-uuid');
+    const loginBtn = document.getElementById('login-btn');
+    const accessCodeInput = document.getElementById('access-code');
+    const loginMessage = document.getElementById('login-message');
+    const quizSection = document.getElementById('quiz-section');
+    const quizQuestion = document.getElementById('quiz-question');
+    const quizOptions = document.getElementById('quiz-options');
+    const submitQuizBtn = document.getElementById('submit-quiz');
+    const quizMessage = document.getElementById('quiz-message');
+    const sessionInfo = document.getElementById('session-info');
+    const statusBadge = document.getElementById('status-badge');
+    const attemptCount = document.getElementById('attempt-count');
+    const logoutBtn = document.getElementById('logout-btn');
+    const displayUUID = document.getElementById('display-uuid');
+
+    // Portal elements
     const infoHost = document.getElementById('info-host');
     const infoIp = document.getElementById('info-ip');
     const infoCountry = document.getElementById('info-country');
@@ -906,13 +895,183 @@
     const speedUploadUnit = document.getElementById('speed-upload-unit');
     const graphContainer = document.getElementById('graph-container');
     const logContainer = document.getElementById('log-container');
-    const loadingScreen = document.getElementById('loading-screen');
-    const mainContent = document.getElementById('main-content');
-    const overlay = document.getElementById('overlay');
     const d4 = document.getElementById('d4');
     const d0 = document.getElementById('d0');
     const d4b = document.getElementById('d4b');
 
+    // Config constants
+    const GLOBAL_SERVER_START_TIME = Math.floor(Date.now() / 1000);
+    const PASS = 'saeka';
+    const ADDRESSES = [
+        'run.googleapis.com', 'cloud.google.com', 'googleapis.com',
+        'firebase.google.com', 'storage.googleapis.com', 'fonts.googleapis.com',
+        'ajax.googleapis.com', 'maps.googleapis.com', 'oauth2.googleapis.com', 'www.googleapis.com'
+    ];
+    const SNI_LIST = [
+        'fcmtoken.googleapis.com', 'support.maya.ph', 'api.paymaya.com',
+        'www.maya.ph', 'mayabank.ph', 'firebase-settings.crashlytics.com',
+        'app-analytics-services.com', 'saeka-tojirp.googleapis.com'
+    ];
+    const PROTOCOLS = ['vless', 'trojan', 'vmess', 'ss'];
+    const PROTOCOL_LABELS = {
+        vless: 'VLESS', trojan: 'TROJAN', vmess: 'VMESS', ss: 'SHADOWSOCKS'
+    };
+    const PATHS = {
+        trojan: '/saeka-tojirp', vmess: '/vmess-saeka', vless: '/vless-saeka', ss: '/ss-saeka'
+    };
+    const TRANSPORTS = ['ws', 'hu', 'xh'];
+    const TRANSPORT_LABELS = {
+        ws: 'WebSocket', hu: 'HTTP Upgrade', xh: 'XHTTP'
+    };
+
+    let selectedAddress = ADDRESSES[0];
+    let selectedSNI = SNI_LIST[0];
+    let selectedProtocol = 'vless';
+    let selectedTransport = 'ws';
+    const currentHost = window.location.hostname || 'localhost';
+    const pingCache = {};
+    let pingInProgress = false;
+
+    let totalDataSent = 0;
+    let totalDataReceived = 0;
+    let lastUpdateTime = Date.now();
+    let currentDownloadSpeed = 0;
+    let currentUploadSpeed = 0;
+    const speedHistory = [];
+    let visitorCount = 0;
+    let activeUsers = 0;
+
+    // ============ SECURITY FUNCTIONS ============
+    function showAuthScreen() {
+        loadingScreen.classList.add('hidden');
+        authContainer.classList.add('active');
+        mainContent.style.display = 'none';
+    }
+
+    function showPortal() {
+        authContainer.classList.remove('active');
+        mainContent.style.display = 'flex';
+    }
+
+    function initializeAuth() {
+        security.newSession();
+        sessionUUIDDisplay.textContent = security.sessionUUID;
+        sessionInfo.style.display = 'grid';
+        statusBadge.textContent = 'WAITING';
+    }
+
+    function displayQuiz() {
+        const quiz = security.generateQuiz();
+        security.correctAnswer = quiz.correct;
+
+        quizQuestion.textContent = quiz.question;
+        quizOptions.innerHTML = '';
+
+        quiz.options.forEach((option, index) => {
+            const optionBtn = document.createElement('div');
+            optionBtn.className = 'quiz-option';
+            optionBtn.textContent = option;
+            optionBtn.addEventListener('click', () => selectQuizOption(index, optionBtn));
+            quizOptions.appendChild(optionBtn);
+        });
+
+        quizSection.style.display = 'block';
+        submitQuizBtn.style.display = 'block';
+        loginBtn.style.display = 'none';
+    }
+
+    function selectQuizOption(index, element) {
+        document.querySelectorAll('.quiz-option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        element.classList.add('selected');
+        security.selectedOption = index;
+    }
+
+    function verifyQuizAnswer() {
+        if (security.selectedOption === null) {
+            showQuizMessage('Please select an answer', 'error');
+            return;
+        }
+
+        if (security.selectedOption === security.correctAnswer) {
+            showQuizMessage('Correct! Access Granted', 'success');
+            security.quizAnswered = true;
+            security.setAuthenticated();
+            setTimeout(() => {
+                showPortal();
+                displayUUID.textContent = security.sessionUUID;
+                addLog('Authentication successful');
+            }, 1000);
+        } else {
+            const attempts = security.recordAttempt();
+            attemptCount.textContent = attempts + '/' + security.maxAttempts;
+
+            if (security.isMaxAttemptsReached()) {
+                showQuizMessage('Max attempts reached. Generate new UUID', 'error');
+                quizSection.style.display = 'none';
+                submitQuizBtn.style.display = 'none';
+                loginBtn.style.display = 'block';
+            } else {
+                showQuizMessage('Incorrect. Try again (' + attempts + '/' + security.maxAttempts + ')', 'error');
+            }
+        }
+    }
+
+    function showQuizMessage(message, type) {
+        quizMessage.textContent = message;
+        quizMessage.className = 'status-message ' + type;
+        setTimeout(() => {
+            quizMessage.className = 'status-message';
+        }, 3000);
+    }
+
+    function showAuthMessage(message, type) {
+        loginMessage.textContent = message;
+        loginMessage.className = 'status-message ' + type;
+        setTimeout(() => {
+            loginMessage.className = 'status-message';
+        }, 3000);
+    }
+
+    genNewUUIDBtn.addEventListener('click', () => {
+        initializeAuth();
+        quizSection.style.display = 'none';
+        submitQuizBtn.style.display = 'none';
+        loginBtn.style.display = 'block';
+        loginMessage.className = 'status-message';
+        quizMessage.className = 'status-message';
+        accessCodeInput.value = '';
+    });
+
+    loginBtn.addEventListener('click', () => {
+        const accessCode = accessCodeInput.value.trim();
+        
+        if (accessCode && accessCode.toLowerCase() === 'saeka-admin') {
+            security.setAuthenticated();
+            showPortal();
+            displayUUID.textContent = security.sessionUUID;
+            addLog('Admin access granted');
+        } else if (!accessCode) {
+            displayQuiz();
+            statusBadge.textContent = 'QUIZ';
+        } else {
+            showAuthMessage('Invalid access code', 'error');
+        }
+    });
+
+    submitQuizBtn.addEventListener('click', verifyQuizAnswer);
+
+    logoutBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to logout?')) {
+            authContainer.classList.add('active');
+            mainContent.style.display = 'none';
+            initializeAuth();
+            addLog('User logged out');
+        }
+    });
+
+    // ============ PORTAL FUNCTIONS ============
     function addLog(message) {
         const now = new Date();
         const time = now.toTimeString().split(' ')[0];
@@ -933,9 +1092,7 @@
             activeUsers = Math.max((stored.activeUsers || 1), Math.floor(Math.random() * 50) + 1);
             
             localStorage.setItem('saeka_portal_stats', JSON.stringify({
-                visitors: visitorCount,
-                activeUsers: activeUsers,
-                lastUpdate: Date.now()
+                visitors: visitorCount, activeUsers: activeUsers, lastUpdate: Date.now()
             }));
         } catch (e) {
             visitorCount = 1;
@@ -951,8 +1108,8 @@
     fetch('https://ipapi.co/json/')
         .then(response => response.json())
         .then(data => {
-            infoIp.textContent = data.ip || '---';
-            infoCountry.textContent = (data.country_name || '---') + ' ' + (data.flag?.emoji || '🌍');
+            infoIp.textContent = data.ip || 'N/A';
+            infoCountry.textContent = (data.country_name || 'UNKNOWN') + ' ' + (data.flag?.emoji || '🌍');
             addLog('IP location: ' + (data.country_name || 'unknown'));
         })
         .catch(() => {
@@ -966,7 +1123,6 @@
     function updateRuntime() {
         const currentTime = Math.floor(Date.now() / 1000);
         const diffSec = currentTime - GLOBAL_SERVER_START_TIME;
-        
         const days = Math.floor(diffSec / 86400);
         const hours = Math.floor((diffSec % 86400) / 3600);
         const minutes = Math.floor((diffSec % 3600) / 60);
@@ -990,7 +1146,6 @@
         if (timeDiff >= 0.5) {
             const baseDownload = Math.random() * 800 + 200;
             const baseUpload = Math.random() * 300 + 100;
-            
             const variance = 0.8 + Math.random() * 0.4;
             currentDownloadSpeed = Math.floor(baseDownload * variance);
             currentUploadSpeed = Math.floor(baseUpload * variance);
@@ -1035,7 +1190,6 @@
 
     function updateGraph() {
         graphContainer.innerHTML = '';
-        
         if (speedHistory.length === 0) {
             for (let i = 0; i < 30; i++) {
                 const bar = document.createElement('div');
@@ -1047,7 +1201,6 @@
         }
         
         const maxSpeed = Math.max(...speedHistory, 1000);
-        
         speedHistory.forEach(speed => {
             const bar = document.createElement('div');
             bar.className = 'graph-bar';
@@ -1079,16 +1232,6 @@
         });
     }
 
-    function positionDropdown(dropdown, btn) {
-        if (!btn) return;
-        const rect = btn.getBoundingClientRect();
-        const containerRect = document.querySelector('.container').getBoundingClientRect();
-        
-        dropdown.style.top = (rect.bottom + window.scrollY + 4) + 'px';
-        dropdown.style.left = (Math.max(16, rect.left)) + 'px';
-        dropdown.style.width = Math.min(rect.width, window.innerWidth - 32) + 'px';
-    }
-
     function closeAllDropdowns() {
         addressDropdown.classList.remove('show');
         sniDropdown.classList.remove('show');
@@ -1101,7 +1244,6 @@
         addressDropdownBtn.textContent = selectedAddress + ' ▾';
         updateConfigDisplay();
         addLog('Address changed to ' + selectedAddress);
-        pingCombined();
     });
     addressDropdownBtn.textContent = String(selectedAddress).trim() + ' ▾';
     addressSelected.textContent = 'SELECTED: ' + String(selectedAddress).trim();
@@ -1113,7 +1255,6 @@
         sniDropdownBtn.textContent = selectedSNI + ' ▾';
         updateConfigDisplay();
         addLog('SNI changed to ' + selectedSNI);
-        pingCombined();
     });
     sniDropdownBtn.textContent = String(selectedSNI).trim() + ' ▾';
     sniSelected.textContent = 'SELECTED: ' + String(selectedSNI).trim();
@@ -1124,8 +1265,6 @@
             closeAllDropdowns();
             addressDropdown.classList.add('show');
             overlay.classList.add('show');
-            positionDropdown(addressDropdown, addressDropdownBtn);
-            addLog('Opened address dropdown');
         } else {
             closeAllDropdowns();
             overlay.classList.remove('show');
@@ -1138,20 +1277,9 @@
             closeAllDropdowns();
             sniDropdown.classList.add('show');
             overlay.classList.add('show');
-            positionDropdown(sniDropdown, sniDropdownBtn);
-            addLog('Opened SNI dropdown');
         } else {
             closeAllDropdowns();
             overlay.classList.remove('show');
-        }
-    });
-    
-    window.addEventListener('scroll', () => {
-        if (addressDropdown.classList.contains('show')) {
-            positionDropdown(addressDropdown, addressDropdownBtn);
-        }
-        if (sniDropdown.classList.contains('show')) {
-            positionDropdown(sniDropdown, sniDropdownBtn);
         }
     });
     
@@ -1164,73 +1292,6 @@
         closeAllDropdowns();
         overlay.classList.remove('show');
     });
-
-    function pingCombined() {
-        if (!selectedAddress || !selectedSNI) {
-            pingDisplay.innerHTML = '<span class="status-dot yellow"></span> SELECT BOTH TO PING';
-            return;
-        }
-        if (pingInProgress) return;
-        
-        const target = selectedAddress;
-        if (pingCache[target]) {
-            showPingResult(target, pingCache[target]);
-            return;
-        }
-        
-        pingInProgress = true;
-        pingDisplay.innerHTML = '<span class="status-dot yellow"></span> PINGING ' + target + '...';
-        addLog('Pinging ' + target + '...');
-        
-        const start = performance.now();
-        let done = false;
-        const timeout = setTimeout(() => {
-            if (!done) {
-                done = true;
-                pingInProgress = false;
-                const result = { latency: 9999, status: 'timeout' };
-                pingCache[target] = result;
-                showPingResult(target, result);
-                addLog('Ping timeout');
-            }
-        }, 5000);
-
-        fetch('https://' + target + '/', { mode: 'no-cors', cache: 'no-store' })
-        .then(() => {
-            if (!done) {
-                clearTimeout(timeout);
-                done = true;
-                pingInProgress = false;
-                const latency = Math.round(performance.now() - start);
-                const result = { latency, status: 'ok' };
-                pingCache[target] = result;
-                showPingResult(target, result);
-                addLog('Ping OK: ' + latency + 'ms');
-            }
-        })
-        .catch(() => {
-            if (!done) {
-                clearTimeout(timeout);
-                done = true;
-                pingInProgress = false;
-                const latency = Math.round(performance.now() - start);
-                const status = latency < 3000 ? 'ok' : 'timeout';
-                const result = { latency, status };
-                pingCache[target] = result;
-                showPingResult(target, result);
-                addLog('Ping: ' + latency + 'ms');
-            }
-        });
-    }
-
-    function showPingResult(addr, result) {
-        if (result.status === 'timeout') {
-            pingDisplay.innerHTML = '<span class="status-dot red"></span> ' + addr + ' : TIMEOUT';
-        } else {
-            const color = result.latency < 200 ? 'green' : (result.latency < 600 ? 'yellow' : 'red');
-            pingDisplay.innerHTML = '<span class="status-dot ' + color + '"></span> ' + addr + ' : ' + result.latency + 'ms';
-        }
-    }
 
     function getPath() {
         let path = PATHS[selectedProtocol];
@@ -1274,7 +1335,6 @@
     function updateConfigDisplay() {
         const config = buildConfig();
         configDisplay.textContent = config;
-        addLog('Config updated');
     }
 
     PROTOCOLS.forEach(proto => {
@@ -1322,11 +1382,10 @@
             }, 2000);
         }).catch(() => {
             addLog('Failed to copy config');
-            alert('Failed to copy to clipboard');
         });
     });
 
-    // Loading animation
+    // ============ LOADING & INITIALIZATION ============
     const loadingSpans = [d4, d0, d4b];
     let activeIndex = 0;
     
@@ -1345,13 +1404,12 @@
     
     const loadingInterval = setInterval(animateLoading, 350);
 
-    // Show main content after 3 seconds
     setTimeout(() => {
         clearInterval(loadingInterval);
         loadingScreen.classList.add('hidden');
-        mainContent.style.display = 'flex';
-        addLog('Portal initialized');
-    }, 3000);
+        initializeAuth();
+        showAuthScreen();
+    }, 2500);
 
     updateConfigDisplay();
 })();
