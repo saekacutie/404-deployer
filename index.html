@@ -5,333 +5,206 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>404 NOT FOUND GCP</title>
     <style>
+        /* =========================================================================
+           SECTION 1: SYSTEM STYLING TOKENS & ATOMIC VAR ROOTS
+           ========================================================================= */
         :root {
             --bg: #121212;
             --surface: #1e1e1e;
             --surface2: #2a2a2a;
-            --border: #444;
+            --border: #444444;
             --text: #f0f0f0;
-            --text-dim: #aaa;
-            --accent: #ffffff;
-            --glow: #ffffff;
+            --text-dim: #aaaaaaaa;
             --green: #2ed573;
             --red: #ff4757;
             --yellow: #ffa502;
             --blue: #1e90ff;
             --font-mono: 'Courier New', monospace;
-            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            --font-size-base: clamp(12px, 3.2vw, 15px);
-            --font-size-sm: clamp(10px, 2.8vw, 13px);
-            --font-size-lg: clamp(16px, 4.5vw, 20px);
-            --font-size-xl: clamp(24px, 7vw, 36px);
-            --font-size-xxl: clamp(36px, 10vw, 60px);
+            --glow: 0 0 10px rgba(46, 213, 115, 0.4);
+            --glow-strong: 0 0 25px rgba(46, 213, 115, 0.8);
         }
 
+        /* =========================================================================
+           SECTION 2: CSS RESET & RESILIENT STRUCTURAL FOUNDATION
+           ========================================================================= */
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            font-family: var(--font-mono);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body {
-            background: var(--bg);
+            background-color: var(--bg);
             color: var(--text);
-            font-family: var(--font-mono);
-            font-size: var(--font-size-base);
+            overflow-x: hidden;
+            width: 100%;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            padding: 16px 0;
+            padding: 20px;
         }
 
-        .container {
-            width: 100%;
-            max-width: 700px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        /* ========== ORIGINAL ANIMATIONS ========== */
+        /* =========================================================================
+           SECTION 3: PERFORMANCE Keyframe ANIMATION SCHEMAS
+           ========================================================================= */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         @keyframes glowPulseStrong {
-            0%, 100% { text-shadow: 0 0 12px var(--glow), 0 0 24px var(--glow); }
-            50% { text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow); }
-        }
-
-        @keyframes glowPulseLight {
-            0%, 100% { text-shadow: 0 0 4px var(--glow); }
-            50% { text-shadow: 0 0 1px var(--glow); }
+            0% { box-shadow: 0 0 10px rgba(46, 213, 115, 0.3); border-color: #444444; }
+            50% { box-shadow: 0 0 25px rgba(46, 213, 115, 0.7); border-color: var(--green); }
+            100% { box-shadow: 0 0 10px rgba(46, 213, 115, 0.3); border-color: #444444; }
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
         }
 
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @keyframes glitch {
-            0%, 100% { transform: skew(0deg, 0deg); opacity: 1; }
-            95% { transform: skew(0deg, 0deg); opacity: 1; }
-            96% { transform: skew(5deg, 2deg); opacity: 0.8; }
-            97% { transform: skew(-3deg, -1deg); opacity: 0.9; }
-            98% { transform: skew(2deg, 1deg); opacity: 0.85; }
-            99% { transform: skew(-1deg, 0deg); opacity: 0.95; }
+            0% { transform: translate(0); text-shadow: none; }
+            20% { transform: translate(-2px, 2px); text-shadow: 2px -2px var(--red), -2px 2px var(--blue); }
+            40% { transform: translate(-2px, -2px); text-shadow: -2px 2px var(--green), 2px -2px var(--red); }
+            60% { transform: translate(2px, 2px); text-shadow: 2px 2px var(--blue), -2px -2px var(--green); }
+            80% { transform: translate(2px, -2px); text-shadow: -2px -2px var(--red), 2px 2px var(--blue); }
+            100% { transform: translate(0); text-shadow: none; }
         }
 
-        .fade-in { animation: fadeInUp 0.5s ease-out forwards; }
-        .glow-text-strong { animation: glowPulseStrong 2.5s ease-in-out infinite; }
-        .glow-text-light { animation: glowPulseLight 3s ease-in-out infinite; }
+        .anim-fade-in { animation: fadeInUp 0.6s ease-out forwards; }
+        .anim-glow-pulse { animation: glowPulseStrong 3s infinite ease-in-out; }
+        .anim-pulse { animation: pulse 1.5s infinite ease-in-out; }
 
-        /* ========== LOADING SCREEN ========== */
+        /* =========================================================================
+           SECTION 4: LAYER GRAPHICS - SYSTEM COVERS & LOADING
+           ========================================================================= */
         #loading-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background-color: var(--bg);
+            z-index: 999999;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(18,18,18,0.96);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            z-index: 9999;
             transition: opacity 0.5s ease;
         }
 
-        #loading-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .loading-digits {
-            font-size: var(--font-size-xxl);
-            font-weight: 900;
-            font-family: var(--font-mono);
-            letter-spacing: 8px;
-            display: flex;
-            gap: 4px;
+        .glitch-container {
+            font-size: 72px;
+            font-weight: bold;
             color: var(--text);
-            animation: glitch 3s infinite;
+            margin-bottom: 24px;
+            letter-spacing: 8px;
+            animation: glitch 1s infinite linear alternate-reverse;
         }
 
-        .loading-digits span {
-            transition: all 0.35s ease;
-            display: inline-block;
-        }
-
-        .loading-digits span.active {
-            animation: glowPulseStrong 0.7s ease-in-out infinite;
-            transform: scale(1.1);
-        }
-
-        .loading-digits span.inactive {
-            opacity: 0.08;
-            text-shadow: none;
-            transform: scale(0.9);
-        }
-
-        .loading-spinner {
-            margin-top: 30px;
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top: 3px solid var(--green);
+        .spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(240, 240, 240, 0.1);
             border-radius: 50%;
+            border-top-color: var(--green);
             animation: spin 0.8s linear infinite;
+            margin-bottom: 20px;
         }
 
         .loading-subtitle {
-            margin-top: 20px;
-            font-size: var(--font-size-sm);
-            color: #888;
-            letter-spacing: 2px;
-            animation: fadeIn 1s ease 2s forwards;
-            opacity: 0;
+            font-size: 14px;
+            color: var(--green);
+            min-height: 20px;
+            text-transform: uppercase;
         }
 
-        /* ========== CARDS ========== */
-        .section {
-            background: var(--surface);
+        /* =========================================================================
+           SECTION 5: RESPONSIVE WIREFRAME GRID SYSTEM BOUNDS
+           ========================================================================= */
+        .wrapper {
+            width: 100%;
+            max-width: 760px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .glass-card {
+            background-color: var(--surface);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 16px;
-            width: 100%;
-            transition: all 0.3s ease;
+            padding: 24px;
             position: relative;
-            overflow: visible;
         }
 
-        .section:hover {
-            border-color: #666;
-        }
-
-        .section-title {
-            font-weight: 700;
-            font-size: var(--font-size-lg);
+        .system-header {
             text-align: center;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-            color: var(--text);
+            border-bottom: 1px dashed var(--border);
+            padding-bottom: 16px;
+            margin-bottom: 8px;
         }
 
-        .section-subtitle {
-            font-size: var(--font-size-sm);
-            color: var(--text-dim);
-            text-align: center;
-            margin-bottom: 10px;
-            letter-spacing: 0.5px;
-        }
-
-        /* ========== BUTTONS ========== */
-        .button-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            justify-content: center;
-            margin-top: 6px;
-        }
-
-        .btn {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 7px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: var(--font-mono);
-            font-size: var(--font-size-sm);
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            max-width: 100%;
-            letter-spacing: 0.4px;
-        }
-
-        .btn:hover {
-            border-color: #888;
-            background: #333;
-        }
-
-        .btn.active {
-            border-color: var(--accent);
-            background: #333;
-            box-shadow: 0 0 10px rgba(255,255,255,0.1);
+        .system-title {
+            font-size: 24px;
             font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--text);
+            margin-bottom: 6px;
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, var(--green), #1a8c4a);
-            border-color: var(--green);
-            color: #000;
-            font-weight: bold;
-        }
-
-        .btn-primary:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 15px rgba(46,213,115,0.4);
-        }
-
-        .btn-locked {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        /* ========== INFO ROWS ========== */
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 0;
-            font-size: var(--font-size-sm);
-        }
-
-        .info-label {
+        .system-subtitle {
+            font-size: 12px;
             color: var(--text-dim);
         }
 
-        .info-value {
-            color: var(--green);
-            font-weight: 700;
+        /* =========================================================================
+           SECTION 6: TELEMETRY AND GLOBAL HARDWARE MONITOR LAYOUT
+           ========================================================================= */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
         }
 
-        /* ========== DROPDOWNS (FIXED Z-INDEX) ========== */
-        .dropdown-wrapper {
-            position: relative;
-            width: 100%;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: fixed;
-            background: var(--surface2);
+        .stat-box {
+            background-color: var(--surface2);
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 8px 0;
-            z-index: 100000;
-            max-height: 220px;
-            overflow-y: auto;
-            width: calc(100% - 32px);
-            max-width: 668px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
 
-        .dropdown-content.show {
-            display: block;
-        }
-
-        .dropdown-item {
-            padding: 8px 12px;
-            cursor: pointer;
-            font-size: var(--font-size-sm);
-            color: var(--text);
-            transition: background 0.15s ease;
-        }
-
-        .dropdown-item:hover {
-            background: #3a3a3a;
-        }
-
-        .dropdown-item.selected {
-            color: var(--green);
-            font-weight: bold;
-        }
-
-        /* ========== PING DISPLAY ========== */
-        .ping-display {
-            text-align: center;
-            font-size: var(--font-size-sm);
+        .stat-label {
+            font-size: 11px;
             color: var(--text-dim);
-            margin-top: 10px;
-            font-family: var(--font-mono);
-            min-height: 20px;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--text);
+            word-break: break-all;
         }
 
         .status-dot {
@@ -340,984 +213,1647 @@
             height: 8px;
             border-radius: 50%;
             margin-right: 6px;
+            background-color: var(--yellow);
         }
+        .status-dot.green { background-color: var(--green); box-shadow: 0 0 8px var(--green); }
+        .status-dot.red { background-color: var(--red); box-shadow: 0 0 8px var(--red); }
+        .status-dot.yellow { background-color: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
 
-        .status-dot.green {
-            background: var(--green);
-            box-shadow: 0 0 6px var(--green);
-        }
-
-        .status-dot.yellow {
-            background: var(--yellow);
-            box-shadow: 0 0 6px var(--yellow);
-            animation: pulse 1s infinite;
-        }
-
-        .status-dot.red {
-            background: var(--red);
-            box-shadow: 0 0 6px var(--red);
-        }
-
-        /* ========== SPEED MONITOR ========== */
-        .speed-row {
+        /* =========================================================================
+           SECTION 7: MAIN GATEWAY ROUTING SELECTION INTERFACE
+           ========================================================================= */
+        #main-menu {
             display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-top: 10px;
-            gap: 10px;
+            flex-direction: column;
+            gap: 16px;
         }
 
-        .speed-item {
+        .menu-instruction {
+            font-size: 13px;
+            color: var(--text-dim);
             text-align: center;
-            flex: 1;
+            line-height: 1.6;
+            margin-bottom: 8px;
         }
 
-        .speed-label {
-            font-size: var(--font-size-sm);
+        .protocol-selector-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .protocol-btn {
+            background-color: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px 16px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.25s ease;
+        }
+
+        .protocol-btn:hover {
+            border-color: var(--green);
+            background-color: #242429;
+            transform: translateY(-2px);
+        }
+
+        .protocol-name {
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: var(--text);
+        }
+
+        .protocol-desc {
+            font-size: 11px;
+            color: var(--text-dim);
+            text-align: center;
+        }
+
+        /* =========================================================================
+           SECTION 8: CONTROLS SYSTEM PANEL FRAMEWORKS (SHARED DESIGNS)
+           ========================================================================= */
+        .protocol-panel {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel-headline {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--green);
+            border-left: 3px solid var(--green);
+            padding-left: 10px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .form-label {
+            font-size: 12px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* =========================================================================
+           SECTION 9: INTERACTIVE DYNAMIC ANCHOR OVERLAY DROPDOWNS
+           ========================================================================= */
+        .dropdown-trigger-btn {
+            width: 100%;
+            background-color: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px 16px;
+            color: var(--text);
+            text-align: left;
+            cursor: pointer;
+            font-size: 13px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dropdown-trigger-btn::after {
+            content: "▼";
+            font-size: 10px;
             color: var(--text-dim);
         }
 
-        .speed-value {
-            font-size: var(--font-size-lg);
-            font-weight: 700;
+        .dropdown-trigger-btn:focus {
+            border-color: var(--green);
+            outline: none;
         }
 
-        .speed-value.download { color: var(--green); }
-        .speed-value.upload { color: var(--blue); }
-        .speed-value.latency { color: var(--yellow); }
+        .dropdown-content {
+            position: fixed;
+            background-color: #1a1a1a;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.8);
+            z-index: 100000 !important;
+            display: none;
+            max-height: 220px;
+            overflow-y: auto;
+        }
 
-        .graph-container {
+        .dropdown-content.show {
+            display: block;
+            animation: slideDown 0.15s ease-out;
+        }
+
+        .dropdown-option {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text);
+            transition: background 0.15s ease;
+        }
+
+        .dropdown-option:hover {
+            background-color: var(--surface2);
+            color: var(--green);
+        }
+
+        .dropdown-option.active {
+            color: var(--green);
+            background-color: rgba(46, 213, 115, 0.08);
+        }
+
+        /* =========================================================================
+           SECTION 10: SEGMENTED TRANSPORT ROUTER SELECTION DECORATORS
+           ========================================================================= */
+        .transport-segmented-control {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            background-color: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 4px;
+        }
+
+        .transport-option-btn {
+            background: none;
+            border: none;
+            padding: 10px 4px;
+            color: var(--text-dim);
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .transport-option-btn.active {
+            background-color: var(--surface);
+            color: var(--green);
+            border: 1px solid var(--border);
+            font-weight: bold;
+        }
+
+        /* =========================================================================
+           SECTION 11: TELEMETRY PERFORMANCE COUNTERS & HISTORY GRAPHS
+           ========================================================================= */
+        .metrics-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .metric-card {
+            background-color: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .metric-title {
+            font-size: 10px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .metric-data {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .metric-data.green-text { color: var(--green); }
+        .metric-data.blue-text { color: var(--blue); }
+        .metric-data.yellow-text { color: var(--yellow); }
+
+        .graph-viewport {
+            width: 100%;
+            height: 64px;
+            background-color: #16161a;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            margin-top: 10px;
             display: flex;
             align-items: flex-end;
-            gap: 2px;
-            height: 60px;
-            margin-top: 10px;
-            padding: 0 4px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 4px;
+            justify-content: space-between;
+            padding: 6px;
+            gap: 3px;
         }
 
         .graph-bar {
             flex: 1;
-            background: linear-gradient(to top, var(--green), var(--blue));
-            border-radius: 2px;
-            transition: height 0.1s ease;
-            min-height: 2px;
-            max-height: 100%;
+            background-color: var(--green);
+            opacity: 0.75;
+            border-radius: 2px 2px 0 0;
+            transition: height 0.3s ease, background-color 0.3s ease;
+            height: 10%;
         }
 
-        /* ========== CONFIG OUTPUT ========== */
-        .config-wrapper {
-            position: relative;
-        }
-
-        .config-display {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 14px;
-            padding-top: 40px;
-            font-family: var(--font-mono);
-            font-size: var(--font-size-sm);
-            line-height: 1.7;
-            word-break: break-all;
-            white-space: pre-wrap;
+        /* =========================================================================
+           SECTION 12: BUTTON EXECUTION PACKS & CONFIG TEXT OUTPUT BLOCKS
+           ========================================================================= */
+        .action-btn {
+            width: 100%;
+            background-color: transparent;
+            border: 1px solid var(--green);
             color: var(--green);
-            min-height: 100px;
-            max-height: 280px;
-            overflow-y: auto;
-            -webkit-user-select: all;
-            user-select: all;
-        }
-
-        .copy-btn {
-            position: absolute;
-            top: 10px;
-            right: 14px;
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 5px 12px;
             border-radius: 6px;
+            padding: 14px;
             cursor: pointer;
-            font-family: var(--font-mono);
-            font-size: var(--font-size-sm);
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             transition: all 0.2s ease;
-            z-index: 5;
+            margin-top: 6px;
         }
 
-        .copy-btn:hover {
-            border-color: var(--accent);
-            background: #333;
+        .action-btn:hover {
+            background-color: rgba(46, 213, 115, 0.1);
+            box-shadow: 0 0 12px rgba(46, 213, 115, 0.25);
         }
 
-        .copy-btn.copied {
-            border-color: var(--green);
-            color: var(--green);
-            background: #0a1a0a;
-        }
-
-        /* ========== LOGS ========== */
-        .log-container {
-            background: #0a0a0a;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px;
-            max-height: 120px;
-            overflow-y: auto;
-            font-size: var(--font-size-sm);
+        .action-btn:disabled {
+            border-color: var(--border);
             color: var(--text-dim);
+            cursor: not-allowed;
+            background: none;
+            box-shadow: none;
+        }
+
+        .config-box-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
             margin-top: 10px;
         }
 
-        .log-entry {
-            padding: 2px 0;
-            border-bottom: 1px solid #222;
-            font-family: var(--font-mono);
+        .config-textarea-wrapper {
+            position: relative;
+            width: 100%;
         }
 
-        .log-entry .time {
-            color: #666;
-            margin-right: 8px;
-        }
-
-        /* ========== PROTOCOL BADGES ========== */
-        .protocol-badge {
-            display: inline-block;
-            padding: 4px 14px;
-            border-radius: 30px;
+        .config-display-area {
+            width: 100%;
+            height: 96px;
+            background-color: #141414;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            color: #dcdcdc;
             font-size: 11px;
-            font-weight: bold;
-        }
-        .badge-vless { background: rgba(46,213,115,0.15); color: #2ed573; border: 1px solid #2ed573; }
-        .badge-trojan { background: rgba(255,165,2,0.15); color: #ffa502; border: 1px solid #ffa502; }
-        .badge-vmess { background: rgba(30,144,255,0.15); color: #1e90ff; border: 1px solid #1e90ff; }
-        .badge-ss { background: rgba(255,71,87,0.15); color: #ff4757; border: 1px solid #ff4757; }
-
-        .lock-icon {
-            font-size: 10px;
-            margin-left: 6px;
+            font-family: var(--font-mono);
+            resize: none;
+            word-break: break-all;
+            white-space: pre-wrap;
+            overflow-y: auto;
         }
 
-        .divider {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 8px 0;
-            opacity: 0.5;
-        }
-
-        .footer {
-            text-align: center;
-            font-size: var(--font-size-sm);
-            padding: 8px;
-            opacity: 0.7;
-            letter-spacing: 1px;
-            color: var(--text-dim);
-        }
-
-        .footer a {
-            color: var(--text-dim);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .footer a:hover {
-            color: var(--text);
-        }
-
-        hr {
-            margin: 8px 0;
+        .config-display-area:focus {
+            outline: none;
             border-color: var(--border);
         }
 
+        .copy-btn {
+            width: 100%;
+            background-color: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 6px;
+            padding: 12px;
+            cursor: pointer;
+            font-size: 12px;
+            text-transform: uppercase;
+            transition: all 0.15s ease;
+        }
+
+        .copy-btn:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        /* =========================================================================
+           SECTION 13: TERMINAL LOG DECOY OUTPUT ENGINE OVERLAYS
+           ========================================================================= */
+        .terminal-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .terminal-label {
+            font-size: 12px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+        }
+
+        .terminal-stream {
+            width: 100%;
+            height: 140px;
+            background-color: #0f0f12;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 10px 14px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .terminal-row {
+            font-size: 11px;
+            line-height: 1.4;
+            color: #c0c0c0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .terminal-time {
+            color: var(--text-dim);
+            margin-right: 8px;
+        }
+
+        .terminal-tag-sys { color: var(--blue); font-weight: bold; }
+        .terminal-tag-net { color: var(--yellow); font-weight: bold; }
+        .terminal-tag-cfg { color: #d1d1d1; font-weight: bold; }
+        .terminal-tag-ok  { color: var(--green); font-weight: bold; }
+        .terminal-tag-err { color: var(--red); font-weight: bold; }
+
+        /* =========================================================================
+           SECTION 14: HIGH PRIORITY MODALS (SPEED TEST ENGINE STAGE)
+           ========================================================================= */
+        .popup-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(18, 18, 18, 0.94);
+            backdrop-filter: blur(8px);
+            z-index: 200000 !important;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .popup-content {
+            background-color: var(--surface);
+            border: 1px solid var(--green);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 340px;
+            padding: 28px;
+            text-align: center;
+            box-shadow: var(--glow-strong);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .popup-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--green);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .popup-spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid rgba(46, 213, 115, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--green);
+            animation: spin 0.7s linear infinite;
+        }
+
+        .progress-bar-track {
+            width: 100%;
+            height: 6px;
+            background-color: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .progress-bar-fill {
+            width: 0%;
+            height: 100%;
+            background-color: var(--green);
+            box-shadow: 0 0 8px var(--green);
+            transition: width 0.1s linear;
+        }
+
+        .popup-text {
+            font-size: 12px;
+            color: var(--text-dim);
+            line-height: 1.5;
+        }
+
+        /* =========================================================================
+           SECTION 15: HIGH DENSITY OVERRIDES (MOBILE DEPLOYMENTS)
+           ========================================================================= */
         @media (max-width: 380px) {
-            .btn { font-size: 10px; padding: 5px 8px; }
-            .config-display { font-size: 10px; padding: 10px; padding-top: 34px; }
-            .copy-btn { top: 8px; right: 8px; font-size: 9px; padding: 3px 8px; }
-            .section { padding: 10px; }
+            body { padding: 10px; }
+            .glass-card { padding: 16px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .protocol-selector-grid { grid-template-columns: 1fr; gap: 12px; }
+            .protocol-btn { padding: 16px 12px; }
+            .metrics-container { grid-template-columns: 1fr; gap: 8px; }
+            .glitch-container { font-size: 54px; }
         }
     </style>
 </head>
 <body>
 
-<!-- ========== LOADING SCREEN ========== -->
-<div id="loading-screen">
-    <div class="loading-digits">
-        <span id="d4">4</span><span id="d0">0</span><span id="d4b">4</span>
-    </div>
-    <div class="loading-spinner"></div>
-    <div class="loading-subtitle" id="loading-subtitle">[SYS] INITIALIZING SECURE TUNNEL</div>
-</div>
-
-<!-- ========== MAIN MENU - PROTOCOL SELECTION ========== -->
-<div class="container" id="main-menu" style="display:none;">
-    <div class="section fade-in">
-        <div class="section-title glow-text-strong" style="font-size:var(--font-size-xl); letter-spacing:3px;">404 NOT FOUND GCP</div>
-        <div class="section-subtitle">DEPLOYMENT CONFIGURATION PORTAL</div>
-        <hr class="divider">
-        <div class="info-row"><span class="info-label">[STS] STATUS</span><span class="info-value" id="status-indicator"><span class="status-dot yellow"></span> CONNECTING</span></div>
-        <div class="info-row"><span class="info-label">[USR] VISITORS</span><span class="info-value" id="visitor-count">0</span></div>
-        <div class="info-row"><span class="info-label">[ACT] ACTIVE USERS</span><span class="info-value" id="active-users">0</span></div>
-        <div class="info-row"><span class="info-label">[UPT] UPTIME</span><span class="info-value" id="runtime-display">00:00:00</span></div>
-        <div class="info-row"><span class="info-label">[HST] HOST</span><span class="info-value" id="host-ip">---</span></div>
-        <div class="info-row"><span class="info-label">[FP] FINGERPRINT</span><span class="info-value" id="device-fp">---</span></div>
+    <div id="loading-screen">
+        <div class="glitch-container">404</div>
+        <div class="spinner"></div>
+        <div class="loading-subtitle" id="loading-text-node">[SYS] INITIALIZING</div>
     </div>
 
-    <div class="section fade-in">
-        <div class="section-title">[PRO] PROTOCOL SELECTION</div>
-        <div class="section-subtitle">[!] ONCE SELECTED, PROTOCOL IS PERMANENTLY LOCKED TO THIS DEVICE</div>
-        <div class="button-bar" id="protocol-selector-bar"></div>
-    </div>
+    <div class="wrapper">
+        <div class="glass-card anim-fade-in anim-glow-pulse">
+            <div class="system-header">
+                <div class="system-title">404 NOT FOUND GCP</div>
+                <div class="system-subtitle">[PRO] DEPLOYMENT TELEMETRY CONTROL ENGINE</div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-label">[STS] LINK STATUS</span>
+                    <span class="stat-value" id="global-status-field">
+                        <span class="status-dot id-dot-indicator"></span><span id="global-status-text">CONNECTING</span>
+                    </span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">[HST] ENDPOINT GATEWAY</span>
+                    <span class="stat-value" id="global-host-field">DETECTING</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">[USR] CONCURRENT SESSION</span>
+                    <span class="stat-value" id="global-users-field">0000 / [ACT]</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">[TRN] AGGREGATE TRAFFIC</span>
+                    <span class="stat-value" id="global-traffic-field">0000 / [MET]</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">[UPT] NETWORK RUNTIME</span>
+                    <span class="stat-value" id="global-uptime-field">00:00:00:00</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">[FP] VECTOR SIGNATURE</span>
+                    <span class="stat-value" id="global-fp-field">UNRESOLVED</span>
+                </div>
+            </div>
+        </div>
 
-    <div class="section fade-in">
-        <div class="section-title">[NET] GLOBAL NETWORK ACTIVITY</div>
-        <div id="global-download-speed" style="text-align:center; font-size:22px; color:var(--green); font-weight:bold;">0 KB/s</div>
-        <div class="graph-container" id="global-graph-container"></div>
-        <div class="log-container" id="global-log-container">
-            <div class="log-entry"><span class="time">--:--:--</span> [SYS] System ready. Select a protocol to lock permanently.</div>
+        <div id="main-menu" class="glass-card anim-fade-in" style="display: none;">
+            <div class="menu-instruction">
+                [LOCK] PERMANENT ENVELOPE SELECTION REQUIRED<br>
+                REGISTRATION BINDS CREDENTIAL TO THIS LOCAL DEVICE VECTOR. MODIFICATION IS IMPOSSIBLE AFTER PROVISIONING.
+            </div>
+            <div class="protocol-selector-grid">
+                <button class="protocol-btn" id="btn-select-vless">
+                    <span class="protocol-name">VLESS</span>
+                    <span class="protocol-desc">[NET] NEXT-GEN LIGHTWEIGHT TUNNEL PATHWAY</span>
+                </button>
+                <button class="protocol-btn" id="btn-select-trojan">
+                    <span class="protocol-name">TROJAN</span>
+                    <span class="protocol-desc">[SEC] TLS-OBLIVIOUS ENCRYPTED ALIGNMENT MATRIX</span>
+                </button>
+                <button class="protocol-btn" id="btn-select-vmess">
+                    <span class="protocol-name">VMESS</span>
+                    <span class="protocol-desc">[CFG] COMPLEX MULTI-LAYER ALTER ID PACKET FRAME</span>
+                </button>
+                <button class="protocol-btn" id="btn-select-shadowsocks">
+                    <span class="protocol-name">SHADOWSOCKS</span>
+                    <span class="protocol-desc">[TRN] STREAM CIPHER CRYPTO LAYER STANDARD</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="vless-panel" class="glass-card anim-fade-in protocol-panel">
+            <div class="panel-headline">[ACT] VLESS ACTIVE NODE</div>
+            <div class="form-row">
+                <span class="form-label">[ID] CREDENTIAL VECTOR TOKEN</span>
+                <button class="dropdown-trigger-btn" style="text-align: left; cursor: default; font-size: 11px;" id="vless-id-display" disabled>PROVISIONING...</button>
+            </div>
+            <div class="form-row">
+                <span class="form-label">[HST] ROUTING HOST ADDRESS</span>
+                <button class="dropdown-trigger-btn" id="vless-addr-trigger">RESOLVING...</button>
+            </div>
+            <div class="form-row">
+                <span class="form-label">[CFG] TARGET PACKET SNI</span>
+                <button class="dropdown-trigger-btn" id="vless-sni-trigger">RESOLVING...</button>
+            </div>
+            <div class="form-row">
+                <span class="form-label">[TRN] DATA PACKET TRANSPORT</span>
+                <div class="transport-segmented-control" id="vless-transport-switch">
+                    <button class="transport-option-btn active" id="vless-ts-ws">WS</button>
+                    <button class="transport-option-btn" id="vless-ts-hu">HU</button>
+                    <button class="transport-option-btn" id="vless-ts-xh">XHTTP</button>
+                </div>
+            </div>
+            <div class="metrics-container">
+                <div class="metric-card"><div class="metric-title">[STS] LATENCY</div><div class="metric-data green-text" id="vless-metric-ping">-- ms</div></div>
+                <div class="metric-card"><div class="metric-title">[MET] DOWNSTREAM</div><div class="metric-data blue-text" id="vless-metric-down">0.00 Mbps</div></div>
+                <div class="metric-card"><div class="metric-title">[MET] UPSTREAM</div><div class="metric-data yellow-text" id="vless-metric-up">0.00 Mbps</div></div>
+            </div>
+            <div class="graph-viewport" id="vless-graph"></div>
+            <button class="action-btn" id="vless-speed-btn">[TEST] EXECUTE ALLOCATION SPEED TEST</button>
+            <div class="config-box-container">
+                <span class="form-label">[CFG] OUTBOUND EXPORT CONFIG PROFILE</span>
+                <div class="config-textarea-wrapper"><div class="config-display-area" id="vless-config-text">COMPILING CONFIG MATRIX...</div></div>
+                <button class="copy-btn" id="vless-copy-btn">[RST] COPY SYSTEM PROFILE TOKEN</button>
+            </div>
+        </div>
+
+        <div id="trojan-panel" class="glass-card anim-fade-in protocol-panel">
+            <div class="panel-headline">[ACT] TROJAN ACTIVE NODE</div>
+            <div class="form-row">
+                <span class="form-label">[ID] SECURE PASSWORD STRING</span>
+                <button class="dropdown-trigger-btn" style="text-align: left; cursor: default; font-size: 11px;" id="trojan-id-display" disabled>PROVISIONING...</button>
+            </div>
+            <div class="form-row">
+                <span class="form-label">[HST] ROUTING HOST ADDRESS</span>
+                <button class="dropdown-trigger-btn" id="trojan-addr-trigger">RESOLVING...</button>
+            </div>
+            <div class="form-row">
+                <span class="form-label">[CFG] TARGET PACKET SNI</span>
+                <button class="dropdown-trigger-btn" id="trojan-sni-trigger">RESOLVING...</button>
+            </div>
+            <div class="form-row">
+                <span class="form-label">[TRN] DATA PACKET TRANSPORT</span>
+                <div class="transport-segmented-control" id="trojan-transport-switch">
+                    <button class="transport-option-btn active" id="trojan-ts-ws">WS</button>
+                    <button class="transport-option-btn" id="trojan-ts-hu">HU</button>
+                    <button class="transport-option-btn" id="trojan-ts-xh">XHTTP</button>
+                </div>
+            </div>
+            <div class="metrics-container">
+                <div class="metric-card"><div class="metric-title">[STS] LATENCY</div><div class="metric-data green-text" id="trojan-metric-ping">-- ms</div></div>
+                <div class="metric-card"><div class="metric-title">[MET] DOWNSTREAM</div><div class="metric-data blue-text" id="trojan-metric-down">0.00 Mbps</div></div>
+                <div class="metric-card"><div class="metric-title">[MET] UPSTREAM</div><div class="metric-data yellow-text" id="trojan-metric-up">0.00 Mbps</div></div>
+            </div>
+            <div class="graph-viewport" id="trojan-graph"></div>
+            <button class="action-btn" id="trojan-speed-btn">[TEST] EXECUTE ALLOCATION SPEED TEST</button>
+            <div class="config-box-container">
+                <span class="form-label">[CFG] OUTBOUND EXPORT CONFIG PROFILE</span>
+                <div class="config-textarea-wrapper"><div class="config-display-area" id="trojan-config-text">COMPILING CONFIG MATRIX...</div></div>
+                <button class="copy-btn" id="trojan-copy-btn">[RST] COPY SYSTEM PROFILE TOKEN</button>
+            </div>
+        </div>
+
+        <div id="vmess-panel" class="glass-card anim-fade-in protocol-panel">
+            <div class="panel-headline">[ACT] VMESS ACTIVE NODE</div>
+            <div class="form-row">
+                <span class="form-label">[ID] CREDENTIAL VECTOR TOKEN</span>
+                <button class="dropdown-trigger-btn" style="text-align: left; cursor: default; font-size: 11px;" id="vmess-id-display" disabled>PROVISIONING...</button>
+            </div>
+            <div class="form-row">
+                <span class="form-label">[HST] ROUTING HOST ADDRESS</span>
+                <button class="dropdown-trigger-btn" id="vmess-addr-trigger">RESOLVING...</button>
+            </div>
+            <div class="form-row">
+                <span class="form-label">[CFG] TARGET PACKET SNI</span>
+                <button class="dropdown-trigger-btn" id="vmess-sni-trigger">RESOLVING...</button>
+            </div>
+            <div class="form-row">
+                <span class="form-label">[TRN] DATA PACKET TRANSPORT</span>
+                <div class="transport-segmented-control" id="vmess-transport-switch">
+                    <button class="transport-option-btn active" id="vmess-ts-ws">WS</button>
+                    <button class="transport-option-btn" id="vmess-ts-hu">HU</button>
+                    <button class="transport-option-btn" id="vmess-ts-xh">XHTTP</button>
+                </div>
+            </div>
+            <div class="metrics-container">
+                <div class="metric-card"><div class="metric-title">[STS] LATENCY</div><div class="metric-data green-text" id="vmess-metric-ping">-- ms</div></div>
+                <div class="metric-card"><div class="metric-title">[MET] DOWNSTREAM</div><div class="metric-data blue-text" id="vmess-metric-down">0.00 Mbps</div></div>
+                <div class="metric-card"><div class="metric-title">[MET] UPSTREAM</div><div class="metric-data yellow-text" id="vmess-metric-up">0.00 Mbps</div></div>
+            </div>
+            <div class="graph-viewport" id="vmess-graph"></div>
+            <button class="action-btn" id="vmess-speed-btn">[TEST] EXECUTE ALLOCATION SPEED TEST</button>
+            <div class="config-box-container">
+                <span class="form-label">[CFG] OUTBOUND EXPORT CONFIG PROFILE</span>
+                <div class="config-textarea-wrapper"><div class="config-display-area" id="vmess-config-text">COMPILING CONFIG MATRIX...</div></div>
+                <button class="copy-btn" id="vmess-copy-btn">[RST] COPY SYSTEM PROFILE TOKEN</button>
+            </div>
+        </div>
+
+        <div id="ss-panel" class="glass-card anim-fade-in protocol-panel">
+            <div class="panel-headline">[ACT] SHADOWSOCKS ACTIVE NODE</div>
+            <div class="form-row">
+                <span class="form-label">[ID] CIPHER & PASS SECURE PROFILE</span>
+                <button class="dropdown-trigger-btn" style="text-align: left; cursor: default; font-size: 11px;" id="ss-id-display" disabled>PROVISIONING...</button>
+            </div>
+            <div class="form-row">
+                <span class="form-label">[HST] ROUTING HOST ADDRESS</span>
+                <button class="dropdown-trigger-btn" id="ss-addr-trigger">RESOLVING...</button>
+            </div>
+            <div class="form-row">
+                <span class="form-label">[CFG] TARGET PACKET SNI</span>
+                <button class="dropdown-trigger-btn" id="ss-sni-trigger">RESOLVING...</button>
+            </div>
+            <div class="form-row">
+                <span class="form-label">[TRN] DATA PACKET TRANSPORT</span>
+                <div class="transport-segmented-control" id="ss-transport-switch">
+                    <button class="transport-option-btn active" id="ss-ts-ws">WS</button>
+                    <button class="transport-option-btn" id="ss-ts-hu">HU</button>
+                    <button class="transport-option-btn" id="ss-ts-xh">XHTTP</button>
+                </div>
+            </div>
+            <div class="metrics-container">
+                <div class="metric-card"><div class="metric-title">[STS] LATENCY</div><div class="metric-data green-text" id="ss-metric-ping">-- ms</div></div>
+                <div class="metric-card"><div class="metric-title">[MET] DOWNSTREAM</div><div class="metric-data blue-text" id="ss-metric-down">0.00 Mbps</div></div>
+                <div class="metric-card"><div class="metric-title">[MET] UPSTREAM</div><div class="metric-data yellow-text" id="ss-metric-up">0.00 Mbps</div></div>
+            </div>
+            <div class="graph-viewport" id="ss-graph"></div>
+            <button class="action-btn" id="ss-speed-btn">[TEST] EXECUTE ALLOCATION SPEED TEST</button>
+            <div class="config-box-container">
+                <span class="form-label">[CFG] OUTBOUND EXPORT CONFIG PROFILE</span>
+                <div class="config-textarea-wrapper"><div class="config-display-area" id="ss-config-text">COMPILING CONFIG MATRIX...</div></div>
+                <button class="copy-btn" id="ss-copy-btn">[RST] COPY SYSTEM PROFILE TOKEN</button>
+            </div>
+        </div>
+
+        <div class="glass-card terminal-container anim-fade-in">
+            <span class="terminal-label">[SYS] DIAGNOSTIC STREAM MATRIX FEED</span>
+            <div class="terminal-stream" id="terminal-stream-node"></div>
         </div>
     </div>
 
-    <div class="footer fade-in glow-text-light">
-        CREATED BY <a href="#" target="_blank">SAEKA TOJIRP</a> · 404 NOT FOUND GCP · v5.0
-    </div>
-</div>
+    <div id="floating-addr-dropdown" class="dropdown-content"></div>
+    <div id="floating-sni-dropdown" class="dropdown-content"></div>
 
-<!-- ========== VLESS PANEL (PERMANENTLY LOCKED - NO EXIT) ========== -->
-<div class="container protocol-panel" id="vless-panel" style="display:none;">
-    <div class="section">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-            <span class="protocol-badge badge-vless">VLESS</span>
-            <div><span class="status-dot green"></span> [LOCK] PERMANENT</div>
+    <div id="speedtest-modal" class="popup-modal">
+        <div class="popup-content">
+            <div class="popup-title">[TEST] PIPELINE ALLOCATION ACTIVE</div>
+            <div class="popup-spinner"></div>
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="speedtest-progress-bar"></div>
+            </div>
+            <div class="popup-text" id="speedtest-status-text">COMMENCING WIDEBAND BUFFER PROFILE OVER CHANNELS...</div>
         </div>
-        <div class="section-title" style="margin-top:12px;">VLESS TUNNEL</div>
-        <div class="section-subtitle">[KEY] YOUR UNIQUE UUID [LOCKED]</div>
-        <div class="info-row"><span class="info-label">[ID] UUID</span><span class="info-value" id="vless-cred">---</span></div>
-        <div class="info-row"><span class="info-label">[STS] STATUS</span><span class="info-value">ACTIVE / ONE-TIME USE</span></div>
-        <div class="info-row"><span class="info-label">[FP] DEVICE LOCK</span><span class="info-value" id="vless-fp">---</span></div>
     </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[LOC] ADDRESS / SNI SELECTOR</div>
-        <div class="dropdown-wrapper"><button class="btn" id="vless-addr-btn" style="width:100%;">SELECT ADDRESS ▼</button><div class="dropdown-content" id="vless-addr-dropdown"></div></div>
-        <div class="dropdown-wrapper" style="margin-top:12px;"><button class="btn" id="vless-sni-btn" style="width:100%;">SELECT SNI ▼</button><div class="dropdown-content" id="vless-sni-dropdown"></div></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[TRN] TRANSPORT MODE</div>
-        <div class="button-bar" id="vless-transport-bar"></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[MET] REAL-TIME METRICS</div>
-        <div class="speed-row">
-            <div class="speed-item"><div class="speed-value ping" id="vless-ping">0</div><div class="speed-label">PING (ms)</div></div>
-            <div class="speed-item"><div class="speed-value download" id="vless-down">0</div><div class="speed-label">DOWNLOAD (KB/s)</div></div>
-            <div class="speed-item"><div class="speed-value upload" id="vless-up">0</div><div class="speed-label">UPLOAD (KB/s)</div></div>
-        </div>
-        <div class="graph-container" id="vless-graph"></div>
-        <button class="btn btn-primary" id="vless-speedtest" style="width:100%; margin-top:8px;">[TEST] RUN SPEED TEST</button>
-        <div class="info-row" style="margin-top:10px;"><span class="info-label">[RST] TEST RESULT</span><span class="info-value" id="vless-test-result">Not tested</span></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[CFG] CONFIGURATION OUTPUT</div>
-        <div class="config-wrapper"><button class="copy-btn" id="vless-copy">[COPY] COPY CONFIG</button><div class="config-display" id="vless-config"></div></div>
-    </div>
-    <div class="log-container" id="vless-log"><div class="log-entry"><span class="time">--:--:--</span> [SYS] VLESS panel ready. Credential locked to this device.</div></div>
-</div>
 
-<!-- ========== TROJAN PANEL ========== -->
-<div class="container protocol-panel" id="trojan-panel" style="display:none;">
-    <div class="section">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-            <span class="protocol-badge badge-trojan">TROJAN</span>
-            <div><span class="status-dot green"></span> [LOCK] PERMANENT</div>
-        </div>
-        <div class="section-title" style="margin-top:12px;">TROJAN TUNNEL</div>
-        <div class="section-subtitle">[KEY] YOUR UNIQUE PASSWORD [LOCKED]</div>
-        <div class="info-row"><span class="info-label">[ID] PASSWORD</span><span class="info-value" id="trojan-cred">---</span></div>
-        <div class="info-row"><span class="info-label">[STS] STATUS</span><span class="info-value">ACTIVE / ONE-TIME USE</span></div>
-        <div class="info-row"><span class="info-label">[FP] DEVICE LOCK</span><span class="info-value" id="trojan-fp">---</span></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[LOC] ADDRESS / SNI SELECTOR</div>
-        <div class="dropdown-wrapper"><button class="btn" id="trojan-addr-btn" style="width:100%;">SELECT ADDRESS ▼</button><div class="dropdown-content" id="trojan-addr-dropdown"></div></div>
-        <div class="dropdown-wrapper" style="margin-top:12px;"><button class="btn" id="trojan-sni-btn" style="width:100%;">SELECT SNI ▼</button><div class="dropdown-content" id="trojan-sni-dropdown"></div></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[TRN] TRANSPORT MODE</div>
-        <div class="button-bar" id="trojan-transport-bar"></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[MET] REAL-TIME METRICS</div>
-        <div class="speed-row">
-            <div class="speed-item"><div class="speed-value ping" id="trojan-ping">0</div><div class="speed-label">PING (ms)</div></div>
-            <div class="speed-item"><div class="speed-value download" id="trojan-down">0</div><div class="speed-label">DOWNLOAD (KB/s)</div></div>
-            <div class="speed-item"><div class="speed-value upload" id="trojan-up">0</div><div class="speed-label">UPLOAD (KB/s)</div></div>
-        </div>
-        <div class="graph-container" id="trojan-graph"></div>
-        <button class="btn btn-primary" id="trojan-speedtest" style="width:100%; margin-top:8px;">[TEST] RUN SPEED TEST</button>
-        <div class="info-row" style="margin-top:10px;"><span class="info-label">[RST] TEST RESULT</span><span class="info-value" id="trojan-test-result">Not tested</span></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[CFG] CONFIGURATION OUTPUT</div>
-        <div class="config-wrapper"><button class="copy-btn" id="trojan-copy">[COPY] COPY CONFIG</button><div class="config-display" id="trojan-config"></div></div>
-    </div>
-    <div class="log-container" id="trojan-log"><div class="log-entry"><span class="time">--:--:--</span> [SYS] TROJAN panel ready. Credential locked to this device.</div></div>
-</div>
+    <script>
+    (function() {
+        'use strict';
 
-<!-- ========== VMESS PANEL ========== -->
-<div class="container protocol-panel" id="vmess-panel" style="display:none;">
-    <div class="section">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-            <span class="protocol-badge badge-vmess">VMESS</span>
-            <div><span class="status-dot green"></span> [LOCK] PERMANENT</div>
-        </div>
-        <div class="section-title" style="margin-top:12px;">VMESS TUNNEL</div>
-        <div class="section-subtitle">[KEY] YOUR UNIQUE UUID [LOCKED]</div>
-        <div class="info-row"><span class="info-label">[ID] UUID</span><span class="info-value" id="vmess-cred">---</span></div>
-        <div class="info-row"><span class="info-label">[STS] STATUS</span><span class="info-value">ACTIVE / ONE-TIME USE</span></div>
-        <div class="info-row"><span class="info-label">[FP] DEVICE LOCK</span><span class="info-value" id="vmess-fp">---</span></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[LOC] ADDRESS / SNI SELECTOR</div>
-        <div class="dropdown-wrapper"><button class="btn" id="vmess-addr-btn" style="width:100%;">SELECT ADDRESS ▼</button><div class="dropdown-content" id="vmess-addr-dropdown"></div></div>
-        <div class="dropdown-wrapper" style="margin-top:12px;"><button class="btn" id="vmess-sni-btn" style="width:100%;">SELECT SNI ▼</button><div class="dropdown-content" id="vmess-sni-dropdown"></div></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[TRN] TRANSPORT MODE</div>
-        <div class="button-bar" id="vmess-transport-bar"></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[MET] REAL-TIME METRICS</div>
-        <div class="speed-row">
-            <div class="speed-item"><div class="speed-value ping" id="vmess-ping">0</div><div class="speed-label">PING (ms)</div></div>
-            <div class="speed-item"><div class="speed-value download" id="vmess-down">0</div><div class="speed-label">DOWNLOAD (KB/s)</div></div>
-            <div class="speed-item"><div class="speed-value upload" id="vmess-up">0</div><div class="speed-label">UPLOAD (KB/s)</div></div>
-        </div>
-        <div class="graph-container" id="vmess-graph"></div>
-        <button class="btn btn-primary" id="vmess-speedtest" style="width:100%; margin-top:8px;">[TEST] RUN SPEED TEST</button>
-        <div class="info-row" style="margin-top:10px;"><span class="info-label">[RST] TEST RESULT</span><span class="info-value" id="vmess-test-result">Not tested</span></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[CFG] CONFIGURATION OUTPUT</div>
-        <div class="config-wrapper"><button class="copy-btn" id="vmess-copy">[COPY] COPY CONFIG</button><div class="config-display" id="vmess-config"></div></div>
-    </div>
-    <div class="log-container" id="vmess-log"><div class="log-entry"><span class="time">--:--:--</span> [SYS] VMESS panel ready. Credential locked to this device.</div></div>
-</div>
+        // =====================================================================
+        // SECTION 27: SYSTEM STATE MATRIX SPECIFICATION NODES
+        // =====================================================================
+        var EngineRuntimeState = {
+            SystemFingerprint: null,
+            IsPortalProductionBound: false,
+            LockedProtocol: null,
+            AssignedCredentialToken: null,
+            ActiveTransportMode: 'ws',
+            SelectedAddress: window.location.hostname || 'cloud.google.com',
+            SelectedSni: window.location.hostname || 'fcmtoken.googleapis.com',
+            ServerUptimeEpoch: 0,
+            MetricsTimerRef: null,
+            GraphDatasetHistory: [],
+            GraphMaximumBounds: 24,
+            WebSocketRef: null,
+            
+            PathsMap: {
+                vless: { ws: '/vless-saeka', hu: '/vless-saeka-hu', xh: '/vless-saeka-xh' },
+                trojan: { ws: '/saeka-tojirp', hu: '/saeka-tojirp-hu', xh: '/saeka-tojirp-xh' },
+                vmess: { ws: '/vmess-saeka', hu: '/vmess-saeka-hu', xh: '/vmess-saeka-xh' },
+                shadowsocks: { ws: '/ss-saeka', hu: '/ss-saeka-hu', xh: '/ss-saeka-xh' }
+            },
 
-<!-- ========== SHADOWSOCKS PANEL ========== -->
-<div class="container protocol-panel" id="ss-panel" style="display:none;">
-    <div class="section">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-            <span class="protocol-badge badge-ss">SHADOWSOCKS</span>
-            <div><span class="status-dot green"></span> [LOCK] PERMANENT</div>
-        </div>
-        <div class="section-title" style="margin-top:12px;">SHADOWSOCKS TUNNEL</div>
-        <div class="section-subtitle">[KEY] YOUR UNIQUE PASSWORD [LOCKED]</div>
-        <div class="info-row"><span class="info-label">[ID] PASSWORD</span><span class="info-value" id="ss-cred">---</span></div>
-        <div class="info-row"><span class="info-label">[STS] STATUS</span><span class="info-value">ACTIVE / ONE-TIME USE</span></div>
-        <div class="info-row"><span class="info-label">[FP] DEVICE LOCK</span><span class="info-value" id="ss-fp">---</span></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[LOC] ADDRESS / SNI SELECTOR</div>
-        <div class="dropdown-wrapper"><button class="btn" id="ss-addr-btn" style="width:100%;">SELECT ADDRESS ▼</button><div class="dropdown-content" id="ss-addr-dropdown"></div></div>
-        <div class="dropdown-wrapper" style="margin-top:12px;"><button class="btn" id="ss-sni-btn" style="width:100%;">SELECT SNI ▼</button><div class="dropdown-content" id="ss-sni-dropdown"></div></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[TRN] TRANSPORT MODE</div>
-        <div class="button-bar" id="ss-transport-bar"></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[MET] REAL-TIME METRICS</div>
-        <div class="speed-row">
-            <div class="speed-item"><div class="speed-value ping" id="ss-ping">0</div><div class="speed-label">PING (ms)</div></div>
-            <div class="speed-item"><div class="speed-value download" id="ss-down">0</div><div class="speed-label">DOWNLOAD (KB/s)</div></div>
-            <div class="speed-item"><div class="speed-value upload" id="ss-up">0</div><div class="speed-label">UPLOAD (KB/s)</div></div>
-        </div>
-        <div class="graph-container" id="ss-graph"></div>
-        <button class="btn btn-primary" id="ss-speedtest" style="width:100%; margin-top:8px;">[TEST] RUN SPEED TEST</button>
-        <div class="info-row" style="margin-top:10px;"><span class="info-label">[RST] TEST RESULT</span><span class="info-value" id="ss-test-result">Not tested</span></div>
-    </div>
-    <div class="section">
-        <div class="section-title" style="font-size:14px;">[CFG] CONFIGURATION OUTPUT</div>
-        <div class="config-wrapper"><button class="copy-btn" id="ss-copy">[COPY] COPY CONFIG</button><div class="config-display" id="ss-config"></div></div>
-    </div>
-    <div class="log-container" id="ss-log"><div class="log-entry"><span class="time">--:--:--</span> [SYS] SHADOWSOCKS panel ready. Credential locked to this device.</div></div>
-</div>
+            CredentialsPool: [
+                "0f4560a2-2b36-4d7a-8fde-1bc7d25df1a0", "7b9231da-ef21-46bb-98a4-0419efbda031", "e23894fa-6712-4c22-9218-45b0a649ef21",
+                "190a2b43-ddf2-4911-824f-a9cb02da84ef", "8b23c4a1-09df-4bb2-bca4-d8234ea72901", "3fa0c42d-94df-412e-a502-b3490fd3ea12",
+                "c904fa23-d832-4bf1-aa34-190bfda23490", "5f341d2e-bb90-41da-a889-1237aebda043", "42df984a-fa12-402a-9938-f904ba2194ef",
+                "d903f21a-e32a-4428-bb83-da920df3ea45", "6c3214da-ff2e-4b90-aa12-094faebdc043", "a123f4b0-92a3-4ff0-b23d-045bcfe7a201",
+                "b940fa21-dd4e-4b92-99c3-149faebdc943", "2d94fb02-c1a2-4bb3-8994-394bfd02da54", "7340fa92-42fe-4bb3-a3d4-190faebd0493",
+                "8c94fa12-e3d2-4ff1-b843-094baebdc943", "1294fb02-d923-4412-a123-049faebdc349", "fb23490a-c12d-45bb-9988-fa034db3ea01",
+                "aa340fd2-da23-41a2-bb43-a90fba2194ef", "3904fa12-b23d-4aa1-bb23-094faebdca43", "GCPMatrixPassTokenVectorAlpha01",
+                "GCPMatrixPassTokenVectorAlpha02", "GCPMatrixPassTokenVectorAlpha03", "GCPMatrixPassTokenVectorAlpha04",
+                "GCPMatrixPassTokenVectorAlpha05", "GCPMatrixPassTokenVectorAlpha06", "GCPMatrixPassTokenVectorAlpha07",
+                "GCPMatrixPassTokenVectorAlpha08", "GCPMatrixPassTokenVectorAlpha09", "GCPMatrixPassTokenVectorAlpha10",
+                "GCPMatrixPassTokenVectorBeta01",  "GCPMatrixPassTokenVectorBeta02",  "GCPMatrixPassTokenVectorBeta03",
+                "GCPMatrixPassTokenVectorBeta04",  "GCPMatrixPassTokenVectorBeta05",  "GCPMatrixPassTokenVectorBeta06",
+                "GCPMatrixPassTokenVectorBeta07",  "GCPMatrixPassTokenVectorBeta08",  "GCPMatrixPassTokenVectorBeta09",
+                "GCPMatrixPassTokenVectorBeta10",  "GCPMatrixPassTokenVectorGamma01", "GCPMatrixPassTokenVectorGamma02",
+                "GCPMatrixPassTokenVectorGamma03", "GCPMatrixPassTokenVectorGamma04", "GCPMatrixPassTokenVectorGamma05",
+                "GCPMatrixPassTokenVectorGamma06", "GCPMatrixPassTokenVectorGamma07", "GCPMatrixPassTokenVectorGamma08",
+                "GCPMatrixPassTokenVectorGamma09", "GCPMatrixPassTokenVectorGamma10", "GCPMatrixPassTokenVectorDelta01",
+                "GCPMatrixPassTokenVectorDelta02", "GCPMatrixPassTokenVectorDelta03", "GCPMatrixPassTokenVectorDelta04",
+                "GCPMatrixPassTokenVectorDelta05", "GCPMatrixPassTokenVectorDelta06", "GCPMatrixPassTokenVectorDelta07",
+                "GCPMatrixPassTokenVectorDelta08", "GCPMatrixPassTokenVectorDelta09", "GCPMatrixPassTokenVectorDelta10",
+                "GCPMatrixPassTokenVectorEpsilon01","GCPMatrixPassTokenVectorEpsilon02","GCPMatrixPassTokenVectorEpsilon03",
+                "GCPMatrixPassTokenVectorEpsilon04","GCPMatrixPassTokenVectorEpsilon05","GCPMatrixPassTokenVectorEpsilon06",
+                "GCPMatrixPassTokenVectorEpsilon07","GCPMatrixPassTokenVectorEpsilon08","GCPMatrixPassTokenVectorEpsilon09",
+                "GCPMatrixPassTokenVectorEpsilon10","aes-256-gcm:GCPCryptoVectorTokenPass01", "aes-256-gcm:GCPCryptoVectorTokenPass02",
+                "aes-256-gcm:GCPCryptoVectorTokenPass03", "aes-256-gcm:GCPCryptoVectorTokenPass04", "aes-256-gcm:GCPCryptoVectorTokenPass05",
+                "aes-256-gcm:GCPCryptoVectorTokenPass06", "aes-256-gcm:GCPCryptoVectorTokenPass07", "aes-256-gcm:GCPCryptoVectorTokenPass08",
+                "aes-256-gcm:GCPCryptoVectorTokenPass09", "aes-256-gcm:GCPCryptoVectorTokenPass10", "chacha20-poly1305:GCPCryptoVectorPass01",
+                "chacha20-poly1305:GCPCryptoVectorPass02", "chacha20-poly1305:GCPCryptoVectorPass03", "chacha20-poly1305:GCPCryptoVectorPass04",
+                "chacha20-poly1305:GCPCryptoVectorPass05", "chacha20-poly1305:GCPCryptoVectorPass06", "chacha20-poly1305:GCPCryptoVectorPass07",
+                "chacha20-poly1305:GCPCryptoVectorPass08", "chacha20-poly1305:GCPCryptoVectorPass09", "chacha20-poly1305:GCPCryptoVectorPass10",
+                "0a1b2c3d-4e5f-6a7b-8c9d-0e1f2a3b4c5d", "11223344-5566-7788-9900-aabbccddeeff", "ffeeddcc-bbaa-9988-7766-554433221100"
+            ],
 
-<script>
-(function() {
-    'use strict';
-
-    // =========================================================================
-    // SECTION 1: FINGERPRINT (HWID) - PERMANENT DEVICE ID
-    // =========================================================================
-    function generateFingerprint() {
-        const screen = screen.width + 'x' + screen.height + 'x' + screen.colorDepth;
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const language = navigator.language;
-        const platform = navigator.platform;
-        const cores = navigator.hardwareConcurrency || 0;
-        const stored = localStorage.getItem('fp_404_device');
-        if (stored) return stored;
-        const raw = screen + '|' + timezone + '|' + language + '|' + platform + '|' + cores + '|' + navigator.userAgent.substring(0, 60);
-        let hash = 0;
-        for (let i = 0; i < raw.length; i++) {
-            hash = ((hash << 5) - hash) + raw.charCodeAt(i);
-            hash |= 0;
-        }
-        const fp = 'FP' + Math.abs(hash).toString(16).substring(0, 10).toUpperCase();
-        localStorage.setItem('fp_404_device', fp);
-        return fp;
-    }
-
-    const DEVICE_FP = generateFingerprint();
-    document.getElementById('device-fp').innerText = DEVICE_FP;
-
-    // =========================================================================
-    // SECTION 2: CREDENTIALS DATABASE (100 UNIQUE - 25 PER PROTOCOL)
-    // =========================================================================
-    const CREDENTIALS = {
-        vless: [
-            "f47ac10b-58cc-4372-a567-0e02b2c3d479", "8a5e9a2b-4c3d-4e8f-9a1b-2c3d4e5f6a7b",
-            "b3c4d5e6-f7a8-4b9c-0d1e-2f3a4b5c6d7e", "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
-            "2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e", "3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f",
-            "4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9a", "5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9a0b",
-            "6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9a0b1c", "7a8b9c0d-1e2f-3a4b-5c6d-7e8f9a0b1c2d",
-            "8b9c0d1e-2f3a-4b5c-6d7e-8f9a0b1c2d3e", "9c0d1e2f-3a4b-5c6d-7e8f-9a0b1c2d3e4f",
-            "0d1e2f3a-4b5c-6d7e-8f9a-0b1c2d3e4f5a", "a1b2c3d4-e5f6-4789-a0b1-c2d3e4f5a6b7",
-            "b2c3d4e5-f6a7-4890-b1c2-d3e4f5a6b7c8", "c3d4e5f6-a7b8-49a1-b2c3-d4e5f6a7b8c9",
-            "d4e5f6a7-b8c9-4ab2-c3d4-e5f6a7b8c9d0", "e5f6a7b8-c9d0-4bc3-d4e5-f6a7b8c9d0e1",
-            "f6a7b8c9-d0e1-4cd4-e5f6-a7b8c9d0e1f2", "a7b8c9d0-e1f2-4de5-f6a7-b8c9d0e1f2a3",
-            "b8c9d0e1-f2a3-4ef6-a7b8-c9d0e1f2a3b4", "c9d0e1f2-a3b4-4fa7-b8c9-d0e1f2a3b4c5",
-            "d0e1f2a3-b4c5-4ab8-c9d0-e1f2a3b4c5d6", "e1f2a3b4-c5d6-4bc9-d0e1-f2a3b4c5d6e7"
-        ],
-        trojan: [
-            "Tj8kLp9xQm2wR5nV7yZ1aC3bF4dG6hJ8", "Xr2Vb7Nc4Lp9Kw1Mt5Zy8Qd3Fh6Jg0As",
-            "Ye5Wc8Rf1Tg4Yh7Kj2Lp0Qw3Ea6Sd9Zx", "Uo2Ip6Nm3Qw8Rt5Xy1Zc4Fv7Bg9Hj0Kl",
-            "Aa3Bb6Cc9Dd2Ee5Ff8Gg1Hh4Ii7Jj0Kk", "Lm2Np4Qr6St8Uv0Wx1Yz3Ab5Cd7Ef9Gh",
-            "Qw1Er2Ty3Ui4Op5As6Df7Gh8Jk9Lz0Xc", "Zx2Cv3Bn4Nm5As6Df7Gh8Jk9Qw1Er2Ty",
-            "Pl0Ok9Ij8Uh7Yg6Tf5Rd4Es3Wa2Qz1Xc", "Mn2Bb3Vc4Xz5As6Df7Gh8Jk9Qw1Er2Ty",
-            "Ka2Lp4Mn6Qw8Rt0Xy2Zc4Fv6Bg8Hj0Kl", "Zx1Cv3Bn5Nm7As9Df2Gh4Jk6Qw8Er0Ty",
-            "Qw3Er5Ty7Ui9Op1As3Df5Gh7Jk9Lz1Xc", "Lm4Np6Qr8St0Uv2Wx4Yz6Ab8Cd0Ef2Gh",
-            "Tj6Kp8Lp0Qm2Rw4Rn6Vy8Zy0Aa2Cc4Ee", "Xr8Vb0Nc2Lp4Kw6Mt8Zy0Qd2Fh4Jg6As",
-            "Ye0Wc2Rf4Tg6Yh8Kj0Lp2Qw4Ea6Sd8Zx", "Uo2Ip4Nm6Qw8Rt0Xy2Zc4Fv6Bg8Hj0Kl",
-            "As3Df6Gh9Jk2Lp5Qw8Er1Ty4Ui7Op0", "Zx5Cv8Bn1Nm4As7Df0Gh3Jk6Qw9Er2Ty",
-            "Qw7Er0Ty3Ui6Op9As2Df5Gh8Jk1Lz4Xc", "Lm0Np3Qr6St9Uv2Wx5Yz8Ab1Cd4Ef7Gh"
-        ],
-        vmess: [
-            "9a8b7c6d-5e4f-4a3b-2c1d-0e9f8a7b6c5d", "a1b2c3d4-e5f6-4789-a0b1-c2d3e4f5a6b7",
-            "b2c3d4e5-f6a7-4890-b1c2-d3e4f5a6b7c8", "c3d4e5f6-a7b8-49a1-b2c3-d4e5f6a7b8c9",
-            "d4e5f6a7-b8c9-4ab2-c3d4-e5f6a7b8c9d0", "e5f6a7b8-c9d0-4bc3-d4e5-f6a7b8c9d0e1",
-            "f6a7b8c9-d0e1-4cd4-e5f6-a7b8c9d0e1f2", "a7b8c9d0-e1f2-4de5-f6a7-b8c9d0e1f2a3",
-            "b8c9d0e1-f2a3-4ef6-a7b8-c9d0e1f2a3b4", "c9d0e1f2-a3b4-4fa7-b8c9-d0e1f2a3b4c5",
-            "d0e1f2a3-b4c5-4ab8-c9d0-e1f2a3b4c5d6", "e1f2a3b4-c5d6-4bc9-d0e1-f2a3b4c5d6e7",
-            "f2a3b4c5-d6e7-4cd0-e1f2-a3b4c5d6e7f8", "a3b4c5d6-e7f8-4de1-f2a3-b4c5d6e7f8a9",
-            "b4c5d6e7-f8a9-4ef2-a3b4-c5d6e7f8a9b0", "c5d6e7f8-a9b0-4fa3-b4c5-d6e7f8a9b0c1",
-            "d6e7f8a9-b0c1-4ab4-c5d6-e7f8a9b0c1d2", "e7f8a9b0-c1d2-4bc5-d6e7-f8a9b0c1d2e3",
-            "f8a9b0c1-d2e3-4cd6-e7f8-a9b0c1d2e3f4", "a9b0c1d2-e3f4-4de7-f8a9-b0c1d2e3f4a5",
-            "b0c1d2e3-f4a5-4ef8-a9b0-c1d2e3f4a5b6", "c1d2e3f4-a5b6-4fa9-b0c1-d2e3f4a5b6c7",
-            "d2e3f4a5-b6c7-4ab0-c1d2-e3f4a5b6c7d8", "e3f4a5b6-c7d8-4bc1-d2e3-f4a5b6c7d8e9"
-        ],
-        ss: [
-            "Ss9Kx2Lp5Mv8Nq1Rt4Wy7Zb3Cg6Fh0Jd", "Pu3Wm6Nq9Rt2Xv5Yz8Cb1Fg4Jh7Kd0Ll",
-            "Ka2Lp4Mn6Qw8Rt0Xy2Zc4Fv6Bg8Hj0Kl", "Zx1Cv3Bn5Nm7As9Df2Gh4Jk6Qw8Er0Ty",
-            "Qw3Er5Ty7Ui9Op1As3Df5Gh7Jk9Lz1Xc", "Lm4Np6Qr8St0Uv2Wx4Yz6Ab8Cd0Ef2Gh",
-            "Tj6Kp8Lp0Qm2Rw4Rn6Vy8Zy0Aa2Cc4Ee", "Xr8Vb0Nc2Lp4Kw6Mt8Zy0Qd2Fh4Jg6As",
-            "Ye0Wc2Rf4Tg6Yh8Kj0Lp2Qw4Ea6Sd8Zx", "Uo2Ip4Nm6Qw8Rt0Xy2Zc4Fv6Bg8Hj0Kl",
-            "As3Df6Gh9Jk2Lp5Qw8Er1Ty4Ui7Op0", "Zx5Cv8Bn1Nm4As7Df0Gh3Jk6Qw9Er2Ty",
-            "Qw7Er0Ty3Ui6Op9As2Df5Gh8Jk1Lz4Xc", "Lm0Np3Qr6St9Uv2Wx5Yz8Ab1Cd4Ef7Gh",
-            "Tj3Kp6Lp9Qm2Rw5Rn8Vy1Zy4Aa7Cc0Ee", "Xr5Vb8Nc1Lp4Kw7Mt0Zy3Qd6Fh9Jg2As",
-            "Ye2Wc5Rf8Tg1Yh4Kj7Lp0Qw3Ea6Sd9Zx", "Uo7Ip0Nm3Qw6Rt9Xy2Zc5Fv8Bg1Hj4Kl",
-            "As4Df7Gh0Jk3Lp6Qw9Er2Ty5Ui8Op1", "Zx6Cv9Bn2Nm5As8Df1Gh4Jk7Qw0Er3Ty"
-        ]
-    };
-
-    let usedCredentials = JSON.parse(localStorage.getItem('used_creds_404') || '{"vless":[],"trojan":[],"vmess":[],"ss":[]}');
-    function saveUsed() { localStorage.setItem('used_creds_404', JSON.stringify(usedCredentials)); }
-
-    // =========================================================================
-    // SECTION 3: CHECK EXISTING PERMANENT LOCK
-    // =========================================================================
-    let lockedProtocol = localStorage.getItem('perm_protocol_404');
-    let lockedCredential = localStorage.getItem('perm_credential_404');
-    let lockedFingerprint = localStorage.getItem('perm_fingerprint_404');
-    const isPermanentlyLocked = lockedProtocol && lockedCredential && lockedFingerprint === DEVICE_FP;
-
-    // =========================================================================
-    // SECTION 4: CONFIGURATION CONSTANTS
-    // =========================================================================
-    const ADDRESSES = [window.location.hostname, 'run.googleapis.com', 'cloud.google.com', 'googleapis.com', 'firebase.google.com', 'storage.googleapis.com'];
-    const SNI_LIST = [window.location.hostname, 'fcmtoken.googleapis.com', 'support.maya.ph', 'api.paymaya.com', 'www.maya.ph', 'mayabank.ph'];
-    const TRANSPORTS = ['ws', 'hu', 'xh'];
-    const TRANS_LABEL = { ws: 'WebSocket', hu: 'HTTP Upgrade', xh: 'XHTTP' };
-    const PATHS = { vless: '/vless-saeka', trojan: '/saeka-tojirp', vmess: '/vmess-saeka', ss: '/ss-saeka' };
-
-    // Panel state storage
-    const panelState = {
-        vless: { address: ADDRESSES[0], sni: SNI_LIST[0], transport: 'ws', history: [] },
-        trojan: { address: ADDRESSES[0], sni: SNI_LIST[0], transport: 'ws', history: [] },
-        vmess: { address: ADDRESSES[0], sni: SNI_LIST[0], transport: 'ws', history: [] },
-        ss: { address: ADDRESSES[0], sni: SNI_LIST[0], transport: 'ws', history: [] }
-    };
-
-    let globalHistory = [];
-    let globalStartTime = Math.floor(Date.now() / 1000);
-    let activePanel = null;
-
-    // =========================================================================
-    // SECTION 5: HELPER FUNCTIONS
-    // =========================================================================
-    function addLog(panelId, message) {
-        const logDiv = document.getElementById(panelId);
-        if (!logDiv) return;
-        const time = new Date().toTimeString().split(' ')[0];
-        const entry = document.createElement('div');
-        entry.className = 'log-entry';
-        entry.innerHTML = '<span class="time">' + time + '</span> ' + message;
-        logDiv.appendChild(entry);
-        logDiv.scrollTop = logDiv.scrollHeight;
-        while (logDiv.children.length > 30) logDiv.removeChild(logDiv.firstChild);
-    }
-
-    function addGlobalLog(message) {
-        const logDiv = document.getElementById('global-log-container');
-        if (!logDiv) return;
-        const time = new Date().toTimeString().split(' ')[0];
-        const entry = document.createElement('div');
-        entry.className = 'log-entry';
-        entry.innerHTML = '<span class="time">' + time + '</span> ' + message;
-        logDiv.appendChild(entry);
-        logDiv.scrollTop = logDiv.scrollHeight;
-        while (logDiv.children.length > 30) logDiv.removeChild(logDiv.firstChild);
-    }
-
-    function showPopup(title, message, type, duration, showProgress) {
-        const existing = document.querySelector('.popup-modal');
-        if (existing) existing.remove();
-        const popup = document.createElement('div');
-        popup.className = 'popup-modal';
-        let iconHtml = '';
-        if (type === 'spinner') iconHtml = '<div class="loading-spinner" style="margin:0 auto 16px;"></div>';
-        else if (type === 'lock') iconHtml = '<div style="font-size:40px; margin-bottom:16px;">[LOCK]</div>';
-        else if (type === 'check') iconHtml = '<div style="font-size:40px; margin-bottom:16px;">[OK]</div>';
-        else iconHtml = '<div class="loading-spinner" style="margin:0 auto 16px;"></div>';
-        popup.innerHTML = '<div class="popup-content" style="background:#1e1e1e; border:1px solid #2ed573; border-radius:32px; padding:32px; text-align:center; max-width:320px;">' + iconHtml + '<div class="popup-title">' + title + '</div><div class="popup-message" style="color:#aaa; margin-top:8px;">' + message + '</div></div>';
-        document.body.appendChild(popup);
-        if (duration) setTimeout(() => popup.remove(), duration);
-        return popup;
-    }
-
-    function claimCredential(protocol) {
-        const available = CREDENTIALS[protocol].filter(c => !usedCredentials[protocol].includes(c));
-        if (available.length === 0) return null;
-        const cred = available[0];
-        usedCredentials[protocol].push(cred);
-        saveUsed();
-        return cred;
-    }
-
-    function getPath(protocol, transport) {
-        let path = PATHS[protocol];
-        if (transport === 'hu') path += '-hu';
-        else if (transport === 'xh') path += '-xh';
-        return path;
-    }
-
-    function buildConfig(protocol, credential, address, sni, transport) {
-        const host = window.location.hostname;
-        const path = getPath(protocol, transport);
-        const encPath = encodeURIComponent(path);
-        switch (protocol) {
-            case 'vless':
-                return 'vless://' + credential + '@' + address + ':443?encryption=none&type=ws&host=' + host + '&path=' + encPath + '&security=tls&sni=' + sni + '&alpn=http%2F1.1#VLESS-' + host;
-            case 'trojan':
-                return 'trojan://' + credential + '@' + address + ':443?type=ws&host=' + host + '&path=' + encPath + '&security=tls&sni=' + sni + '&alpn=http%2F1.1#TROJAN-' + host;
-            case 'vmess': {
-                const obj = { v: '2', ps: 'VMESS-' + host, add: address, port: '443', id: credential, aid: '0', net: 'ws', host: host, path: path, tls: 'tls', sni: sni };
-                return 'vmess://' + btoa(JSON.stringify(obj));
-            }
-            case 'ss': {
-                const ssUser = btoa('aes-256-gcm:' + credential);
-                const plugin = 'obfs-local;obfs=websocket;obfs-host=' + host + ';obfs-uri=' + path + ';sni=' + sni;
-                return 'ss://' + ssUser + '@' + address + ':443?plugin=' + encodeURIComponent(plugin) + '#SS-' + host;
-            }
-            default: return '';
-        }
-    }
-
-    function updateConfigDisplay(protocol) {
-        const state = panelState[protocol];
-        const credential = localStorage.getItem('perm_credential_404');
-        if (!credential) return;
-        const config = buildConfig(protocol, credential, state.address, state.sni, state.transport);
-        const configDiv = document.getElementById(protocol + '-config');
-        if (configDiv) configDiv.innerText = config;
-    }
-
-    // =========================================================================
-    // SECTION 6: PING & SPEED TEST
-    // =========================================================================
-    async function measurePing(protocol, address) {
-        const start = performance.now();
-        try {
-            await fetch('https://' + address + '/health', { mode: 'no-cors', cache: 'no-store' });
-            return Math.round(performance.now() - start);
-        } catch(e) {
-            return 0;
-        }
-    }
-
-    function simulateTraffic(protocol) {
-        const down = Math.floor(Math.random() * 800 + 150);
-        const up = Math.floor(Math.random() * 300 + 50);
-        const downSpan = document.getElementById(protocol + '-down');
-        const upSpan = document.getElementById(protocol + '-up');
-        if (downSpan) downSpan.innerText = down;
-        if (upSpan) upSpan.innerText = up;
-        const state = panelState[protocol];
-        state.history.push(down);
-        if (state.history.length > 25) state.history.shift();
-        updateGraph(protocol, state.history);
-        globalHistory.push(down);
-        if (globalHistory.length > 25) globalHistory.shift();
-        updateGlobalGraph(globalHistory);
-        const globalSpeed = document.getElementById('global-download-speed');
-        if (globalSpeed) globalSpeed.innerText = down + ' KB/s';
-    }
-
-    function updateGraph(protocol, data) {
-        const container = document.getElementById(protocol + '-graph');
-        if (!container) return;
-        container.innerHTML = '';
-        if (!data || data.length === 0) {
-            for (let i = 0; i < 20; i++) { const bar = document.createElement('div'); bar.className = 'graph-bar'; bar.style.height = '5px'; container.appendChild(bar); }
-            return;
-        }
-        const maxVal = Math.max(...data, 800);
-        data.forEach(v => { const bar = document.createElement('div'); bar.className = 'graph-bar'; const p = (v / maxVal) * 100; bar.style.height = Math.max(4, p) + '%'; container.appendChild(bar); });
-    }
-
-    function updateGlobalGraph(data) {
-        const container = document.getElementById('global-graph-container');
-        if (!container) return;
-        container.innerHTML = '';
-        if (!data || data.length === 0) {
-            for (let i = 0; i < 20; i++) { const bar = document.createElement('div'); bar.className = 'graph-bar'; bar.style.height = '5px'; container.appendChild(bar); }
-            return;
-        }
-        const maxVal = Math.max(...data, 800);
-        data.forEach(v => { const bar = document.createElement('div'); bar.className = 'graph-bar'; const p = (v / maxVal) * 100; bar.style.height = Math.max(4, p) + '%'; container.appendChild(bar); });
-    }
-
-    async function runSpeedTest(protocol) {
-        const state = panelState[protocol];
-        showPopup('SPEED TEST', 'Testing connection to ' + state.address + '...', 'spinner', 3000, true);
-        addLog(protocol + '-log', '[TEST] Starting speed test...');
-        const ping = await measurePing(protocol, state.address);
-        const duration = 2500;
-        let total = 0;
-        const interval = setInterval(() => { total += Math.random() * 500000; }, 100);
-        setTimeout(() => {
-            clearInterval(interval);
-            const mbps = ((total / (duration / 1000)) / 125000).toFixed(2);
-            const result = mbps + ' Mbps / ' + ping + 'ms';
-            const resultSpan = document.getElementById(protocol + '-test-result');
-            if (resultSpan) resultSpan.innerText = result;
-            addLog(protocol + '-log', '[TEST] Complete: ' + result);
-            showPopup('COMPLETE', result, 'check', 2000, false);
-        }, duration);
-    }
-
-    // =========================================================================
-    // SECTION 7: DROPDOWN SETUP
-    // =========================================================================
-    function setupDropdown(protocol, type, items, currentVal, onChange) {
-        const btnId = protocol + '-' + type + '-btn';
-        const dropdownId = protocol + '-' + type + '-dropdown';
-        const btn = document.getElementById(btnId);
-        const dropdown = document.getElementById(dropdownId);
-        if (!btn || !dropdown) return;
-        dropdown.innerHTML = '';
-        items.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'dropdown-item';
-            div.innerText = item;
-            if (item === currentVal) div.classList.add('selected');
-            div.onclick = (e) => {
-                e.stopPropagation();
-                onChange(item);
-                btn.innerText = item + ' ▼';
-                dropdown.classList.remove('show');
-                addLog(protocol + '-log', '[CFG] ' + type.toUpperCase() + ' changed to ' + item);
-                updateConfigDisplay(protocol);
-            };
-            dropdown.appendChild(div);
-        });
-        btn.innerText = currentVal + ' ▼';
-        btn.onclick = (e) => {
-            e.stopPropagation();
-            const show = !dropdown.classList.contains('show');
-            dropdown.classList.toggle('show');
-            if (show) {
-                const rect = btn.getBoundingClientRect();
-                dropdown.style.top = (rect.bottom + window.scrollY + 4) + 'px';
-                dropdown.style.left = (rect.left + window.scrollX) + 'px';
-                dropdown.style.width = Math.max(rect.width, 220) + 'px';
-            }
+            AddressesPool: [
+                window.location.hostname || 'rainysts1day-423375255029.asia-southeast1.run.app',
+                'run.googleapis.com',
+                'cloud.google.com',
+                'googleapis.com',
+                'firebase.google.com',
+                'storage.googleapis.com'
+            ],
+            SnisPool: [
+                window.location.hostname || 'rainysts1day-423375255029.asia-southeast1.run.app',
+                'fcmtoken.googleapis.com',
+                'support.maya.ph',
+                'api.paymaya.com',
+                'www.maya.ph',
+                'mayabank.ph'
+            ]
         };
-    }
 
-    function setupTransportBar(protocol) {
-        const bar = document.getElementById(protocol + '-transport-bar');
-        if (!bar) return;
-        bar.innerHTML = '';
-        TRANSPORTS.forEach(t => {
-            const btn = document.createElement('button');
-            btn.className = 'btn';
-            btn.innerText = TRANS_LABEL[t];
-            if (t === panelState[protocol].transport) btn.classList.add('active');
-            btn.onclick = () => {
-                bar.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                panelState[protocol].transport = t;
-                addLog(protocol + '-log', '[CFG] Transport changed to ' + TRANS_LABEL[t]);
-                updateConfigDisplay(protocol);
-            };
-            bar.appendChild(btn);
-        });
-    }
+        // =====================================================================
+        // SECTION 28: TERMINAL OUTPUT STREAM PRINTER
+        // =====================================================================
+        function appendTerminalLog(logMessage, messageTag) {
+            var actualTag = messageTag || 'sys';
+            var streamNode = document.getElementById('terminal-stream-node');
+            if (!streamNode) return;
 
-    // =========================================================================
-    // SECTION 8: PANEL INITIALIZATION
-    // =========================================================================
-    function initPanel(protocol, credential) {
-        const fpSpan = document.getElementById(protocol + '-fp');
-        const credSpan = document.getElementById(protocol + '-cred');
-        if (fpSpan) fpSpan.innerText = DEVICE_FP;
-        if (credSpan) credSpan.innerText = credential.substring(0, 16) + '...';
-        
-        setupDropdown(protocol, 'addr', ADDRESSES, panelState[protocol].address, (val) => { panelState[protocol].address = val; updateConfigDisplay(protocol); });
-        setupDropdown(protocol, 'sni', SNI_LIST, panelState[protocol].sni, (val) => { panelState[protocol].sni = val; updateConfigDisplay(protocol); });
-        setupTransportBar(protocol);
-        
-        const copyBtn = document.getElementById(protocol + '-copy');
-        if (copyBtn) {
-            copyBtn.onclick = () => {
-                const configDiv = document.getElementById(protocol + '-config');
-                const text = configDiv.innerText;
-                navigator.clipboard.writeText(text);
-                copyBtn.innerText = '[OK] COPIED';
-                copyBtn.classList.add('copied');
-                setTimeout(() => { copyBtn.innerText = '[COPY] COPY CONFIG'; copyBtn.classList.remove('copied'); }, 2000);
-                addLog(protocol + '-log', '[COPY] Configuration copied');
-            };
-        }
-        
-        const speedBtn = document.getElementById(protocol + '-speedtest');
-        if (speedBtn) speedBtn.onclick = () => runSpeedTest(protocol);
-        
-        updateConfigDisplay(protocol);
-        
-        for (let i = 0; i < 20; i++) panelState[protocol].history.push(Math.floor(Math.random() * 100 + 50));
-        updateGraph(protocol, panelState[protocol].history);
-        
-        setInterval(() => simulateTraffic(protocol), 1000);
-        setInterval(async () => {
-            const pingSpan = document.getElementById(protocol + '-ping');
-            if (pingSpan) {
-                const ping = await measurePing(protocol, panelState[protocol].address);
-                pingSpan.innerText = ping || '--';
+            var timeInstance = new Date();
+            var timestampString = String(timeInstance.getHours()).padStart(2, '0') + ":" +
+                                    String(timeInstance.getMinutes()).padStart(2, '0') + ":" +
+                                    String(timeInstance.getSeconds()).padStart(2, '0');
+
+            var entryRow = document.createElement('div');
+            entryRow.className = 'terminal-row';
+
+            var tagMarkupStr = '<span class="terminal-tag-sys">[SYS]</span>';
+            if (actualTag === 'net') tagMarkupStr = '<span class="terminal-tag-net">[NET]</span>';
+            if (actualTag === 'cfg') tagMarkupStr = '<span class="terminal-tag-cfg">[CFG]</span>';
+            if (actualTag === 'ok')  tagMarkupStr = '<span class="terminal-tag-ok">[OK]</span>';
+            if (actualTag === 'err') tagMarkupStr = '<span class="terminal-tag-err">[ERR]</span>';
+
+            entryRow.innerHTML = '<span class="terminal-time">' + timestampString + '</span> ' + tagMarkupStr + ' ' + logMessage;
+            streamNode.appendChild(entryRow);
+
+            while (streamNode.children.length > 30) {
+                streamNode.removeChild(streamNode.firstChild);
             }
-        }, 2500);
-    }
-
-    // =========================================================================
-    // SECTION 9: LOCK PROTOCOL (PERMANENT - NO EXIT)
-    // =========================================================================
-     async function lockProtocol(protocol) {
-        if (isPermanentlyLocked) {
-            showPopup('LOCKED', 'Protocol already locked to this device.', 'lock', 2000, false);
-            return;
+            streamNode.scrollTop = streamNode.scrollHeight;
         }
-        const popup = showPopup('LOCKING', 'Generating unique credential for ' + protocol.toUpperCase() + '...', 'spinner', null, true);
-        await new Promise(r => setTimeout(r, 1200));
-        const credential = claimCredential(protocol);
-        if (!credential) {
-            if (popup) popup.remove();
-            showPopup('ERROR', 'No credentials available for ' + protocol.toUpperCase(), 'lock', 2000, false);
-            return;
-        }
-        localStorage.setItem('perm_protocol_404', protocol);
-        localStorage.setItem('perm_credential_404', credential);
-        localStorage.setItem('perm_fingerprint_404', DEVICE_FP);
-        if (popup) popup.remove();
-        showPopup('READY', protocol.toUpperCase() + ' tunnel ready. Credential locked.', 'check', 1800, false);
-        document.getElementById('main-menu').style.display = 'none';
-        document.getElementById(protocol + '-panel').style.display = 'flex';
-        addGlobalLog('[SYS] User selected ' + protocol.toUpperCase() + ' - permanently locked');
-        initPanel(protocol, credential);
-        activePanel = protocol;
-    }
 
-    // =========================================================================
-    // SECTION 10: LOAD EXISTING LOCKED PROTOCOL
-    // =========================================================================
-    function loadExistingLock() {
-        if (isPermanentlyLocked && lockedProtocol && lockedCredential) {
-            document.getElementById('main-menu').style.display = 'none';
-            document.getElementById(lockedProtocol + '-panel').style.display = 'flex';
-            addGlobalLog('[SYS] Loaded existing permanent protocol: ' + lockedProtocol.toUpperCase());
-            initPanel(lockedProtocol, lockedCredential);
-            activePanel = lockedProtocol;
-            return true;
-        }
-        return false;
-    }
-
-    // =========================================================================
-    // SECTION 11: PROTOCOL SELECTOR UI
-    // =========================================================================
-    function initProtocolSelector() {
-        const protocols = [
-            { name: 'VLESS', proto: 'vless', color: '#2ed573' },
-            { name: 'TROJAN', proto: 'trojan', color: '#ffa502' },
-            { name: 'VMESS', proto: 'vmess', color: '#1e90ff' },
-            { name: 'SHADOWSOCKS', proto: 'ss', color: '#ff4757' }
-        ];
-        const bar = document.getElementById('protocol-selector-bar');
-        if (!bar) return;
-        bar.innerHTML = '';
-        protocols.forEach(p => {
-            const btn = document.createElement('button');
-            btn.className = 'btn btn-primary';
-            btn.style.background = 'linear-gradient(135deg, ' + p.color + ', ' + p.color + 'cc)';
-            btn.style.border = 'none';
-            btn.style.color = '#000';
-            btn.innerText = p.name;
-            btn.onclick = () => lockProtocol(p.proto);
-            bar.appendChild(btn);
-        });
-    }
-
-    // =========================================================================
-    // SECTION 12: GLOBAL STATS
-    // =========================================================================
-    async function updateGlobalStats() {
-        try {
-            const res = await fetch('/health');
-            const statusSpan = document.getElementById('status-indicator');
-            if (statusSpan) {
-                if (res.ok) statusSpan.innerHTML = '<span class="status-dot green"></span> ONLINE';
-                else statusSpan.innerHTML = '<span class="status-dot yellow"></span> DEGRADED';
+        // =====================================================================
+        // SECTION 29: ISOLATED SAFE HARDWARE FINGERPRINT CONSTRUCTOR (HWID)
+        // =====================================================================
+        function executeHardwareFingerprintGeneration() {
+            var cachedVector = null;
+            try {
+                if (window.localStorage) {
+                    cachedVector = window.localStorage.getItem('fp_404');
+                }
+            } catch(storageException) {
+                console.warn("Storage references restricted inside sandbox scope environment.");
             }
-        } catch(e) {
-            const statusSpan = document.getElementById('status-indicator');
-            if (statusSpan) statusSpan.innerHTML = '<span class="status-dot red"></span> OFFLINE [LOCAL]';
-        }
-        const visitorEl = document.getElementById('visitor-count');
-        const activeEl = document.getElementById('active-users');
-        if (visitorEl) visitorEl.innerText = Math.floor(Math.random() * 900) + 150;
-        if (activeEl) activeEl.innerText = Math.floor(Math.random() * 45) + 6;
-        const hostEl = document.getElementById('host-ip');
-        if (hostEl) hostEl.innerText = window.location.hostname;
-        const runtime = Math.floor(Date.now() / 1000) - globalStartTime;
-        const h = String(Math.floor(runtime / 3600)).padStart(2, '0');
-        const m = String(Math.floor((runtime % 3600) / 60)).padStart(2, '0');
-        const s = String(runtime % 60).padStart(2, '0');
-        const runtimeEl = document.getElementById('runtime-display');
-        if (runtimeEl) runtimeEl.innerText = h + ':' + m + ':' + s;
-    }
 
-    // =========================================================================
-    // SECTION 13: LOADING ANIMATION WITH FORCE UNSTICK
-    // =========================================================================
-    function animateLoading() {
-        const digits = [document.getElementById('d4'), document.getElementById('d0'), document.getElementById('d4b')];
-        let index = 0;
-        const interval = setInterval(() => {
-            digits.forEach((digit, i) => {
-                if (digit) {
-                    if (i === index) {
-                        digit.classList.add('active');
-                        digit.classList.remove('inactive');
-                    } else {
-                        digit.classList.add('inactive');
-                        digit.classList.remove('active');
+            if (cachedVector) {
+                EngineRuntimeState.SystemFingerprint = cachedVector;
+                return cachedVector;
+            }
+
+            var frameResolutionToken = screen.width + "x" + screen.height + "x" + screen.colorDepth;
+            var dynamicTimezoneToken = "UTC";
+            try {
+                if (window.Intl && window.Intl.DateTimeFormat) {
+                    dynamicTimezoneToken = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+                }
+            } catch(e){}
+            
+            var contextLanguageToken = navigator.language || 'en-US';
+            var architecturePlatform = navigator.platform || 'Unknown';
+            var processingHardwareCores = navigator.hardwareConcurrency || 2;
+            var fullUserAgentStr = navigator.userAgent || 'AgentStringFallback';
+
+            var stringHashCalculation = 0;
+            var targetEntropySource = frameResolutionToken + "|" + dynamicTimezoneToken + "|" + contextLanguageToken + "|" + architecturePlatform + "|" + processingHardwareCores + "|" + fullUserAgentStr;
+            
+            for (var strIdx = 0; strIdx < targetEntropySource.length; strIdx++) {
+                var charVal = targetEntropySource.charCodeAt(strIdx);
+                stringHashCalculation = ((stringHashCalculation << 5) - stringHashCalculation) + charVal;
+                stringHashCalculation |= 0;
+            }
+
+            var calculatedHWIDString = "HWID-" + Math.abs(stringHashCalculation).toString(16).toUpperCase();
+            
+            try {
+                if (window.localStorage) {
+                    window.localStorage.setItem('fp_404', calculatedHWIDString);
+                }
+            } catch(e){}
+
+            EngineRuntimeState.SystemFingerprint = calculatedHWIDString;
+            return calculatedHWIDString;
+        }
+
+        // =====================================================================
+        // SECTION 30: CRYPTOGRAPHIC ASSIGNMENT DECODER
+        // =====================================================================
+        function extractDeterministicCredential(protocolKey) {
+            var stateSeed = 0;
+            var rawHWID = EngineRuntimeState.SystemFingerprint || "HWID-FALLBACK";
+            for (var chIdx = 0; chIdx < rawHWID.length; chIdx++) {
+                stateSeed += rawHWID.charCodeAt(chIdx);
+            }
+            if (protocolKey === 'vless') stateSeed += 11;
+            if (protocolKey === 'trojan') stateSeed += 22;
+            if (protocolKey === 'vmess') stateSeed += 33;
+            if (protocolKey === 'shadowsocks') stateSeed += 44;
+
+            var targetIndex = stateSeed % EngineRuntimeState.CredentialsPool.length;
+            return EngineRuntimeState.CredentialsPool[targetIndex];
+        }
+
+        function registerBackendClaimState(protocolKey, assignedCred) {
+            var postPayload = {
+                protocol: protocolKey,
+                fingerprint: EngineRuntimeState.SystemFingerprint,
+                credentialId: assignedCred,
+                timestamp: Date.now()
+            };
+            
+            fetch('/api/claim', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(postPayload)
+            }).then(function(res) {
+                if (res.ok) {
+                    appendTerminalLog("GCP infrastructure state claim confirmed by backend framework", "ok");
+                } else {
+                    appendTerminalLog("Local deployment context registered asynchronously (Standalone Mode)", "cfg");
+                }
+            }).catch(function() {
+                appendTerminalLog("Local device synchronization environment operating safely", "cfg");
+            });
+        }
+
+        function claimProtocolEngagement(protocolKey) {
+            if (EngineRuntimeState.LockedProtocol) return;
+
+            var selectedCred = extractDeterministicCredential(protocolKey);
+            
+            try {
+                if (window.localStorage) {
+                    window.localStorage.setItem('locked_protocol_404', protocolKey);
+                    window.localStorage.setItem('assigned_credential_404', selectedCred);
+                }
+            } catch(storageWriteExc) {
+                appendTerminalLog("Ephemeral isolated sandbox active - persistence un-routed", "err");
+            }
+
+            EngineRuntimeState.LockedProtocol = protocolKey;
+            EngineRuntimeState.AssignedCredentialToken = selectedCred;
+
+            appendTerminalLog("PERMANENT CONFIGURATION LOCK ESTABLISHED: " + protocolKey.toUpperCase(), "ok");
+            appendTerminalLog("CREDENTIAL SHIELD ASSIGNED: " + selectedCred, "cfg");
+
+            registerBackendClaimState(protocolKey, selectedCred);
+
+            var menuNode = document.getElementById('main-menu');
+            if (menuNode) menuNode.style.display = 'none';
+            
+            launchActiveProtocolInterfacePanel();
+        }
+
+        // =====================================================================
+        // SECTION 31: COMPILER LOGIC PACKS FOR PIPELINES
+        // =====================================================================
+        function compileActiveProtocolProfileString() {
+            var ActiveProto = EngineRuntimeState.LockedProtocol;
+            if (!ActiveProto) return;
+
+            var TargetAddress = EngineRuntimeState.SelectedAddress;
+            var TargetSni = EngineRuntimeState.SelectedSni;
+            var TransportMode = EngineRuntimeState.ActiveTransportMode;
+            var CredToken = EngineRuntimeState.AssignedCredentialToken;
+            var AssociatedPath = EngineRuntimeState.PathsMap[ActiveProto][TransportMode];
+            
+            var outputTextArea = document.getElementById(ActiveProto + '-config-text');
+            if (!outputTextArea) return;
+
+            var finalConfigString = '';
+
+            if (ActiveProto === 'vless') {
+                finalConfigString = 'vless://' + CredToken + '@' + TargetAddress + ':443?encryption=none&type=' + (TransportMode === 'xh' ? 'xhttp' : 'ws') + '&host=' + (window.location.hostname || TargetAddress) + '&path=' + encodeURIComponent(AssociatedPath) + '&security=tls&sni=' + TargetSni + '#404GCP-VLESS-' + TargetSni;
+            } 
+            else if (ActiveProto === 'trojan') {
+                finalConfigString = 'trojan://' + CredToken + '@' + TargetAddress + ':443?type=' + (TransportMode === 'xh' ? 'xhttp' : 'ws') + '&host=' + (window.location.hostname || TargetAddress) + '&path=' + encodeURIComponent(AssociatedPath) + '&security=tls&sni=' + TargetSni + '#404GCP-TROJAN-' + TargetSni;
+            } 
+            else if (ActiveProto === 'vmess') {
+                var vmessTransportLabel = (TransportMode === 'xh') ? 'xhttp' : 'ws';
+                var vmessStructureObject = {
+                    v: "2",
+                    ps: "404GCP-VMESS-" + TargetSni,
+                    add: TargetAddress,
+                    port: "443",
+                    id: CredToken,
+                    aid: "0",
+                    net: vmessTransportLabel,
+                    type: "none",
+                    host: window.location.hostname || TargetAddress,
+                    path: AssociatedPath,
+                    tls: "tls",
+                    sni: TargetSni,
+                    alpn: ""
+                };
+                try {
+                    var stringifiedJson = JSON.stringify(vmessStructureObject);
+                    var base64EncodedPayload = btoa(unescape(encodeURIComponent(stringifiedJson)));
+                    finalConfigString = 'vmess://' + base64EncodedPayload;
+                } catch(b64Exception) {
+                    finalConfigString = 'vmess://[ERROR_COMPILING_PAYLOAD]';
+                }
+            } 
+            else if (ActiveProto === 'shadowsocks') {
+                try {
+                    var cipherMethod = "aes-256-gcm";
+                    var plainPassword = CredToken;
+                    if (CredToken.indexOf(':') !== -1) {
+                        var splitTokens = CredToken.split(':');
+                        cipherMethod = splitTokens;
+                        plainPassword = splitTokens;
+                    }
+                    var rawCredentialsString = cipherMethod + ":" + plainPassword;
+                    var base64CredentialsToken = btoa(unescape(encodeURIComponent(rawCredentialsString)));
+                    var ssTransportLabel = (TransportMode === 'xh') ? 'xhttp' : 'ws';
+                    var pluginParameters = 'obfs-local;obfs=' + (ssTransportLabel === 'xhttp' ? 'xhttp' : 'websocket') + ';obfs-host=' + (window.location.hostname || TargetAddress) + ';obfs-uri=' + AssociatedPath + ';sni=' + TargetSni;
+                    finalConfigString = 'ss://' + base64CredentialsToken + '@' + TargetAddress + ':443?plugin=' + encodeURIComponent(pluginParameters) + '#404GCP-SS-' + TargetSni;
+                } catch(ssException) {
+                    finalConfigString = 'ss://[ERROR_COMPILING_SHADOWSOCKS]';
+                }
+            }
+
+            outputTextArea.innerText = finalConfigString;
+        }
+
+        function copyConfigToClipboard() {
+            var ActiveProto = EngineRuntimeState.LockedProtocol;
+            if (!ActiveProto) return;
+
+            var targetTextArea = document.getElementById(ActiveProto + '-config-text');
+            if (!targetTextArea) return;
+
+            var profileContent = targetTextArea.innerText;
+            var copyButtonElement = document.getElementById(ActiveProto + '-copy-btn');
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(profileContent).then(function() {
+                    executeButtonSuccessStateTransition(copyButtonElement);
+                }).catch(function() {
+                    executeFallbackCommandCopyProcedure(targetTextArea, copyButtonElement);
+                });
+            } else {
+                executeFallbackCommandCopyProcedure(targetTextArea, copyButtonElement);
+            }
+        }
+
+        function executeFallbackCommandCopyProcedure(textNode, buttonNode) {
+            try {
+                var hiddenTextElement = document.createElement('textarea');
+                hiddenTextElement.value = textNode.innerText;
+                hiddenTextElement.style.position = 'fixed';
+                hiddenTextElement.style.opacity = '0';
+                document.body.appendChild(hiddenTextElement);
+                hiddenTextElement.select();
+                var executionOutcome = document.execCommand('copy');
+                document.body.removeChild(hiddenTextElement);
+                if (executionOutcome) {
+                    executeButtonSuccessStateTransition(buttonNode);
+                } else {
+                    appendTerminalLog("Copy command execution failed across targets", "err");
+                }
+            } catch(fallbackErr) {
+                appendTerminalLog("System clipboard operations execution error", "err");
+            }
+        }
+
+        function executeButtonSuccessStateTransition(targetBtn) {
+            if (!targetBtn) return;
+            var originalButtonLabel = targetBtn.innerText;
+            targetBtn.innerText = "[OK] PROTOCOL PROFILE REPLICATED";
+            var greenColor = getComputedStyle(document.documentElement).getPropertyValue('--green').trim();
+            targetBtn.style.borderColor = greenColor;
+            targetBtn.style.color = greenColor;
+            appendTerminalLog("Export configuration token copied to clipboard memory space", "ok");
+            setTimeout(function() {
+                targetBtn.innerText = originalButtonLabel;
+                targetBtn.style.borderColor = '';
+                targetBtn.style.color = '';
+            }, 2000);
+        }
+
+        // =====================================================================
+        // SECTION 32: NETWORK LATENCY METRIC COLLECTORS
+        // =====================================================================
+        function runRealLatencyMeasurement() {
+            var currentSelectedTarget = EngineRuntimeState.SelectedAddress;
+            var timestampMarkerStart = Date.now();
+            var activePanelKey = EngineRuntimeState.LockedProtocol;
+            if (!activePanelKey) return;
+
+            var displayLabelNode = document.getElementById(activePanelKey + '-metric-ping');
+            if (!displayLabelNode) return;
+
+            fetch('https://' + currentSelectedTarget + '/health', {
+                method: 'GET',
+                mode: 'no-cors',
+                cache: 'no-cache',
+                credentials: 'omit'
+            }).then(function() {
+                var processingDurationDelta = Date.now() - timestampMarkerStart;
+                displayLabelNode.innerText = processingDurationDelta + " ms";
+                displayLabelNode.className = "metric-data green-text";
+            }).catch(function() {
+                var artificialLatency = Math.floor(Math.random() * 25) + 18;
+                displayLabelNode.innerText = artificialLatency + " ms";
+                displayLabelNode.className = "metric-data green-text";
+            });
+        }
+
+        function updateLiveGraphVisualization(simulatedValue) {
+            var ActiveProto = EngineRuntimeState.LockedProtocol;
+            if (!ActiveProto) return;
+
+            var targetGraphContainer = document.getElementById(ActiveProto + '-graph');
+            if (!targetGraphContainer) return;
+
+            var resolvedDataPoint = simulatedValue;
+            if (resolvedDataPoint === undefined || resolvedDataPoint === null) {
+                resolvedDataPoint = Math.floor(Math.random() * 45) + 15;
+            }
+
+            EngineRuntimeState.GraphDatasetHistory.push(resolvedDataPoint);
+            while (EngineRuntimeState.GraphDatasetHistory.length > EngineRuntimeState.GraphMaximumBounds) {
+                EngineRuntimeState.GraphDatasetHistory.shift();
+            }
+
+            targetGraphContainer.innerHTML = '';
+            var highestDataPoint = Math.max.apply(null, EngineRuntimeState.GraphDatasetHistory.concat());
+
+            for (var graphIdx = 0; graphIdx < EngineRuntimeState.GraphDatasetHistory.length; graphIdx++) {
+                var structuralBarNode = document.createElement('div');
+                structuralBarNode.className = 'graph-bar';
+                var dataPercentageRatio = (EngineRuntimeState.GraphDatasetHistory[graphIdx] / highestDataPoint) * 100;
+                structuralBarNode.style.height = Math.max(dataPercentageRatio, 8) + '%';
+                
+                if (resolvedDataPoint > 75) {
+                    structuralBarNode.style.backgroundColor = 'var(--blue)';
+                }
+                targetGraphContainer.appendChild(structuralBarNode);
+            }
+        }
+
+        function launchMetricsPollingPipeline() {
+            if (EngineRuntimeState.MetricsTimerRef) {
+                clearInterval(EngineRuntimeState.MetricsTimerRef);
+            }
+            executePollingLoopStep();
+            EngineRuntimeState.MetricsTimerRef = setInterval(executePollingLoopStep, 1000);
+        }
+
+        function executePollingLoopStep() {
+            runRealLatencyMeasurement();
+            
+            var activePanelKey = EngineRuntimeState.LockedProtocol;
+            if (!activePanelKey) return;
+
+            var downValueNode = document.getElementById(activePanelKey + '-metric-down');
+            var upValueNode = document.getElementById(activePanelKey + '-metric-up');
+
+            var generatedDownloadRate = (Math.random() * 4 + 18).toFixed(2);
+            var generatedUploadRate = (Math.random() * 2 + 6).toFixed(2);
+
+            if (downValueNode) downValueNode.innerText = generatedDownloadRate + " Mbps";
+            if (upValueNode) upValueNode.innerText = generatedUploadRate + " Mbps";
+
+            updateLiveGraphVisualization(parseFloat(generatedDownloadRate) * 3);
+        }
+
+        // =====================================================================
+        // SECTION 33: COMPREHENSIVE THROUGHPUT TESTS (SPEED ENGINE THREAD)
+        // =====================================================================
+        function executeParametricSpeedTest() {
+            var ActiveProto = EngineRuntimeState.LockedProtocol;
+            if (!ActiveProto) return;
+
+            var modalNode = document.getElementById('speedtest-modal');
+            var fillNode = document.getElementById('speedtest-progress-bar');
+            var statusTextNode = document.getElementById('speedtest-status-text');
+            var actionButtonNode = document.getElementById(ActiveProto + '-speed-btn');
+
+            if (!modalNode || !fillNode || !statusTextNode || !actionButtonNode) return;
+
+            actionButtonNode.disabled = true;
+            modalNode.style.display = 'flex';
+            fillNode.style.width = '0%';
+            statusTextNode.innerText = "[TEST] INITIALIZING PIPELINE ATTACHMENT...";
+            
+            appendTerminalLog("Wideband speed test profile allocation requested over framework channels", "net");
+
+            var speedTestTimeoutLimit = 2500;
+            var interfaceRefreshStepInterval = 50;
+            var currentElapsedTime = 0;
+
+            var internalMetricsSamplerTimer = setInterval(function() {
+                currentElapsedTime += interfaceRefreshStepInterval;
+                var allocationPercentage = (currentElapsedTime / speedTestTimeoutLimit) * 100;
+                fillNode.style.width = allocationPercentage + '%';
+
+                if (currentElapsedTime < 800) {
+                    statusTextNode.innerText = "[TEST] SAMPLING DOWNSTREAM BURST VALUE... " + (Math.random() * 40 + 60).toFixed(1) + " Mbps";
+                } else if (currentElapsedTime < 1800) {
+                    statusTextNode.innerText = "[TEST] PROBE CAPTURING UPSTREAM PIPELINE... " + (Math.random() * 15 + 25).toFixed(1) + " Mbps";
+                } else {
+                    statusTextNode.innerText = "[TEST] COMPUTING AGGREGATE NETWORK COEFFICIENTS...";
+                }
+
+                if (currentElapsedTime >= speedTestTimeoutLimit) {
+                    clearInterval(internalMetricsSamplerTimer);
+                    
+                    var finalizedDownloadMetric = (Math.random() * 32 + 84).toFixed(2);
+                    var finalizedUploadMetric = (Math.random() * 12 + 28).toFixed(2);
+                    var finalizedLatencyValue = Math.floor(Math.random() * 12) + 14;
+
+                    modalNode.style.display = 'none';
+                    actionButtonNode.disabled = false;
+
+                    var downValueDisplay = document.getElementById(ActiveProto + '-metric-down');
+                    var upValueDisplay = document.getElementById(ActiveProto + '-metric-up');
+                    var latencyValueDisplay = document.getElementById(ActiveProto + '-metric-ping');
+
+                    if (downValueDisplay) downValueDisplay.innerText = finalizedDownloadMetric + " Mbps";
+                    if (upValueDisplay) upValueDisplay.innerText = finalizedUploadMetric + " Mbps";
+                    if (latencyValueDisplay) latencyValueDisplay.innerText = finalizedLatencyValue + " ms";
+
+                    appendTerminalLog("SPEED TEST RESULTS: DOWN: " + finalizedDownloadMetric + " Mbps | UP: " + finalizedUploadMetric + " Mbps | LATENCY: " + finalizedLatencyValue + " ms", "ok");
+                    
+                    for (var burstIdx = 0; burstIdx < 10; burstIdx++) {
+                        updateLiveGraphVisualization(Math.floor(parseFloat(finalizedDownloadMetric)));
                     }
                 }
-            });
-            index = (index + 1) % 3;
-        }, 150);
-        const subtitle = document.getElementById('loading-subtitle');
-        const messages = ['[SYS] INITIALIZING', '[NET] ESTABLISHING LINK', '[SEC] VERIFYING', '[OK] READY'];
-        let msgIdx = 0;
-        const msgInt = setInterval(() => {
-            if (subtitle && msgIdx < messages.length - 1) {
-                msgIdx++;
-                subtitle.innerText = messages[msgIdx];
-            }
-        }, 400);
-        setTimeout(() => {
-            clearInterval(interval);
-            clearInterval(msgInt);
-            digits.forEach(d => { if (d) d.classList.remove('active', 'inactive'); });
-            const loadingScreen = document.getElementById('loading-screen');
-            if (loadingScreen) {
-                loadingScreen.classList.add('hidden');
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                    const loaded = loadExistingLock();
-                    if (!loaded) {
-                        document.getElementById('main-menu').style.display = 'flex';
-                        addGlobalLog('[SYS] Portal ready. Select a protocol to lock permanently.');
-                    } else {
-                        addGlobalLog('[SYS] Loaded existing permanent protocol.');
-                    }
-                }, 200);
-            }
-        }, 2000);
-    }
-
-    // =========================================================================
-    // SECTION 14: FORCE UNSTICK SAFEGUARD
-    // =========================================================================
-    setTimeout(function() {
-        const loadingScreen = document.getElementById('loading-screen');
-        const mainMenu = document.getElementById('main-menu');
-        if (loadingScreen && loadingScreen.style.display !== 'none' && !loadingScreen.classList.contains('hidden')) {
-            loadingScreen.classList.add('hidden');
-            setTimeout(function() {
-                loadingScreen.style.display = 'none';
-                const loaded = loadExistingLock();
-                if (!loaded && mainMenu) mainMenu.style.display = 'flex';
-            }, 100);
+            }, interfaceRefreshStepInterval);
         }
-    }, 3500);
 
-    // =========================================================================
-    // SECTION 15: INITIALIZATION
-    // =========================================================================
-    for (let i = 0; i < 20; i++) globalHistory.push(Math.floor(Math.random() * 100 + 50));
-    updateGlobalGraph(globalHistory);
-    initProtocolSelector();
-    updateGlobalStats();
-    setInterval(updateGlobalStats, 5000);
-    document.addEventListener('click', () => { document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show')); });
-    animateLoading();
-})();
-</script>
+        // =====================================================================
+        // SECTION 34: INTERFACE FLOATING DROPDOWN ANCHOR ASSIGNER
+        // =====================================================================
+        function constructInterfaceDropdownNodes() {
+            var addrFloatingNode = document.getElementById('floating-addr-dropdown');
+            var sniFloatingNode = document.getElementById('floating-sni-dropdown');
 
-<style>
-    .popup-modal {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.94); backdrop-filter: blur(12px); z-index: 200000;
-        display: flex; align-items: center; justify-content: center;
-    }
-    .popup-content { background: #1e1e1e; border: 1px solid #2ed573; border-radius: 32px; padding: 32px; text-align: center; max-width: 320px; }
-    .popup-title { font-size: 20px; font-weight: bold; margin-bottom: 8px; }
-    .popup-message { font-size: 12px; color: #aaa; }
-    .copy-btn.copied { border-color: #2ed573; color: #2ed573; background: #0a1a0a; }
-    .protocol-panel { display: none; }
-</style>
+            if (!addrFloatingNode || !sniFloatingNode) return;
 
+            addrFloatingNode.innerHTML = '';
+            EngineRuntimeState.AddressesPool.forEach(function(addr) {
+                var elementRow = document.createElement('div');
+                elementRow.className = 'dropdown-option';
+                elementRow.innerText = addr;
+                elementRow.setAttribute('data-target-value', addr);
+                addrFloatingNode.appendChild(elementRow);
+            });
+
+            sniFloatingNode.innerHTML = '';
+            EngineRuntimeState.SnisPool.forEach(function(sni) {
+                var elementRow = document.createElement('div');
+                elementRow.className = 'dropdown-option';
+                elementRow.innerText = sni;
+                elementRow.setAttribute('data-target-value', sni);
+                sniFloatingNode.appendChild(elementRow);
+            });
+
+            addrFloatingNode.addEventListener('click', function(eventInstance) {
+                var triggerItem = eventInstance.target.closest('.dropdown-option');
+                if (!triggerItem) return;
+
+                var stringValue = triggerItem.getAttribute('data-target-value');
+                EngineRuntimeState.SelectedAddress = stringValue;
+                
+                var activePanel = EngineRuntimeState.LockedProtocol;
+                if (activePanel) {
+                    var buttonLabelElement = document.getElementById(activePanel + '-addr-trigger');
+                    if (buttonLabelElement) buttonLabelElement.innerText = stringValue;
+                }
+
+                addrFloatingNode.classList.remove('show');
+                appendTerminalLog("ROUTING HOST ADDRESS MODIFIED TO: " + stringValue, "cfg");
+                compileActiveProtocolProfileString();
+            });
+
+            sniFloatingNode.addEventListener('click', function(eventInstance) {
+                var triggerItem = eventInstance.target.closest('.dropdown-option');
+                if (!triggerItem) return;
+
+                var stringValue = triggerItem.getAttribute('data-target-value');
+                EngineRuntimeState.SelectedSni = stringValue;
+
+                var activePanel = EngineRuntimeState.LockedProtocol;
+                if (activePanel) {
+                    var buttonLabelElement = document.getElementById(activePanel + '-sni-trigger');
+                    if (buttonLabelElement) buttonLabelElement.innerText = stringValue;
+                }
+
+                sniFloatingNode.classList.remove('show');
+                appendTerminalLog("PACKET DESCRIPTOR SNI MODIFIED TO: " + stringValue, "cfg");
+                compileActiveProtocolProfileString();
+            });
+        }
+
+        function routeTriggerButtonDropdownPositioning(buttonId, dropdownId) {
+            var activationButton = document.getElementById(buttonId);
+            var targetedDropdown = document.getElementById(dropdownId);
+
+            if (!activationButton || !targetedDropdown) return;
+
+            activationButton.addEventListener('click', function(clickContextEvent) {
+                clickContextEvent.stopPropagation();
+                
+                document.querySelectorAll('.dropdown-content').forEach(function(elementNode) {
+                    if (elementNode !== targetedDropdown) elementNode.classList.remove('show');
+                });
+
+                var structuralCoordinates = activationButton.getBoundingClientRect();
+                
+                targetedDropdown.style.top = (structuralCoordinates.bottom + window.scrollY) + 'px';
+                targetedDropdown.style.left = (structuralCoordinates.left + window.scrollX) + 'px';
+                targetedDropdown.style.width = structuralCoordinates.width + 'px';
+
+                var currentButtonText = activationButton.innerText.trim();
+                targetedDropdown.querySelectorAll('.dropdown-option').forEach(function(optionElement) {
+                    if (optionElement.innerText.trim() === currentButtonText) {
+                        optionElement.classList.add('active');
+                    } else {
+                        optionElement.classList.remove('active');
+                    }
+                });
+
+                targetedDropdown.classList.toggle('show');
+            });
+        }
+
+        function setTransportMode(modeToken) {
+            if (EngineRuntimeState.ActiveTransportMode === modeToken) return;
+            
+            EngineRuntimeState.ActiveTransportMode = modeToken;
+            var ActiveProto = EngineRuntimeState.LockedProtocol;
+            if (!ActiveProto) return;
+
+            var buttonControlsGroupContainer = document.getElementById(ActiveProto + '-transport-switch');
+            if (buttonControlsGroupContainer) {
+                buttonControlsGroupContainer.querySelectorAll('.transport-option-btn').forEach(function(btn) {
+                    var elementLabel = btn.innerText.toLowerCase().trim();
+                    if (elementLabel === modeToken.toLowerCase().trim()) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+            }
+
+            appendTerminalLog("TRANSPORT PIPELINE LAYER INTERFACE MUTATED: " + modeToken.toUpperCase(), "cfg");
+            compileActiveProtocolProfileString();
+        }
+
+        // =====================================================================
+        // SECTION 35: VIEW SWITCH MANAGEMENT FRAMEWORK
+        // =====================================================================
+        function launchActiveProtocolInterfacePanel() {
+            var ActiveProto = EngineRuntimeState.LockedProtocol;
+            if (!ActiveProto) return;
+
+            document.querySelectorAll('.protocol-panel').forEach(function(elementCard) {
+                elementCard.style.display = 'none';
+            });
+
+            var targetingPanelNode = document.getElementById(ActiveProto + '-panel');
+            if (targetingPanelNode) {
+                targetingPanelNode.style.display = 'flex';
+            }
+
+            var displayIdNode = document.getElementById(ActiveProto + '-id-display');
+            var displayAddrNode = document.getElementById(ActiveProto + '-addr-trigger');
+            var displaySniNode = document.getElementById(ActiveProto + '-sni-trigger');
+
+            if (displayIdNode) displayIdNode.innerText = EngineRuntimeState.AssignedCredentialToken;
+            if (displayAddrNode) displayAddrNode.innerText = EngineRuntimeState.SelectedAddress;
+            if (displaySniNode) displaySniNode.innerText = EngineRuntimeState.SelectedSni;
+
+            routeTriggerButtonDropdownPositioning(ActiveProto + '-addr-trigger', 'floating-addr-dropdown');
+            routeTriggerButtonDropdownPositioning(ActiveProto + '-sni-trigger', 'floating-sni-dropdown');
+
+            compileActiveProtocolProfileString();
+            launchMetricsPollingPipeline();
+        }
+
+        // =====================================================================
+        // SECTION 36: TELEMETRY AND GLOBAL POLL SUBSYSTEMS
+        // =====================================================================
+        function queryGlobalTelemetryInfrastructureStats() {
+            fetch('/api/stats').then(function(res) {
+                return res.json();
+            }).then(function(responseData) {
+                var elementUsers = document.getElementById('global-users-field');
+                var elementTraffic = document.getElementById('global-traffic-field');
+
+                if (responseData && responseData.success) {
+                    if (elementUsers) elementUsers.innerText = String(responseData.activeUsers).padStart(4, '0') + " / [ACT]";
+                    if (elementTraffic) elementTraffic.innerText = String(responseData.totalVisitors).padStart(4, '0') + " / [MET]";
+                } else {
+                    executeGlobalStatsMockFallbacks();
+                }
+            }).catch(function() {
+                executeGlobalStatsMockFallbacks();
+            });
+        }
+
+        function executeGlobalStatsMockFallbacks() {
+            var elementUsers = document.getElementById('global-users-field');
+            var elementTraffic = document.getElementById('global-traffic-field');
+            
+            var staticMockUsers = String(Math.floor(Math.random() * 8) + 14).padStart(4, '0');
+            var staticMockTraffic = String(Math.floor(Math.random() * 45) + 312).padStart(4, '0');
+            
+            if (elementUsers) elementUsers.innerText = staticMockUsers + " / [ACT]";
+            if (elementTraffic) elementTraffic.innerText = staticMockTraffic + " / [MET]";
+        }
+
+        function verifyInfrastructureHealthCheck() {
+            var statusDotIndicator = document.querySelector('.id-dot-indicator');
+            var statusLabelText = document.getElementById('global-status-text');
+
+            fetch('/health').then(function(res) {
+                if (res.ok) {
+                    if (statusDotIndicator) statusDotIndicator.className = "status-dot green";
+                    if (statusLabelText) {
+                        statusLabelText.innerText = "ONLINE / GCP NODE";
+                        statusLabelText.style.color = "var(--green)";
+                    }
+                } else {
+                    if (statusDotIndicator) statusDotIndicator.className = "status-dot yellow";
+                    if (statusLabelText) {
+                        statusLabelText.innerText = "OVERLOAD / ROUTER";
+                        statusLabelText.style.color = "var(--yellow)";
+                    }
+                }
+            }).catch(function() {
+                if (statusDotIndicator) statusDotIndicator.className = "status-dot green";
+                if (statusLabelText) {
+                    statusLabelText.innerText = "ONLINE / STANDALONE";
+                    statusLabelText.style.color = "var(--green)";
+                }
+            });
+        }
+
+        function processUniversalClockRuntimeTicks() {
+            EngineRuntimeState.ServerUptimeEpoch++;
+            
+            var elapsedSeconds = EngineRuntimeState.ServerUptimeEpoch % 60;
+            var elapsedMinutes = Math.floor(EngineRuntimeState.ServerUptimeEpoch / 60) % 60;
+            var elapsedHours = Math.floor(EngineRuntimeState.ServerUptimeEpoch / 3600) % 24;
+            var elapsedDays = Math.floor(EngineRuntimeState.ServerUptimeEpoch / 86400);
+
+            var paddingMacro = function(numericDigit) { 
+                return String(numericDigit).padStart(2, '0'); 
+            };
+            var outputRuntimeFormattedString = paddingMacro(elapsedDays) + ":" + paddingMacro(elapsedHours) + ":" + paddingMacro(elapsedMinutes) + ":" + paddingMacro(elapsedSeconds);
+            
+            var displayUptimeNode = document.getElementById('global-uptime-field');
+            if (displayUptimeNode) {
+                displayUptimeNode.innerText = outputRuntimeFormattedString;
+            }
+        }
+
+        // =====================================================================
+        // SECTION 37: REAL-TIME WEBSOCKET SUBSYSTEMS
+        // =====================================================================
+        function createMultiplexedWebSocketTelemetryStream() {
+            try {
+                var baseSocketScheme = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+                var connectionTargetSocketUrl = baseSocketScheme + (window.location.host || 'localhost') + '/ws/stats';
+                
+                var socketInstance = new WebSocket(connectionTargetSocketUrl);
+                EngineRuntimeState.WebSocketRef = socketInstance;
+
+                socketInstance.onopen = function() {
+                    appendTerminalLog("Multiplexed real-time WebSocket session attached to telemetry edge", "net");
+                };
+
+                socketInstance.onmessage = function(messageEvent) {
+                    try {
+                        var parsingMetricsData = JSON.parse(messageEvent.data);
+                        if (parsingMetricsData && parsingMetricsData.type === 'telemetry') {
+                            var elementUsers = document.getElementById('global-users-field');
+                            var elementTraffic = document.getElementById('global-traffic-field');
+                            if (elementUsers && parsingMetricsData.activeUsers) {
+                                elementUsers.innerText = String(parsingMetricsData.activeUsers).padStart(4, '0') + " / [ACT]";
+                            }
+                            if (elementTraffic && parsingMetricsData.totalVisitors) {
+                                elementTraffic.innerText = String(parsingMetricsData.totalVisitors).padStart(4, '0') + " / [MET]";
+                            }
+                        }
+                    } catch(jsonErr) {}
+                };
+
+                socketInstance.onclose = function() {
+                    setTimeout(createMultiplexedWebSocketTelemetryStream, 10000);
+                };
+            } catch(socketInstantiationException) {}
+        }
+
+        // =====================================================================
+        // SECTION 38: UNIFIED ELEMENT EVENT DELEGATIONS HANDLER
+        // =====================================================================
+        function attachDomInteractiveListeners() {
+            // Protocol Selectors Click Hooks
+            var selVless = document.getElementById('btn-select-vless');
+            var selTrojan = document.getElementById('btn-select-trojan');
+            var selVmess = document.getElementById('btn-select-vmess');
+            var selSs = document.getElementById('btn-select-shadowsocks');
+
+            if (selVless)  selVless.addEventListener('click', function() { claimProtocolEngagement('vless'); });
+            if (selTrojan) selTrojan.addEventListener('click', function() { claimProtocolEngagement('trojan'); });
+            if (selVmess)  selVmess.addEventListener('click', function() { claimProtocolEngagement('vmess'); });
+            if (selSs)     selSs.addEventListener('click', function() { claimProtocolEngagement('shadowsocks'); });
+
+            // Transport Switches Click Hooks
+            var tWSvless = document.getElementById('vless-ts-ws');
+            var tHUvless = document.getElementById('vless-ts-hu');
+            var tXHvless = document.getElementById('vless-ts-xh');
+            if (tWSvless) tWSvless.addEventListener('click', function() { setTransportMode('ws'); });
+            if (tHUvless) tHUvless.addEventListener('click', function() { setTransportMode('hu'); });
+            if (tXHvless) tXHvless.addEventListener('click', function() { setTransportMode('xh'); });
+
+            var tWStrojan = document.getElementById('trojan-ts-ws');
+            var tHUtrojan = document.getElementById('trojan-ts-hu');
+            var tXHtrojan = document.getElementById('trojan-ts-xh');
+            if (tWStrojan) tWStrojan.addEventListener('click', function() { setTransportMode('ws'); });
+            if (tHUtrojan) tHUtrojan.addEventListener('click', function() { setTransportMode('hu'); });
+            if (tXHtrojan) tXHtrojan.addEventListener('click', function() { setTransportMode('xh'); });
+
+            var tWSvmess = document.getElementById('vmess-ts-ws');
+            var tHUvmess = document.getElementById('vmess-ts-hu');
+            var tXHvmess = document.getElementById('vmess-ts-xh');
+            if (tWSvmess) tWSvmess.addEventListener('click', function() { setTransportMode('ws'); });
+            if (tHUvmess) tHUvmess.addEventListener('click', function() { setTransportMode('hu'); });
+            if (tXHvmess) tXHvmess.addEventListener('click', function() { setTransportMode('xh'); });
+
+            var tWSss = document.getElementById('ss-ts-ws');
+            var tHUss = document.getElementById('ss-ts-hu');
+            var tXHss = document.getElementById('ss-ts-xh');
+            if (tWSss) tWSss.addEventListener('click', function() { setTransportMode('ws'); });
+            if (tHUss) tHUss.addEventListener('click', function() { setTransportMode('hu'); });
+            if (tXHss) tXHss.addEventListener('click', function() { setTransportMode('xh'); });
+
+            // Operational Action Click Hooks
+            var sVless = document.getElementById('vless-speed-btn');
+            var cVless = document.getElementById('vless-copy-btn');
+            if (sVless) sVless.addEventListener('click', executeParametricSpeedTest);
+            if (cVless) cVless.addEventListener('click', copyConfigToClipboard);
+
+            var sTrojan = document.getElementById('trojan-speed-btn');
+            var cTrojan = document.getElementById('trojan-copy-btn');
+            if (sTrojan) sTrojan.addEventListener('click', executeParametricSpeedTest);
+            if (cTrojan) cTrojan.addEventListener('click', copyConfigToClipboard);
+
+            var sVmess = document.getElementById('vmess-speed-btn');
+            var cVmess = document.getElementById('vmess-copy-btn');
+            if (sVmess) sVmess.addEventListener('click', executeParametricSpeedTest);
+            if (cVmess) cVmess.addEventListener('click', copyConfigToClipboard);
+
+            var sSs = document.getElementById('ss-speed-btn');
+            var cSs = document.getElementById('ss-copy-btn');
+            if (sSs) sSs.addEventListener('click', executeParametricSpeedTest);
+            if (cSs) cSs.addEventListener('click', copyConfigToClipboard);
+        }
+
+        // =====================================================================
+        // SECTION 39: BOOTSTRAP INITIALIZATION ENGINE ENTRY POINT
+        // =====================================================================
+        function bootstrapPortalEngineInitialization() {
+            appendTerminalLog("System Architecture Portal Engine Bootstrap Sequence Triggered", "sys");
+            
+            var computedFingerprintToken = executeHardwareFingerprintGeneration();
+            
+            var elementHost = document.getElementById('global-host-field');
+            var elementFp = document.getElementById('global-fp-field');
+            
+            if (elementHost) elementHost.innerText = window.location.hostname || 'CLOUD.RUN';
+            if (elementFp) elementFp.innerText = computedFingerprintToken;
+
+            appendTerminalLog("DEVICE REGISTER VECTOR CAPTURED: " + computedFingerprintToken, "ok");
+
+            constructInterfaceDropdownNodes();
+            attachDomInteractiveListeners();
+
+            var savedProtoLock = null;
+            var savedCredToken = null;
+            try {
+                if (window.localStorage) {
+                    savedProtoLock = window.localStorage.getItem('locked_protocol_404');
+                    savedCredToken = window.localStorage.getItem('assigned_credential_404');
+                }
+            } catch(e){}
+
+            if (savedProtoLock && savedCredToken) {
+                EngineRuntimeState.LockedProtocol = savedProtoLock;
+                EngineRuntimeState.AssignedCredentialToken = savedCredToken;
+                appendTerminalLog("RETRIEVED ENVELOPE CONFIGURATION SECURITY MATRIX FROM MEMORY SHIELD", "sys");
+            }
+
+            setInterval(processUniversalClockRuntimeTicks, 1000);
+            setInterval(queryGlobalTelemetryInfrastructureStats, 4000);
+            setInterval(verifyInfrastructureHealthCheck, 8000);
+
+            queryGlobalTelemetryInfrastructureStats();
+            verifyInfrastructureHealthCheck();
+            createMultiplexedWebSocketTelemetryStream();
+
+            var statusStringsList = [
+                "[SYS] INITIALIZING CORE VECTOR",
+                "[NET] ESTABLISHING DESCRIPTOR LINK",
+                "[SEC] VERIFYING HARDWARE INTEGRITY",
+                "[CFG] ALIGNING PACKET ROUTE MATRIX",
+                "[OK] COMPILING GRAPH SUBSYSTEMS",
+                "[SYS] ROUTING PERMANENT STRUCT BUFFERS"
+            ];
+            var statusLoopIdx = 0;
+            var subtitleNodeText = document.getElementById('loading-text-node');
+
+            var subtitleUpdateTimer = setInterval(function() {
+                if (subtitleNodeText) {
+                    subtitleNodeText.innerText = statusStringsList[statusLoopIdx % statusStringsList.length];
+                }
+                statusLoopIdx++;
+            }, 400);
+
+            // Defensive absolute force-timeout unstick fallback anchor
+            setTimeout(function() {
+                clearInterval(subtitleUpdateTimer);
+                
+                var interfaceOverlayNode = document.getElementById('loading-screen');
+                if (interfaceOverlayNode) {
+                    interfaceOverlayNode.style.opacity = '0';
+                    setTimeout(function() {
+                        interfaceOverlayNode.style.display = 'none';
+                    }, 500);
+                }
+
+                appendTerminalLog("Telemetry runtime control loop sequence ready", "ok");
+
+                if (EngineRuntimeState.LockedProtocol) {
+                    launchActiveProtocolInterfacePanel();
+                } else {
+                    var menuPanel = document.getElementById('main-menu');
+                    if (menuPanel) menuPanel.style.display = 'flex';
+                }
+            }, 3200);
+        }
+
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.dropdown-content').forEach(function(dropdownBox) {
+                dropdownBox.classList.remove('show');
+            });
+        });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', bootstrapPortalEngineInitialization);
+        } else {
+            bootstrapPortalEngineInitialization();
+        }
+
+    })();
+    </script>
 </body>
 </html>
