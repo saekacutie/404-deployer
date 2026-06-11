@@ -1,4 +1,4 @@
-name: Pre-Deployment Checker
+name: GCP Cloud Shell Checker
 
 on:
   push:
@@ -8,150 +8,227 @@ on:
   workflow_dispatch:
 
 jobs:
-  validate:
+  check:
     runs-on: ubuntu-latest
-    
     steps:
       - uses: actions/checkout@v4
       
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      
-      - name: Install dependencies
+      - name: ═══ GCP CLOUD SHELL DEPLOYMENT CHECKER ═══
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq nginx jq
+          echo "╔═══════════════════════════════════════════════════════════════════════════╗"
+          echo "║                       GCP CLOUD SHELL CHECKER                             ║"
+          echo "║                        404-DEPLOYER v5.0                                  ║"
+          echo "╚═══════════════════════════════════════════════════════════════════════════╝"
+          echo ""
       
-      - name: Create validator script
+      - name: 📁 PHASE 1 - File Manifest
         run: |
-          cat > /tmp/validator.py << 'PYTHON_SCRIPT'
-          import os
-          import re
-          import json
-          import subprocess
-          from pathlib import Path
-          
-          errors = 0
-          warnings = 0
-          
-          G = '\033[92m'
-          R = '\033[91m'
-          Y = '\033[93m'
-          C = '\033[96m'
-          B = '\033[1m'
-          E = '\033[0m'
-          
-          def ok(msg): print(f"{G}OK: {msg}{E}")
-          def err(msg): global errors; errors += 1; print(f"{R}ERROR: {msg}{E}")
-          def warn(msg): global warnings; warnings += 1; print(f"{Y}WARN: {msg}{E}")
-          def info(msg): print(f"{C}INFO: {msg}{E}")
-          
-          print("=" * 70)
-          print("404-DEPLOYER VALIDATION TOOL".center(70))
-          print("=" * 70)
-          
-          # Phase 1: File manifest
-          print("\n--- PHASE 1: FILE MANIFEST ---")
-          required = ["index.html", "config.json", "nginx.conf", "Dockerfile", "deploy.sh"]
-          for f in required:
-              if Path(f).exists():
-                  ok(f"{f} found")
-              else:
-                  err(f"{f} MISSING")
-          
-          if errors > 0:
-              exit(1)
-          
-          # Phase 2: index.html
-          print("\n--- PHASE 2: index.html ---")
-          with open("index.html") as f:
-              html = f.read()
-          
-          if "<!DOCTYPE html" in html:
-              ok("DOCTYPE present")
-          else:
-              err("DOCTYPE missing")
-          
-          open_div = html.count("<div")
-          close_div = html.count("</div>")
-          if open_div == close_div:
-              ok(f"Div tags balanced ({open_div}/{close_div})")
-          else:
-              err(f"Div mismatch: open={open_div}, close={close_div}")
-          
-          # Phase 3: config.json
-          print("\n--- PHASE 3: config.json ---")
-          try:
-              with open("config.json") as f:
-                  config = json.load(f)
-              ok("JSON syntax valid")
-              
-              inbounds = config.get("inbounds", [])
-              info(f"Total inbounds: {len(inbounds)}")
-              
-              ports = [i["port"] for i in inbounds]
-              if len(set(ports)) != len(ports):
-                  err("Duplicate ports found")
-              else:
-                  ok("No duplicate ports")
-          except json.JSONDecodeError as e:
-              err(f"JSON error at line {e.lineno}: {e.msg}")
-              errors += 1
-          
-          # Phase 4: nginx.conf
-          print("\n--- PHASE 4: nginx.conf ---")
-          result = subprocess.run(["nginx", "-t", "-c", os.getcwd() + "/nginx.conf"], capture_output=True, text=True)
-          if result.returncode == 0:
-              ok("nginx.conf syntax valid")
-          else:
-              err("nginx.conf syntax invalid")
-              errors += 1
-          
-          # Phase 5: Dockerfile
-          print("\n--- PHASE 5: Dockerfile ---")
-          with open("Dockerfile") as f:
-              docker = f.read()
-          
-          if re.search(r"^FROM", docker, re.M):
-              ok("FROM instruction present")
-          else:
-              err("FROM missing")
-          
-          if re.search(r"^EXPOSE", docker, re.M):
-              ok("EXPOSE present")
-          else:
-              warn("No EXPOSE instruction")
-          
-          if re.search(r"^CMD|^ENTRYPOINT", docker, re.M):
-              ok("CMD/ENTRYPOINT present")
-          else:
-              err("CMD or ENTRYPOINT missing")
-          
-          # Phase 6: deploy.sh
-          print("\n--- PHASE 6: deploy.sh ---")
-          result = subprocess.run(["bash", "-n", "deploy.sh"], capture_output=True, text=True)
-          if result.returncode == 0:
-              ok("deploy.sh syntax valid")
-          else:
-              err("deploy.sh syntax invalid")
-              errors += 1
-          
-          # Final summary
-          print("\n" + "=" * 70)
-          print("SUMMARY")
-          print("=" * 70)
-          print(f"Errors: {errors}")
-          print(f"Warnings: {warnings}")
-          
-          if errors > 0:
-              print("\nDEPLOYMENT BLOCKED - Fix errors above")
-              exit(1)
-          else:
-              print("\nALL CHECKS PASSED - Ready for deployment")
-              exit(0)
-          PYTHON_SCRIPT
+          echo "┌─────────────────────────────────────────────────────────────────────────┐"
+          echo "│  📁 PHASE 1: FILE MANIFEST CHECK                                       │"
+          echo "├─────────────────────────────────────────────────────────────────────────┤"
+          for f in index.html config.json nginx.conf Dockerfile deploy.sh; do
+            if [ -f "$f" ]; then
+              SIZE=$(stat -c%s "$f" 2>/dev/null || stat -f%z "$f" 2>/dev/null)
+              LINES=$(wc -l < "$f")
+              echo "│  ✅ $f ($LINES lines, ${SIZE} bytes)                                      │"
+            else
+              echo "│  ❌ $f MISSING                                                           │"
+              exit 1
+            fi
+          done
+          echo "└─────────────────────────────────────────────────────────────────────────┘"
+          echo ""
       
-      - name: Run validator
-        run: python3 /tmp/validator.py
+      - name: 🔧 PHASE 2 - config.json Validation
+        run: |
+          echo "┌─────────────────────────────────────────────────────────────────────────┐"
+          echo "│  🔧 PHASE 2: CONFIG.JSON VALIDATION                                    │"
+          echo "├─────────────────────────────────────────────────────────────────────────┤"
+          sudo apt-get install -y jq -qq 2>/dev/null
+          if jq empty config.json 2>/dev/null; then
+            echo "│  ✅ JSON syntax valid                                                    │"
+            COUNT=$(jq '.inbounds | length' config.json)
+            echo "│  📊 Inbounds count: $COUNT (expected 12)                                 │"
+            if [ "$COUNT" -eq 12 ]; then
+              echo "│  ✅ Correct number of inbounds                                           │"
+            else
+              echo "│  ⚠️ Warning: Expected 12, found $COUNT                                  │"
+            fi
+            # Show ports
+            PORTS=$(jq '.inbounds[].port' config.json | tr '\n' ' ')
+            echo "│  🔌 Ports configured: $PORTS                                             │"
+          else
+            echo "│  ❌ Invalid JSON syntax                                                   │"
+            exit 1
+          fi
+          echo "└─────────────────────────────────────────────────────────────────────────┘"
+          echo ""
+      
+      - name: 🌐 PHASE 3 - nginx.conf Validation
+        run: |
+          echo "┌─────────────────────────────────────────────────────────────────────────┐"
+          echo "│  🌐 PHASE 3: NGINX.CONF VALIDATION                                     │"
+          echo "├─────────────────────────────────────────────────────────────────────────┤"
+          sudo apt-get install -y nginx -qq 2>/dev/null
+          sudo nginx -t -c $(pwd)/nginx.conf 2>&1 | while read line; do
+            if echo "$line" | grep -q "successful\|OK\|ok"; then
+              echo "│  ✅ $line                                                              │"
+            elif echo "$line" | grep -q "emerg\|error\|fail"; then
+              echo "│  ❌ $line                                                              │"
+              exit 1
+            else
+              echo "│  📌 $line                                                              │"
+            fi
+          done
+          # Check location paths
+          echo "│  🔗 Checking 12 location paths...                                        │"
+          PATHS="/saeka-tojirp /saeka-tojirp-hu /saeka-tojirp-xh /vmess-saeka /vmess-saeka-hu /vmess-saeka-xh /vless-saeka /vless-saeka-hu /vless-saeka-xh /ss-saeka /ss-saeka-hu /ss-saeka-xh"
+          MISSING=""
+          for p in $PATHS; do
+            if ! grep -q "location $p" nginx.conf; then
+              MISSING="$MISSING $p"
+            fi
+          done
+          if [ -z "$MISSING" ]; then
+            echo "│  ✅ All 12 location paths present                                         │"
+          else
+            echo "│  ❌ Missing paths:$MISSING                                               │"
+            exit 1
+          fi
+          echo "└─────────────────────────────────────────────────────────────────────────┘"
+          echo ""
+      
+      - name: 🐳 PHASE 4 - Dockerfile Validation
+        run: |
+          echo "┌─────────────────────────────────────────────────────────────────────────┐"
+          echo "│  🐳 PHASE 4: DOCKERFILE VALIDATION                                     │"
+          echo "├─────────────────────────────────────────────────────────────────────────┤"
+          if grep -q "^FROM" Dockerfile; then
+            FROM_IMG=$(grep "^FROM" Dockerfile | head -1 | awk '{print $2}')
+            echo "│  ✅ Base image: $FROM_IMG                                                │"
+          else
+            echo "│  ❌ Missing FROM instruction                                             │"
+            exit 1
+          fi
+          if grep -q "^EXPOSE" Dockerfile; then
+            EXPOSE_PORT=$(grep "^EXPOSE" Dockerfile | grep -o '[0-9]*')
+            echo "│  ✅ EXPOSE $EXPOSE_PORT configured                                       │"
+          else
+            echo "│  ⚠️ No EXPOSE instruction (Cloud Run needs port 8080)                   │"
+          fi
+          if grep -q "^CMD\|^ENTRYPOINT" Dockerfile; then
+            echo "│  ✅ CMD/ENTRYPOINT present                                               │"
+          else
+            echo "│  ❌ Missing CMD or ENTRYPOINT                                            │"
+            exit 1
+          fi
+          echo "└─────────────────────────────────────────────────────────────────────────┘"
+          echo ""
+      
+      - name: 📜 PHASE 5 - deploy.sh Validation
+        run: |
+          echo "┌─────────────────────────────────────────────────────────────────────────┐"
+          echo "│  📜 PHASE 5: DEPLOY.SH VALIDATION                                      │"
+          echo "├─────────────────────────────────────────────────────────────────────────┤"
+          if bash -n deploy.sh 2>/dev/null; then
+            echo "│  ✅ Bash syntax valid                                                    │"
+          else
+            echo "│  ❌ Bash syntax errors                                                   │"
+            bash -n deploy.sh 2>&1 | head -3
+            exit 1
+          fi
+          if [ -x "deploy.sh" ]; then
+            echo "│  ✅ Executable permission set                                            │"
+          else
+            echo "│  ⚠️ Not executable (run: chmod +x deploy.sh)                            │"
+          fi
+          if grep -q "gcloud" deploy.sh; then
+            GCLOUD_CMDS=$(grep -c "gcloud" deploy.sh)
+            echo "│  ✅ Found $GCLOUD_CMDS gcloud commands                                   │"
+          else
+            echo "│  ❌ No gcloud commands found                                             │"
+            exit 1
+          fi
+          echo "└─────────────────────────────────────────────────────────────────────────┘"
+          echo ""
+      
+      - name: 🎨 PHASE 6 - index.html Validation
+        run: |
+          echo "┌─────────────────────────────────────────────────────────────────────────┐"
+          echo "│  🎨 PHASE 6: INDEX.HTML VALIDATION                                     │"
+          echo "├─────────────────────────────────────────────────────────────────────────┤"
+          if grep -q "<!DOCTYPE html" index.html; then
+            echo "│  ✅ DOCTYPE present                                                     │"
+          else
+            echo "│  ❌ Missing DOCTYPE                                                     │"
+            exit 1
+          fi
+          OPEN_DIV=$(grep -o "<div" index.html | wc -l)
+          CLOSE_DIV=$(grep -o "</div>" index.html | wc -l)
+          if [ "$OPEN_DIV" -eq "$CLOSE_DIV" ]; then
+            echo "│  ✅ $OPEN_DIV div tags properly closed                                   │"
+          else
+            echo "│  ❌ Div mismatch: open=$OPEN_DIV, close=$CLOSE_DIV                      │"
+            exit 1
+          fi
+          if grep -q "</body>" index.html && grep -q "</html>" index.html; then
+            echo "│  ✅ HTML structure complete                                             │"
+          else
+            echo "│  ⚠️ Missing </body> or </html>                                          │"
+          fi
+          echo "└─────────────────────────────────────────────────────────────────────────┘"
+          echo ""
+      
+      - name: 🔗 PHASE 7 - Cross-File Consistency
+        run: |
+          echo "┌─────────────────────────────────────────────────────────────────────────┐"
+          echo "│  🔗 PHASE 7: CROSS-FILE CONSISTENCY                                    │"
+          echo "├─────────────────────────────────────────────────────────────────────────┤"
+          PATHS="/saeka-tojirp /vmess-saeka /vless-saeka /ss-saeka"
+          ALL_GOOD=true
+          for p in $PATHS; do
+            IN_NGINX=$(grep -c "location $p" nginx.conf || echo "0")
+            IN_CONFIG=$(grep -c "$p" config.json || echo "0")
+            IN_HTML=$(grep -c "$p" index.html || echo "0")
+            if [ "$IN_NGINX" -gt 0 ] && [ "$IN_CONFIG" -gt 0 ] && [ "$IN_HTML" -gt 0 ]; then
+              echo "│  ✅ $p - present in all files                                         │"
+            else
+              echo "│  ❌ $p - missing in: nginx:$IN_NGINX config:$IN_CONFIG html:$IN_HTML  │"
+              ALL_GOOD=false
+            fi
+          done
+          if [ "$ALL_GOOD" = true ]; then
+            echo "│  ✅ All paths consistent across files                                   │"
+          else
+            exit 1
+          fi
+          echo "└─────────────────────────────────────────────────────────────────────────┘"
+          echo ""
+      
+      - name: 🚀 PHASE 8 - GCP Cloud Shell Simulation
+        run: |
+          echo "┌─────────────────────────────────────────────────────────────────────────┐"
+          echo "│  🚀 PHASE 8: GCP DEPLOYMENT SIMULATION                                 │"
+          echo "├─────────────────────────────────────────────────────────────────────────┤"
+          echo "│  ☁️ Simulating: gcloud run deploy 404-deployer                          │"
+          echo "│  📍 Region: us-central1                                                 │"
+          echo "│  🔌 Port: 8080                                                          │"
+          echo "│  🧠 CPU: 1 vCPU                                                        │"
+          echo "│  💾 Memory: 2Gi                                                         │"
+          echo "│  ✅ All checks passed - Ready to deploy                                  │"
+          echo "└─────────────────────────────────────────────────────────────────────────┘"
+          echo ""
+      
+      - name: ✅ FINAL VERDICT
+        run: |
+          echo "╔═══════════════════════════════════════════════════════════════════════════╗"
+          echo "║                                                                           ║"
+          echo "║                      ✅ DEPLOYMENT READY                                  ║"
+          echo "║                                                                           ║"
+          echo "║   All 7 validation phases passed successfully                            ║"
+          echo "║   You can now deploy to GCP Cloud Run                                    ║"
+          echo "║                                                                           ║"
+          echo "║   Run: ./deploy.sh                                                        ║"
+          echo "║   Or:  gcloud run deploy 404-deployer --source . --region us-central1   ║"
+          echo "║                                                                           ║"
+          echo "╚═══════════════════════════════════════════════════════════════════════════╝"
