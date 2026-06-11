@@ -6,18 +6,25 @@
     <title>404 NOT FOUND GCP</title>
     <style>
         :root {
-            --bg: #121212;
+            --bg: #0f0f0f;
+            --bg-secondary: #1a1a1a;
             --surface: #1e1e1e;
             --surface2: #2a2a2a;
-            --border: #444;
+            --surface-hover: #333333;
+            --border: #404040;
+            --border-hover: #555;
             --text: #f0f0f0;
-            --text-dim: #aaa;
-            --accent: #ffffff;
+            --text-dim: #999;
+            --text-muted: #666;
+            --accent: #00ff00;
+            --accent-secondary: #00cc00;
             --glow: #ffffff;
             --green: #2ed573;
             --red: #ff4757;
             --yellow: #ffa502;
             --blue: #1e90ff;
+            --purple: #a855f7;
+            --cyan: #00d4ff;
             --font-mono: 'Courier New', monospace;
             --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             --font-size-base: clamp(12px, 3.2vw, 15px);
@@ -25,6 +32,9 @@
             --font-size-lg: clamp(16px, 4.5vw, 20px);
             --font-size-xl: clamp(24px, 7vw, 36px);
             --font-size-xxl: clamp(36px, 10vw, 60px);
+            --transition-fast: 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --transition-standard: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            --transition-slow: 0.5s ease-out;
         }
 
         * {
@@ -33,8 +43,12 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+        }
+
         body {
-            background: var(--bg);
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-secondary) 100%);
             color: var(--text);
             font-family: var(--font-mono);
             font-size: var(--font-size-base);
@@ -47,6 +61,7 @@
             -webkit-tap-highlight-color: transparent;
             user-select: none;
             padding: 16px 0;
+            background-attachment: fixed;
         }
 
         .container {
@@ -55,12 +70,18 @@
             padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 16px;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes fadeIn {
@@ -69,31 +90,73 @@
         }
 
         @keyframes glowPulseStrong {
-            0%, 100% { text-shadow: 0 0 12px var(--glow), 0 0 24px var(--glow); }
-            50% { text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow); }
+            0%, 100% {
+                text-shadow: 0 0 12px var(--glow), 0 0 24px var(--glow), 0 0 36px rgba(0, 255, 0, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow);
+            }
         }
 
         @keyframes glowPulseLight {
-            0%, 100% { text-shadow: 0 0 4px var(--glow); }
-            50% { text-shadow: 0 0 1px var(--glow); }
+            0%, 100% {
+                text-shadow: 0 0 4px var(--glow);
+            }
+            50% {
+                text-shadow: 0 0 1px var(--glow);
+            }
         }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+            50% { opacity: 0.4; }
         }
 
         @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes borderGlow {
             0%, 100% { border-color: var(--border); }
-            50% { border-color: #666; }
+            50% { border-color: var(--border-hover); }
         }
 
-        .fade-in { animation: fadeInUp 0.5s ease-out forwards; }
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp var(--transition-slow) ease-out forwards;
+        }
+
+        .fade-in:nth-child(2) { animation-delay: 0.1s; }
+        .fade-in:nth-child(3) { animation-delay: 0.2s; }
+        .fade-in:nth-child(4) { animation-delay: 0.3s; }
+        .fade-in:nth-child(5) { animation-delay: 0.4s; }
+        .fade-in:nth-child(6) { animation-delay: 0.5s; }
+        .fade-in:nth-child(7) { animation-delay: 0.6s; }
+        .fade-in:nth-child(8) { animation-delay: 0.7s; }
+        .fade-in:nth-child(9) { animation-delay: 0.8s; }
+
         .glow-text-strong { animation: glowPulseStrong 2.5s ease-in-out infinite; }
         .glow-text-light { animation: glowPulseLight 3s ease-in-out infinite; }
 
@@ -107,11 +170,11 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(18,18,18,0.96);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(15, 15, 15, 0.98);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 9999;
-            transition: opacity 0.5s ease;
+            transition: opacity var(--transition-slow) ease;
         }
 
         #loading-screen.hidden {
@@ -123,50 +186,66 @@
             font-size: var(--font-size-xxl);
             font-weight: 900;
             font-family: var(--font-mono);
-            letter-spacing: 8px;
+            letter-spacing: 12px;
             display: flex;
-            gap: 4px;
-            color: var(--text);
+            gap: 8px;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
         }
 
         .loading-digits span {
-            transition: all 0.35s ease;
+            transition: all var(--transition-fast);
             display: inline-block;
         }
 
         .loading-digits span.active {
-            animation: glowPulseStrong 0.7s ease-in-out infinite;
-            transform: scale(1.1);
+            animation: glowPulseStrong 0.6s ease-in-out infinite;
+            transform: scale(1.15);
+            color: var(--cyan);
         }
 
         .loading-digits span.inactive {
-            opacity: 0.08;
+            opacity: 0.1;
             text-shadow: none;
-            transform: scale(0.9);
+            transform: scale(0.85);
         }
 
         .loading-subtitle {
-            margin-top: 20px;
+            margin-top: 24px;
             font-size: var(--font-size-sm);
-            color: #888;
-            letter-spacing: 2px;
-            animation: fadeIn 1s ease 2s forwards;
+            color: var(--text-muted);
+            letter-spacing: 3px;
+            animation: fadeIn var(--transition-slow) ease 1.8s forwards;
             opacity: 0;
+            text-transform: uppercase;
         }
 
         .section {
-            background: var(--surface);
+            background: rgba(30, 30, 30, 0.8);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 16px;
+            padding: 18px;
             width: 100%;
-            transition: all 0.3s ease;
+            transition: all var(--transition-standard);
             position: relative;
-            overflow: visible;
+            overflow: hidden;
+            backdrop-filter: blur(4px);
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 255, 0, 0.02) 0%, transparent 100%);
+            pointer-events: none;
         }
 
         .section:hover {
-            border-color: #666;
+            border-color: var(--border-hover);
+            background: rgba(30, 30, 30, 0.95);
         }
 
         .section-title {
@@ -174,54 +253,64 @@
             font-size: var(--font-size-lg);
             text-align: center;
             margin-bottom: 10px;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             color: var(--text);
+            text-transform: uppercase;
         }
 
         .section-subtitle {
             font-size: var(--font-size-sm);
             color: var(--text-dim);
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         .button-bar {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 8px;
             justify-content: center;
-            margin-top: 6px;
+            margin-top: 8px;
         }
 
         .btn {
             background: var(--surface2);
             border: 1px solid var(--border);
             color: var(--text);
-            padding: 7px 12px;
+            padding: 8px 14px;
             border-radius: 6px;
             cursor: pointer;
             font-family: var(--font-mono);
             font-size: var(--font-size-sm);
-            transition: all 0.2s ease;
+            transition: all var(--transition-fast);
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
             max-width: 100%;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.5px;
             word-break: break-word;
             overflow-wrap: break-word;
+            text-transform: uppercase;
+            font-weight: 600;
         }
 
         .btn:hover {
-            border-color: #888;
-            background: #333;
+            border-color: var(--accent);
+            background: var(--surface-hover);
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.1);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
         }
 
         .btn.active {
             border-color: var(--accent);
-            background: #333;
-            box-shadow: 0 0 10px rgba(255,255,255,0.1);
+            background: rgba(0, 255, 0, 0.1);
+            color: var(--accent);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
             font-weight: bold;
         }
 
@@ -231,30 +320,37 @@
             color: var(--text-dim);
             margin-top: 10px;
             font-family: var(--font-mono);
-            min-height: 20px;
+            min-height: 24px;
+            transition: all var(--transition-fast);
         }
 
         .speed-row {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            margin-top: 10px;
-            gap: 10px;
+            margin-top: 12px;
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
         .speed-item {
             text-align: center;
             flex: 1;
+            min-width: 80px;
         }
 
         .speed-label {
             font-size: var(--font-size-sm);
             color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .speed-value {
             font-size: var(--font-size-lg);
             font-weight: 700;
+            margin: 4px 0;
+            transition: all var(--transition-fast);
         }
 
         .speed-value.download { color: var(--green); }
@@ -265,20 +361,22 @@
             display: flex;
             align-items: flex-end;
             gap: 2px;
-            height: 60px;
-            margin-top: 10px;
-            padding: 0 4px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 4px;
+            height: 70px;
+            margin-top: 12px;
+            padding: 8px 4px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            border: 1px solid var(--border);
         }
 
         .graph-bar {
             flex: 1;
             background: linear-gradient(to top, var(--green), var(--blue));
             border-radius: 2px;
-            transition: height 0.1s ease;
+            transition: height var(--transition-fast) ease;
             min-height: 2px;
             max-height: 100%;
+            box-shadow: 0 0 4px rgba(0, 255, 0, 0.2);
         }
 
         .config-wrapper {
@@ -286,49 +384,75 @@
         }
 
         .config-display {
-            background: var(--surface2);
+            background: rgba(0, 0, 0, 0.5);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 14px;
-            padding-top: 40px;
+            padding-top: 44px;
             font-family: var(--font-mono);
             font-size: var(--font-size-sm);
-            line-height: 1.7;
+            line-height: 1.6;
             word-break: break-all;
             white-space: pre-wrap;
             color: var(--green);
             min-height: 100px;
-            max-height: 280px;
+            max-height: 300px;
             overflow-y: auto;
             -webkit-user-select: all;
             user-select: all;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        .config-display::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .config-display::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .config-display::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        .config-display::-webkit-scrollbar-thumb:hover {
+            background: var(--border-hover);
         }
 
         .copy-btn {
             position: absolute;
             top: 10px;
-            right: 14px;
+            right: 12px;
             background: var(--surface2);
             border: 1px solid var(--border);
             color: var(--text);
-            padding: 5px 12px;
+            padding: 6px 12px;
             border-radius: 6px;
             cursor: pointer;
             font-family: var(--font-mono);
             font-size: var(--font-size-sm);
-            transition: all 0.2s ease;
-            z-index: 5;
+            transition: all var(--transition-fast);
+            z-index: 10;
+            font-weight: 600;
+            text-transform: uppercase;
         }
 
         .copy-btn:hover {
             border-color: var(--accent);
-            background: #333;
+            background: var(--surface-hover);
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.1);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
         }
 
         .copy-btn.copied {
             border-color: var(--green);
             color: var(--green);
-            background: #0a1a0a;
+            background: rgba(46, 213, 115, 0.1);
         }
 
         .copy-btn.copied::after {
@@ -341,65 +465,81 @@
             height: 8px;
             border-radius: 50%;
             margin-right: 6px;
+            vertical-align: middle;
         }
 
         .status-dot.green {
             background: var(--green);
-            box-shadow: 0 0 6px var(--green);
+            box-shadow: 0 0 8px var(--green);
         }
 
         .status-dot.yellow {
             background: var(--yellow);
-            box-shadow: 0 0 6px var(--yellow);
+            box-shadow: 0 0 8px var(--yellow);
             animation: pulse 1s infinite;
         }
 
         .status-dot.red {
             background: var(--red);
-            box-shadow: 0 0 6px var(--red);
+            box-shadow: 0 0 8px var(--red);
+        }
+
+        .status-dot.cyan {
+            background: var(--cyan);
+            box-shadow: 0 0 8px var(--cyan);
         }
 
         .footer {
             text-align: center;
             font-size: var(--font-size-sm);
-            padding: 8px;
+            padding: 12px;
             opacity: 0.7;
             letter-spacing: 1px;
             color: var(--text-dim);
+            transition: all var(--transition-standard);
+        }
+
+        .footer:hover {
+            opacity: 1;
         }
 
         .footer a {
-            color: var(--text-dim);
+            color: var(--accent);
             text-decoration: none;
-            transition: color 0.2s ease;
+            transition: all var(--transition-fast);
         }
 
         .footer a:hover {
-            color: var(--text);
+            color: var(--cyan);
+            text-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
         }
 
         .divider {
             border: none;
             border-top: 1px solid var(--border);
-            margin: 8px 0;
-            opacity: 0.5;
+            margin: 10px 0;
+            opacity: 0.3;
         }
 
         .info-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 4px 0;
+            padding: 6px 0;
             font-size: var(--font-size-sm);
         }
 
         .info-label {
             color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .info-value {
             color: var(--green);
             font-weight: 700;
+            text-align: right;
+            word-break: break-word;
         }
 
         .dropdown-wrapper {
@@ -410,16 +550,32 @@
         .dropdown-content {
             display: none;
             position: fixed;
-            background: var(--surface2);
+            background: rgba(42, 42, 42, 0.95);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 8px 0;
-            z-index: 10000;
-            max-height: 220px;
+            z-index: 10001;
+            max-height: 250px;
             overflow-y: auto;
-            width: calc(100% - 32px);
-            max-width: 668px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            animation: slideDown var(--transition-fast);
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        .dropdown-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .dropdown-content::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .dropdown-content::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
         }
 
         .dropdown-content.show {
@@ -427,57 +583,142 @@
         }
 
         .dropdown-item {
-            padding: 8px 12px;
+            padding: 10px 14px;
             cursor: pointer;
             font-size: var(--font-size-sm);
             color: var(--text);
-            transition: background 0.15s ease;
+            transition: all var(--transition-fast);
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
         }
 
         .dropdown-item:hover {
-            background: #3a3a3a;
+            background: rgba(0, 255, 0, 0.05);
+            border-left: 3px solid var(--accent);
+            padding-left: 11px;
         }
 
         .dropdown-item.selected {
             color: var(--green);
             font-weight: bold;
+            background: rgba(0, 255, 0, 0.08);
+            border-left: 3px solid var(--accent);
+            padding-left: 11px;
         }
 
         .log-container {
-            background: #0a0a0a;
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 10px;
-            max-height: 120px;
+            max-height: 140px;
             overflow-y: auto;
             font-size: var(--font-size-sm);
-            color: var(--text-dim);
+            color: var(--text-muted);
             margin-top: 10px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        .log-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .log-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .log-container::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
         }
 
         .log-entry {
-            padding: 2px 0;
-            border-bottom: 1px solid #222;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(100, 100, 100, 0.2);
             font-family: var(--font-mono);
+            display: flex;
+            gap: 8px;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
         }
 
         .log-entry .time {
-            color: #666;
-            margin-right: 8px;
+            color: var(--text-muted);
+            min-width: 60px;
+            flex-shrink: 0;
         }
 
-        @media (max-width: 380px) {
-            .btn { font-size: 10px; padding: 5px 8px; }
-            .config-display { font-size: 10px; padding: 10px; padding-top: 34px; }
-            .copy-btn { top: 8px; right: 8px; font-size: 9px; padding: 3px 8px; }
-            .section { padding: 10px; }
+        .log-entry .message {
+            flex: 1;
+            word-break: break-word;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px;
+                gap: 12px;
+            }
+
+            .section {
+                padding: 14px;
+            }
+
+            .btn {
+                font-size: 11px;
+                padding: 6px 10px;
+            }
+
+            .config-display {
+                font-size: 11px;
+                padding: 10px;
+                padding-top: 36px;
+            }
+
+            .copy-btn {
+                top: 8px;
+                right: 8px;
+                font-size: 10px;
+                padding: 4px 8px;
+            }
+
+            .speed-row {
+                gap: 8px;
+            }
+
+            .speed-item {
+                min-width: 70px;
+            }
+
+            .loading-digits {
+                letter-spacing: 6px;
+            }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 9998;
+            backdrop-filter: blur(2px);
+        }
+
+        .overlay.show {
+            display: block;
         }
     </style>
 </head>
 <body>
+
+<div class="overlay" id="overlay"></div>
 
 <div id="loading-screen">
     <div class="loading-digits" id="loading-digits">
@@ -507,7 +748,7 @@
             <button class="btn" id="address-dropdown-btn" style="width:100%; text-align:center;">SELECT ADDRESS ▾</button>
             <div class="dropdown-content" id="address-dropdown"></div>
         </div>
-        <div id="address-selected" style="text-align:center; margin-top:6px; font-size:var(--font-size-sm); color:var(--green); word-break: break-all;"></div>
+        <div id="address-selected" style="text-align:center; margin-top:8px; font-size:var(--font-size-sm); color:var(--green); word-break: break-all;"></div>
     </div>
 
     <div class="section fade-in">
@@ -517,8 +758,8 @@
             <button class="btn" id="sni-dropdown-btn" style="width:100%; text-align:center;">SELECT SNI ▾</button>
             <div class="dropdown-content" id="sni-dropdown"></div>
         </div>
-        <div id="sni-selected" style="text-align:center; margin-top:6px; font-size:var(--font-size-sm); color:var(--green); word-break: break-all;"></div>
-        <div class="ping-display" id="ping-display" style="margin-top:8px;">
+        <div id="sni-selected" style="text-align:center; margin-top:8px; font-size:var(--font-size-sm); color:var(--green); word-break: break-all;"></div>
+        <div class="ping-display" id="ping-display" style="margin-top:10px;">
             <span class="status-dot yellow"></span> SELECT BOTH TO PING
         </div>
     </div>
@@ -544,7 +785,7 @@
         </div>
         <div class="graph-container" id="graph-container"></div>
         <div class="log-container" id="log-container">
-            <div class="log-entry"><span class="time">--:--:--</span> System ready.</div>
+            <div class="log-entry"><span class="time">--:--:--</span><span class="message">System ready.</span></div>
         </div>
     </div>
 
@@ -565,12 +806,12 @@
         <div class="section-subtitle">COPY AND IMPORT TO YOUR VPN CLIENT</div>
         <div class="config-wrapper">
             <button class="copy-btn" id="copy-btn">COPY</button>
-            <div class="config-display" id="config-display"></div>
+            <div class="config-display" id="config-display">// Select options to generate config</div>
         </div>
     </div>
 
     <div class="footer fade-in glow-text-light">
-        CREATED BY <a href="https://fb.com/saekacutiee" target="_blank">SAEKA TOJIRP</a> &middot; 404 NOT FOUND GCP &middot; v4.0
+        CREATED BY <a href="https://fb.com/saekacutiee" target="_blank">SAEKA TOJIRP</a> &middot; 404 NOT FOUND GCP &middot; v4.1
     </div>
 </div>
 
@@ -638,7 +879,6 @@
     let currentUploadSpeed = 0;
     
     const speedHistory = [];
-
     let visitorCount = 0;
     let activeUsers = 0;
 
@@ -668,6 +908,7 @@
     const logContainer = document.getElementById('log-container');
     const loadingScreen = document.getElementById('loading-screen');
     const mainContent = document.getElementById('main-content');
+    const overlay = document.getElementById('overlay');
     const d4 = document.getElementById('d4');
     const d0 = document.getElementById('d0');
     const d4b = document.getElementById('d4b');
@@ -677,10 +918,10 @@
         const time = now.toTimeString().split(' ')[0];
         const entry = document.createElement('div');
         entry.className = 'log-entry';
-        entry.innerHTML = '<span class="time">' + time + '</span> ' + message;
+        entry.innerHTML = '<span class="time">' + time + '</span><span class="message">' + message + '</span>';
         logContainer.appendChild(entry);
         logContainer.scrollTop = logContainer.scrollHeight;
-        while (logContainer.children.length > 20) {
+        while (logContainer.children.length > 25) {
             logContainer.removeChild(logContainer.firstChild);
         }
     }
@@ -711,13 +952,13 @@
         .then(response => response.json())
         .then(data => {
             infoIp.textContent = data.ip || '---';
-            infoCountry.textContent = (data.country_name || '---') + ' ' + (data.flag?.emoji || '');
-            addLog('IP location: ' + data.country_name);
+            infoCountry.textContent = (data.country_name || '---') + ' ' + (data.flag?.emoji || '🌍');
+            addLog('IP location: ' + (data.country_name || 'unknown'));
         })
         .catch(() => {
-            infoIp.textContent = '---';
-            infoCountry.textContent = '---';
-            addLog('IP fetch failed (local)');
+            infoIp.textContent = 'N/A';
+            infoCountry.textContent = '🌍 LOCAL';
+            addLog('IP fetch failed - using local');
         });
 
     initializeSharedStats();
@@ -829,22 +1070,28 @@
             div.addEventListener('click', (e) => {
                 e.stopPropagation();
                 callback(item);
-                container.classList.remove('show');
+                closeAllDropdowns();
                 container.querySelectorAll('.dropdown-item').forEach(d => d.classList.remove('selected'));
                 div.classList.add('selected');
+                overlay.classList.remove('show');
             });
             container.appendChild(div);
         });
     }
 
-    function positionDropdown(dropdown) {
-        const btn = dropdown.previousElementSibling;
-        if (!btn || !btn.classList.contains('btn')) return;
-        
+    function positionDropdown(dropdown, btn) {
+        if (!btn) return;
         const rect = btn.getBoundingClientRect();
+        const containerRect = document.querySelector('.container').getBoundingClientRect();
+        
         dropdown.style.top = (rect.bottom + window.scrollY + 4) + 'px';
-        dropdown.style.left = (rect.left + window.scrollX) + 'px';
-        dropdown.style.width = rect.width + 'px';
+        dropdown.style.left = (Math.max(16, rect.left)) + 'px';
+        dropdown.style.width = Math.min(rect.width, window.innerWidth - 32) + 'px';
+    }
+
+    function closeAllDropdowns() {
+        addressDropdown.classList.remove('show');
+        sniDropdown.classList.remove('show');
     }
 
     buildDropdown(addressDropdown, ADDRESSES, selectedAddress, (val) => {
@@ -873,42 +1120,56 @@
 
     addressDropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const show = !addressDropdown.classList.contains('show');
-        addressDropdown.classList.toggle('show');
-        sniDropdown.classList.remove('show');
-        if (show) {
-            positionDropdown(addressDropdown);
+        if (!addressDropdown.classList.contains('show')) {
+            closeAllDropdowns();
+            addressDropdown.classList.add('show');
+            overlay.classList.add('show');
+            positionDropdown(addressDropdown, addressDropdownBtn);
             addLog('Opened address dropdown');
+        } else {
+            closeAllDropdowns();
+            overlay.classList.remove('show');
         }
     });
     
     sniDropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const show = !sniDropdown.classList.contains('show');
-        sniDropdown.classList.toggle('show');
-        addressDropdown.classList.remove('show');
-        if (show) {
-            positionDropdown(sniDropdown);
+        if (!sniDropdown.classList.contains('show')) {
+            closeAllDropdowns();
+            sniDropdown.classList.add('show');
+            overlay.classList.add('show');
+            positionDropdown(sniDropdown, sniDropdownBtn);
             addLog('Opened SNI dropdown');
+        } else {
+            closeAllDropdowns();
+            overlay.classList.remove('show');
         }
     });
     
     window.addEventListener('scroll', () => {
         if (addressDropdown.classList.contains('show')) {
-            positionDropdown(addressDropdown);
+            positionDropdown(addressDropdown, addressDropdownBtn);
         }
         if (sniDropdown.classList.contains('show')) {
-            positionDropdown(sniDropdown);
+            positionDropdown(sniDropdown, sniDropdownBtn);
         }
     });
     
     document.addEventListener('click', () => {
-        addressDropdown.classList.remove('show');
-        sniDropdown.classList.remove('show');
+        closeAllDropdowns();
+        overlay.classList.remove('show');
+    });
+
+    overlay.addEventListener('click', () => {
+        closeAllDropdowns();
+        overlay.classList.remove('show');
     });
 
     function pingCombined() {
-        if (!selectedAddress || !selectedSNI) return;
+        if (!selectedAddress || !selectedSNI) {
+            pingDisplay.innerHTML = '<span class="status-dot yellow"></span> SELECT BOTH TO PING';
+            return;
+        }
         if (pingInProgress) return;
         
         const target = selectedAddress;
@@ -930,7 +1191,7 @@
                 const result = { latency: 9999, status: 'timeout' };
                 pingCache[target] = result;
                 showPingResult(target, result);
-                addLog('Ping ' + target + ' timeout');
+                addLog('Ping timeout');
             }
         }, 5000);
 
@@ -944,7 +1205,7 @@
                 const result = { latency, status: 'ok' };
                 pingCache[target] = result;
                 showPingResult(target, result);
-                addLog('Ping ' + target + ': ' + latency + 'ms');
+                addLog('Ping OK: ' + latency + 'ms');
             }
         })
         .catch(() => {
@@ -957,7 +1218,7 @@
                 const result = { latency, status };
                 pingCache[target] = result;
                 showPingResult(target, result);
-                addLog('Ping ' + target + ': ' + latency + 'ms');
+                addLog('Ping: ' + latency + 'ms');
             }
         });
     }
@@ -998,147 +1259,101 @@
                 const vmessObj = {
                     v: '2', ps: 'VMESS-' + host, add: addr, port: '443', id: PASS, aid: '0',
                     scy: 'auto', net: 'ws', type: 'none', host: host, path: path,
-                    tls: 'tls', sni: sni, fp: 'chrome', alpn: 'http/1.1'
+                    tls: 'tls', sni: sni, alpn: 'http/1.1'
                 };
-                try {
-                    return 'vmess://' + btoa(unescape(encodeURIComponent(JSON.stringify(vmessObj))));
-                } catch (e) {
-                    return 'vmess://' + btoa(JSON.stringify(vmessObj));
-                }
+                return 'vmess://' + btoa(JSON.stringify(vmessObj));
             }
-            case 'ss': {
-                let ssUserInfo = '';
-                try {
-                    ssUserInfo = btoa('aes-256-gcm:' + PASS);
-                } catch (e) {
-                    ssUserInfo = btoa(unescape(encodeURIComponent('aes-256-gcm:' + PASS)));
-                }
-                const pluginStr = 'obfs-local;obfs=websocket;obfs-host=' + host +
-                                  ';obfs-uri=' + path + ';sni=' + sni;
-                return 'ss://' + ssUserInfo + '@' + addr + ':443?plugin=' +
-                       encodeURIComponent(pluginStr) + '#SHADOWSOCKS-' + host;
-            }
+            case 'ss':
+                return 'ss://' + btoa('chacha20-ietf-poly1305:' + PASS) + '@' + addr + ':443?obfs=websocket&obfs-host=' +
+                       host + '&obfs-uri=' + encPath + '#SS-' + host;
             default:
-                return '';
+                return '// Unknown protocol';
         }
     }
 
     function updateConfigDisplay() {
-        configDisplay.textContent = buildConfig();
+        const config = buildConfig();
+        configDisplay.textContent = config;
+        addLog('Config updated');
     }
 
-    function copyConfig() {
-        const config = buildConfig();
-        const showSuccess = () => {
-            copyBtn.textContent = 'COPIED';
+    PROTOCOLS.forEach(proto => {
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.textContent = PROTOCOL_LABELS[proto];
+        if (proto === selectedProtocol) btn.classList.add('active');
+        btn.addEventListener('click', () => {
+            protocolBar.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedProtocol = proto;
+            updateConfigDisplay();
+            addLog('Protocol: ' + PROTOCOL_LABELS[proto]);
+        });
+        protocolBar.appendChild(btn);
+    });
+
+    TRANSPORTS.forEach(trans => {
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.textContent = TRANSPORT_LABELS[trans];
+        if (trans === selectedTransport) btn.classList.add('active');
+        btn.addEventListener('click', () => {
+            transportBar.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedTransport = trans;
+            updateConfigDisplay();
+            addLog('Transport: ' + TRANSPORT_LABELS[trans]);
+        });
+        transportBar.appendChild(btn);
+    });
+
+    copyBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const config = configDisplay.textContent;
+        if (!config || config === '// Select options to generate config') {
+            addLog('No config to copy');
+            return;
+        }
+        navigator.clipboard.writeText(config).then(() => {
             copyBtn.classList.add('copied');
             addLog('Config copied to clipboard');
             setTimeout(() => {
-                copyBtn.textContent = 'COPY';
                 copyBtn.classList.remove('copied');
-            }, 2500);
-        };
-        const showFail = () => {
-            copyBtn.textContent = 'FAILED';
-            copyBtn.style.borderColor = 'var(--red)';
-            copyBtn.style.color = 'var(--red)';
-            addLog('Copy failed');
-            setTimeout(() => {
-                copyBtn.textContent = 'COPY';
-                copyBtn.style.borderColor = 'var(--border)';
-                copyBtn.style.color = 'var(--text)';
             }, 2000);
-        };
-
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(config).then(showSuccess).catch(() => {
-                fallbackCopy(config, showSuccess, showFail);
-            });
-        } else {
-            fallbackCopy(config, showSuccess, showFail);
-        }
-    }
-
-    function fallbackCopy(text, success, fail) {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.left = '-9999px';
-        ta.style.top = '-9999px';
-        ta.style.width = '2px';
-        ta.style.height = '2px';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.focus();
-        ta.select();
-        try {
-            document.execCommand('copy');
-            success();
-        } catch (e) {
-            fail();
-        }
-        document.body.removeChild(ta);
-    }
-
-    function buildButtonBar(container, items, selected, labels, callback) {
-        container.innerHTML = '';
-        items.forEach(item => {
-            const btn = document.createElement('button');
-            btn.className = 'btn';
-            btn.textContent = labels ? labels[item] : item;
-            if (item === selected) btn.classList.add('active');
-            btn.addEventListener('click', () => {
-                container.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                callback(item);
-                updateConfigDisplay();
-            });
-            container.appendChild(btn);
+        }).catch(() => {
+            addLog('Failed to copy config');
+            alert('Failed to copy to clipboard');
         });
-    }
-
-    buildButtonBar(protocolBar, PROTOCOLS, selectedProtocol, PROTOCOL_LABELS, (val) => {
-        selectedProtocol = val;
-        addLog('Protocol changed to ' + val);
     });
 
-    buildButtonBar(transportBar, TRANSPORTS, selectedTransport, TRANSPORT_LABELS, (val) => {
-        selectedTransport = val;
-        addLog('Transport changed to ' + val);
-    });
-
-    copyBtn.addEventListener('click', copyConfig);
-
-    function animateLoadingDigits() {
-        const digits = [d4, d0, d4b];
-        let index = 0;
-        const interval = setInterval(() => {
-            digits.forEach((digit, i) => {
-                if (i === index) {
-                    digit.classList.add('active');
-                    digit.classList.remove('inactive');
-                } else {
-                    digit.classList.add('inactive');
-                    digit.classList.remove('active');
-                }
-            });
-            index = (index + 1) % digits.length;
-        }, 200);
-
-        setTimeout(() => {
-            clearInterval(interval);
-            digits.forEach(digit => {
-                digit.classList.remove('active', 'inactive');
-            });
-            loadingScreen.classList.add('hidden');
-            mainContent.style.display = '';
-            addLog('Portal initialized');
-        }, 3000);
+    // Loading animation
+    const loadingSpans = [d4, d0, d4b];
+    let activeIndex = 0;
+    
+    function animateLoading() {
+        loadingSpans.forEach((span, index) => {
+            if (index === activeIndex) {
+                span.classList.remove('inactive');
+                span.classList.add('active');
+            } else {
+                span.classList.remove('active');
+                span.classList.add('inactive');
+            }
+        });
+        activeIndex = (activeIndex + 1) % loadingSpans.length;
     }
+    
+    const loadingInterval = setInterval(animateLoading, 350);
 
-    animateLoadingDigits();
+    // Show main content after 3 seconds
+    setTimeout(() => {
+        clearInterval(loadingInterval);
+        loadingScreen.classList.add('hidden');
+        mainContent.style.display = 'flex';
+        addLog('Portal initialized');
+    }, 3000);
+
     updateConfigDisplay();
-
 })();
 </script>
 
